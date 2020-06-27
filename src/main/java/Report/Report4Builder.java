@@ -9,22 +9,30 @@ import java.util.stream.Collectors;
 
 import Model.Employee;
 import Model.Task;
+import services.PossibleYearRetriever;
 
-public class Report4Builder implements ReportBuilder {
+public class Report4Builder extends ReportBuilder {
+
+	public Report4Builder(List<Employee> employees) {
+		super(employees);
+		this.inputParamsNames.add("rok");
+		possibleDataRetriever = new PossibleYearRetriever();
+		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
+	}
+
+
 
 	private int year;
 
-	public Report4Builder(int year) {
-		super();
-		this.year = year;
-	}
+
 
 	@Override
-	public Report buildReport(List<Employee> employees){
+	public Report buildReport() {
 		
 		Report report = new Report();
 		List<Employee> modelEmployees = employees;
 		List<Employee> filteredEmployees = new ArrayList<Employee>();
+		this.year = Integer.valueOf(inputParams.get(0));
 
 		for (Employee employee : modelEmployees) {
 			List<Task> filteredTasks = new ArrayList<Task>();

@@ -10,20 +10,30 @@ import java.util.TreeMap;
 
 import Model.Employee;
 import Model.Task;
+import services.PossibleYearRetriever;
 
-public class Report2Builder implements ReportBuilder {
+public class Report2Builder extends ReportBuilder {
+
+	public Report2Builder(List<Employee> employees) {
+		super(employees);
+		this.inputParamsNames.add("rok");
+		possibleDataRetriever = new PossibleYearRetriever();
+		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
+	}
+
+
 
 	private int year;
 
-	public Report2Builder(int year) {
-		this.year = year;
-	}
+
 
 	@Override
-	public Report buildReport(List<Employee> employees) {
-
+	public Report buildReport() {	
+		
 		Report report = new Report();
 
+
+		this.year = Integer.valueOf(this.inputParams.get(0));
 		report.setTitle("Raport godzin projektów w roku: " + year);
 
 		List<String> columnNames = new ArrayList<String>();
@@ -35,6 +45,7 @@ public class Report2Builder implements ReportBuilder {
 		columnNames.add("Ilość godzin");
 
 		TreeMap<String, Double> projectsMap = new TreeMap<>();
+		
 
 		for (Employee employee : employees) {
 			for (Task task : employee.getTaskList()) {

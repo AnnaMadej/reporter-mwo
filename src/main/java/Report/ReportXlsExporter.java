@@ -27,15 +27,15 @@ public class ReportXlsExporter {
 
 	private String generatedReportsPath = "generated-reports";
 
-	Workbook wb;
+	static Workbook wb;
 
-	Sheet sheet1;
+	static Sheet sheet1;
 
-	List<String> columnNames = new ArrayList<String>();
-	List<List<String>> rows = new ArrayList<List<String>>();
-	String title = "";
+	static List<String> columnNames = new ArrayList<String>();
+	static List<List<String>> rows = new ArrayList<List<String>>();
+	static String title = "";
 
-	public File exportToXls(Report report) throws IOException {
+	public static File exportToXls(Report report) throws IOException {
 		wb = new HSSFWorkbook();
 		sheet1 = wb.createSheet("Raport");
 
@@ -78,7 +78,7 @@ public class ReportXlsExporter {
 		return file;
 	}
 
-	private void createRows() {
+	private static void createRows() {
 		Row row;
 		int numberOfStartingRow = 6;
 		int rowsCounter = numberOfStartingRow;
@@ -96,7 +96,7 @@ public class ReportXlsExporter {
 		Date date = new Date();
 	}
 
-	private void createHeaders(int columnNamesRow) {
+	private static void createHeaders(int columnNamesRow) {
 		Row row = sheet1.createRow(columnNamesRow);
 		int cellsCounter = 0;
 		
@@ -117,7 +117,7 @@ public class ReportXlsExporter {
 		cellsCounter = 0;
 	}
 
-	private void createTittle(int titleRow) {
+	private static void createTittle(int titleRow) {
 		Row row = sheet1.createRow(titleRow);
 		Cell titleCell = row.createCell(0);
 

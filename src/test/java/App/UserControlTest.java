@@ -36,7 +36,7 @@ public class UserControlTest {
             sb.append("8. Pokaż logi z odczytu pliku\n");
             sb.append("0. Zakończ pracę z programem\n");
 
-            Assert.assertEquals(sb.toString(), userControl.generateOption());
+            Assert.assertEquals(sb.toString(), userControl.showOptions());
     }
 
 }

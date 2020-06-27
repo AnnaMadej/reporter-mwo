@@ -4,20 +4,26 @@ import java.util.*;
 
 import Model.Employee;
 import Model.Task;
+import services.PossibleYearRetriever;
 
-public class Report1Builder implements ReportBuilder {
+public class Report1Builder extends ReportBuilder {
+
+	public Report1Builder(List<Employee> employees) {
+		super(employees);
+		this.inputParamsNames.add("rok");
+		possibleDataRetriever = new PossibleYearRetriever();
+		System.out.println(employees);
+		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
+	}
 
 	private int year;
 
-	public Report1Builder(int year) {
-		this.year = year;
-	}
-
 	@Override
-	public Report buildReport(List<Employee> employees) {
+	public Report buildReport() {
 
 		Report report = new Report();
 
+		this.year = Integer.valueOf(this.inputParams.get(0));
 		report.setTitle("Raport godzin pracowników w roku: " + year);
 
 		List<String> columnNames = new ArrayList<String>();
@@ -42,7 +48,6 @@ public class Report1Builder implements ReportBuilder {
 			}
 		}
 
-
 		report.setColumnNames(columnNames);
 		report.setRows(rows);
 
@@ -51,18 +56,16 @@ public class Report1Builder implements ReportBuilder {
 
 	public double getTotalHours(Employee employee, int year) {
 		List<Task> taskList = employee.getTaskList();
-		double sum=0;
-		for(Task task:taskList) {
+		double sum = 0;
+		for (Task task : taskList) {
 			Date date = task.getTaskDate();
 			Calendar calendar = new GregorianCalendar();
 			calendar.setTime(date);
-			if (calendar.get(Calendar.YEAR)==year) {
-				sum+=task.getHours();
+			if (calendar.get(Calendar.YEAR) == year) {
+				sum += task.getHours();
 			}
 		}
 		return sum;
 	}
-
-
 
 }

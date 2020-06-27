@@ -5,18 +5,29 @@ import java.util.List;
 
 import Model.Employee;
 import Model.Task;
+import services.PossibleProjectRetriever;
+import services.PossibleYearRetriever;
 
-public class Report5Builder implements ReportBuilder {
+public class Report5Builder extends ReportBuilder {
+
+	public Report5Builder(List<Employee> employees) {
+		super(employees);
+		this.inputParamsNames.add("nazwa projektu");
+		possibleDataRetriever = new PossibleProjectRetriever();
+		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
+		
+	}
+
+
 
 	private String projectName;
 
-	public Report5Builder(String projectName) {
-		super();
-		this.projectName = projectName;
-	}
+	
 
 	@Override
-	public Report buildReport(List<Employee> employees){
+	public Report buildReport() {
+		
+		this.projectName = this.inputParams.get(0);
 		Report report = new Report();
 
 		report.setTitle("Raport ilości godzin pracowników w  projekcie: " + projectName);
