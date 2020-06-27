@@ -18,7 +18,7 @@ public class Report3Builder implements ReportBuilder {
 	}
 
 	@Override
-	public Report buildReport(Model model){
+	public Report buildReport(List<Employee> employees){
 		
 			Report report = new Report();
 		    List<String> columnNames = new ArrayList<String>();
@@ -34,7 +34,7 @@ public class Report3Builder implements ReportBuilder {
 
 	        String[] polishMonths = {"Styczeń","Luty","Marzec","Kwiecień","Maj","Czerwiec","Lipiec","Sierpień","Wrzesień","Pażdziernik","Listopad","Grudzień"};
 
-	        Employee foundEmployee = findEmployee(model, id);
+	        Employee foundEmployee = findEmployee(employees, id);
 
 	        if (foundEmployee != null) {
 	            for (int i=0; i<12; i++) {
@@ -60,8 +60,7 @@ public class Report3Builder implements ReportBuilder {
 	        return report;
 	}
 	
-	  public Employee findEmployee(Model model, String id){
-	        List<Employee> employeeList = model.getEmployeeList();
+	  public Employee findEmployee(List<Employee> employeeList, String id){
 		    String[] listOfWords = id.toLowerCase().trim().split(" +");
 
 	        for (Employee employee : employeeList) {

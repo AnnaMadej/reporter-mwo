@@ -17,7 +17,7 @@ public class Report5Builder implements ReportBuilder {
 	}
 
 	@Override
-	public Report buildReport(Model model){
+	public Report buildReport(List<Employee> employees){
 		Report report = new Report();
 
 		report.setTitle("Raport ilości godzin pracowników w  projekcie: " + projectName);
@@ -30,7 +30,6 @@ public class Report5Builder implements ReportBuilder {
 		columnNames.add("Ilość godzin");
 
 		report.setColumnNames(columnNames);
-		List<Employee> employees = model.getEmployeeList();
 
 		List<List<String>> rows = new ArrayList<List<String>>();
 		Integer rowsCounter = 1;

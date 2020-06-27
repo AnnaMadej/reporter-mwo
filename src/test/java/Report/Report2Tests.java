@@ -17,7 +17,6 @@ public class Report2Tests {
 
     @Before
     public void createModelAndEmployeeListForTest(){
-        model = Mockito.mock(Model.class);
         employees = new ArrayList<>();
     }
 
@@ -39,10 +38,8 @@ public class Report2Tests {
         employees.add(employee1);
         employees.add(employee2);
 
-        Mockito.when(model.getEmployeeList()).thenReturn(employees);
-
         ReportBuilder reportBuilder = new Report2Builder(2012);
-        Report report = reportBuilder.buildReport(model);
+        Report report = reportBuilder.buildReport(employees);
 
         Assert.assertEquals(3, report.getColumnNames().size());
         Assert.assertEquals(1, report.getRows().size());
@@ -67,10 +64,8 @@ public class Report2Tests {
         employees.add(employee1);
         employees.add(employee2);
 
-        Mockito.when(model.getEmployeeList()).thenReturn(employees);
-
         ReportBuilder reportBuilder = new Report2Builder(2020);
-        Report report = reportBuilder.buildReport(model);
+        Report report = reportBuilder.buildReport(employees);
 
         Assert.assertEquals(3, report.getColumnNames().size());
         Assert.assertEquals(0, report.getRows().size());
@@ -98,10 +93,8 @@ public class Report2Tests {
         employees.add(employee1);
         employees.add(employee2);
 
-        Mockito.when(model.getEmployeeList()).thenReturn(employees);
-
         ReportBuilder reportBuilder = new Report2Builder(2012);
-        Report report = reportBuilder.buildReport(model);
+        Report report = reportBuilder.buildReport(employees);
 
         Assert.assertEquals("7.5", report.getRows().get(0).get(2));
         Assert.assertEquals("9.25", report.getRows().get(1).get(2));

@@ -34,12 +34,9 @@ public class Report1BuilderTest {
 		employees.add(employee1);
 		employees.add(employee2);
 
-		Model model = Mockito.mock(Model.class);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
-
 		ReportBuilder rBuilder = new Report1Builder(2020);
 
-		Report report = rBuilder.buildReport(model);
+		Report report = rBuilder.buildReport(employees);
 		ReportPrinter.printReport(report);
 
 	}

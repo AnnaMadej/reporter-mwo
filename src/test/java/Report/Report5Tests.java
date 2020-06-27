@@ -28,12 +28,10 @@ public class Report5Tests {
 		Employee employee2 = new Employee("Paweł", "Kwiatkowski");
 		Task task2 = new Task(date, "jakisProjekt", "jakies zadanie2", 7);
 		employee2.addTask(task2);
-		Model model = Mockito.mock(Model.class);
 		employees.add(employee1);
 		employees.add(employee2);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
 		ReportBuilder rBuilder = new Report5Builder("jakisProjekt");
-		Report report = rBuilder.buildReport(model);
+		Report report = rBuilder.buildReport(employees);
 	
 		Assert.assertTrue(report.getRows().stream().anyMatch(row -> row.get(1).equals("Paweł Kwiatkowski")));
 		Assert.assertTrue(report.getRows().stream().anyMatch(row -> row.get(1).equals("Jan Nowak")));
@@ -43,9 +41,6 @@ public class Report5Tests {
 	public void testNotFilteringMasterEmployeesData() throws IOException {
 		List<Employee> employees = new ArrayList<Employee>();
 
-		Model model = Mockito.mock(Model.class);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
-
 		Employee employee1 = new Employee("Jan", "Nowak");
 		Calendar myCalendar = new GregorianCalendar(2012, 2, 11);
 		Date date = myCalendar.getTime();
@@ -53,9 +48,9 @@ public class Report5Tests {
 		employee1.addTask(task);
 		employees.add(employee1);
 		ReportBuilder rBuilder = new Report5Builder("Projekt2");
-		rBuilder.buildReport(model);
+		rBuilder.buildReport(employees);
 		ReportBuilder rBuilder2 = new Report5Builder("jakisProjekt");
-		Report report = rBuilder2.buildReport(model);
+		Report report = rBuilder2.buildReport(employees);
 
 		Assert.assertTrue((report.getRows().size() == 1));
 
@@ -64,10 +59,7 @@ public class Report5Tests {
 	@Test
 	public void testNotCountingHoursFromDifferentProject() throws IOException {
 		List<Employee> employees = new ArrayList<Employee>();
-
-		Model model = Mockito.mock(Model.class);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
-
+		
 		Employee employee1 = new Employee("Jan", "Nowak");
 		Calendar myCalendar = new GregorianCalendar(2012, 2, 11);
 		Date date = myCalendar.getTime();
@@ -77,7 +69,7 @@ public class Report5Tests {
 		employee1.addTask(task1);
 		employees.add(employee1);
 		ReportBuilder rBuilder2 = new Report5Builder("jakisProjekt");
-		Report report = rBuilder2.buildReport(model);
+		Report report = rBuilder2.buildReport(employees);
 		Assert.assertTrue((report.getRows().size() == 1));
 		Assert.assertEquals("3.0", report.getRows().get(0).get(3));
 	}
@@ -85,8 +77,6 @@ public class Report5Tests {
 	@Test
 	public void testCountingHours() throws IOException {
 		List<Employee> employees = new ArrayList<Employee>();
-		Model model = Mockito.mock(Model.class);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
 		Employee employee1 = new Employee("Jan", "Nowak");
 		Calendar myCalendar = new GregorianCalendar(2012, 2, 11);
 		Date date = myCalendar.getTime();
@@ -96,7 +86,7 @@ public class Report5Tests {
 		employee1.addTask(task1);
 		employees.add(employee1);
 		ReportBuilder rBuilder2 = new Report5Builder("jakisProjekt");
-		Report report = rBuilder2.buildReport(model);
+		Report report = rBuilder2.buildReport(employees);
 		Assert.assertTrue((report.getRows().size() == 1));
 		Assert.assertEquals("11.0", report.getRows().get(0).get(3));
 	}
@@ -114,12 +104,10 @@ public class Report5Tests {
 		Task task3 = new Task(date, "jakisProjekt3", "jakies zadanie2", 7);
 		employee2.addTask(task2);
 		employee2.addTask(task3);
-		Model model = Mockito.mock(Model.class);
 		employees.add(employee1);
 		employees.add(employee2);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
 		ReportBuilder rBuilder = new Report5Builder("jakisProjekt");
-		Report report = rBuilder.buildReport(model);
+		Report report = rBuilder.buildReport(employees);
 		Assert.assertEquals(4, report.getColumnNames().size());
 		Assert.assertEquals(2, report.getRows().size());
 		Assert.assertEquals("3.0", report.getRows().get(0).get(3));
@@ -131,11 +119,8 @@ public class Report5Tests {
 
 		List<Employee> employees = new ArrayList<Employee>();
 
-		Model model = Mockito.mock(Model.class);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
-
 		ReportBuilder rBuilder = new Report5Builder("projekt");
-		Report report = rBuilder.buildReport(model);
+		Report report = rBuilder.buildReport(employees);
 
 		Assert.assertEquals(0, report.getRows().size());
 	}
@@ -144,8 +129,6 @@ public class Report5Tests {
 	public void testEmptyReportIfNotExistingProject() throws IOException {
 		List<Employee> employees = new ArrayList<Employee>();
 
-		Model model = Mockito.mock(Model.class);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
 
 		Employee employee1 = new Employee("Jan", "Nowak");
 		Calendar myCalendar = new GregorianCalendar(2012, 2, 11);
@@ -156,7 +139,7 @@ public class Report5Tests {
 		employee1.addTask(task1);
 		employees.add(employee1);
 		ReportBuilder rBuilder2 = new Report5Builder("Nieistniejący projekt");
-		Report report = rBuilder2.buildReport(model);
+		Report report = rBuilder2.buildReport(employees);
 		Assert.assertEquals(0, report.getRows().size());
 	}
 	

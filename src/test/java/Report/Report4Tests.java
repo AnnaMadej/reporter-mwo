@@ -32,13 +32,10 @@ public class Report4Tests {
 		employee1.addTask(task2);
 
 		employees.add(employee1);
-
-		Model model = Mockito.mock(Model.class);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
-
+		
 		ReportBuilder rBuilder = new Report4Builder(2012);
 
-		Report report = rBuilder.buildReport(model);
+		Report report = rBuilder.buildReport(employees);
 		
 		Assert.assertEquals(report.getColumnNames().size(), 4);
 		
@@ -72,12 +69,9 @@ public class Report4Tests {
 		employees.add(employee1);
 		employees.add(employee2);
 
-		Model model = Mockito.mock(Model.class);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
-
 		ReportBuilder rBuilder = new Report4Builder(2012);
 
-		Report report = rBuilder.buildReport(model);
+		Report report = rBuilder.buildReport(employees);
 
 		
 		Assert.assertEquals(2, report.getRows().size());
@@ -101,12 +95,10 @@ public class Report4Tests {
 
 		employees.add(employee1);
 
-		Model model = Mockito.mock(Model.class);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
 
 		ReportBuilder rBuilder = new Report4Builder(2012);
 
-		Report report = rBuilder.buildReport(model);
+		Report report = rBuilder.buildReport(employees);
 
 		Assert.assertEquals(4, report.getColumnNames().size());
 		Assert.assertEquals(1, report.getRows().size());
@@ -133,13 +125,10 @@ public class Report4Tests {
 
 		employees.add(employee1);
 		employees.add(employee2);
-
-		Model model = Mockito.mock(Model.class);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
-
+		
 		ReportBuilder rBuilder = new Report4Builder(2012);
 
-		Report report = rBuilder.buildReport(model);
+		Report report = rBuilder.buildReport(employees);
 		Assert.assertEquals(4, report.getColumnNames().size());
 		Assert.assertEquals(2, report.getRows().size());
 		Assert.assertEquals("100.0%", report.getRows().get(0).get(2));
@@ -154,9 +143,6 @@ public class Report4Tests {
 
 		List<Employee> employees = new ArrayList<Employee>();
 
-		Model model = Mockito.mock(Model.class);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
-
 		Employee employee1 = new Employee("Jan", "Nowak");
 		Calendar myCalendar = new GregorianCalendar(2012, 2, 11);
 		Date date = myCalendar.getTime();
@@ -164,9 +150,9 @@ public class Report4Tests {
 		employee1.addTask(task);
 		employees.add(employee1);
 		ReportBuilder rBuilder = new Report4Builder(2013);
-		rBuilder.buildReport(model);
+		rBuilder.buildReport(employees);
 		ReportBuilder rBuilder2 = new Report4Builder(2012);
-		Report report = rBuilder2.buildReport(model);
+		Report report = rBuilder2.buildReport(employees);
 
 		Assert.assertTrue((report.getRows().size() == 1));
 	}
@@ -175,9 +161,6 @@ public class Report4Tests {
 	public void testNotCountingPercentsFromDifferentYears() throws IOException {
 
 		List<Employee> employees = new ArrayList<Employee>();
-
-		Model model = Mockito.mock(Model.class);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
 
 		Employee employee1 = new Employee("Jan", "Nowak");
 		Calendar myCalendar = new GregorianCalendar(2012, 2, 11);
@@ -193,7 +176,7 @@ public class Report4Tests {
 		employee1.addTask(task2);
 		employees.add(employee1);
 		ReportBuilder rBuilder = new Report4Builder(2012);
-		Report report = rBuilder.buildReport(model);
+		Report report = rBuilder.buildReport(employees);
 
 		Assert.assertEquals(4, report.getColumnNames().size());
 		Assert.assertEquals(1, report.getRows().size());
@@ -206,9 +189,6 @@ public class Report4Tests {
 	public void testSumOfPercentsInRowIsAlways100() throws IOException {
 
 		List<Employee> employees = new ArrayList<Employee>();
-
-		Model model = Mockito.mock(Model.class);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
 
 		Employee employee1 = new Employee("Jan", "Nowak");
 		Calendar myCalendar = new GregorianCalendar(2012, 2, 11);
@@ -225,7 +205,7 @@ public class Report4Tests {
 
 		employees.add(employee1);
 		ReportBuilder rBuilder = new Report4Builder(2012);
-		Report report = rBuilder.buildReport(model);
+		Report report = rBuilder.buildReport(employees);
 
 		String proj1Percents = report.getRows().get(0).get(2);
 		String proj2Percents = report.getRows().get(0).get(3);
@@ -241,11 +221,8 @@ public class Report4Tests {
 
 		List<Employee> employees = new ArrayList<Employee>();
 
-		Model model = Mockito.mock(Model.class);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
-
 		ReportBuilder rBuilder = new Report4Builder(2012);
-		Report report = rBuilder.buildReport(model);
+		Report report = rBuilder.buildReport(employees);
 
 		Assert.assertEquals(0, report.getRows().size());
 	}
@@ -254,9 +231,6 @@ public class Report4Tests {
 	public void testEmptyReportIfNotExistingYear() throws IOException {
 
 		List<Employee> employees = new ArrayList<Employee>();
-
-		Model model = Mockito.mock(Model.class);
-		Mockito.when(model.getEmployeeList()).thenReturn(employees);
 
 		Employee employee1 = new Employee("Jan", "Nowak");
 		Calendar myCalendar = new GregorianCalendar(2012, 2, 11);
@@ -272,7 +246,7 @@ public class Report4Tests {
 		employee1.addTask(task2);
 		employees.add(employee1);
 		ReportBuilder rBuilder = new Report4Builder(2020);
-		Report report = rBuilder.buildReport(model);
+		Report report = rBuilder.buildReport(employees);
 
 		Assert.assertEquals(0, report.getRows().size());
 

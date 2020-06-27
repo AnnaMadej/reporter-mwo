@@ -21,7 +21,7 @@ public class Report2Builder implements ReportBuilder {
 	}
 
 	@Override
-	public Report buildReport(Model model) {
+	public Report buildReport(List<Employee> employees) {
 
 		Report report = new Report();
 
@@ -36,7 +36,6 @@ public class Report2Builder implements ReportBuilder {
 		columnNames.add("Ilość godzin");
 
 		TreeMap<String, Double> projectsMap = new TreeMap<>();
-		List<Employee> employees = model.getEmployeeList();
 
 		for (Employee employee : employees) {
 			for (Task task : employee.getTaskList()) {

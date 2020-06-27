@@ -21,10 +21,10 @@ public class Report4Builder implements ReportBuilder {
 	}
 
 	@Override
-	public Report buildReport(Model model){
+	public Report buildReport(List<Employee> employees){
 		
 		Report report = new Report();
-		List<Employee> modelEmployees = model.getEmployeeList();
+		List<Employee> modelEmployees = employees;
 		List<Employee> filteredEmployees = new ArrayList<Employee>();
 
 		for (Employee employee : modelEmployees) {

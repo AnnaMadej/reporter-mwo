@@ -15,7 +15,7 @@ public class Report1Builder implements ReportBuilder {
 	}
 
 	@Override
-	public Report buildReport(Model model) {
+	public Report buildReport(List<Employee> employees) {
 
 		Report report = new Report();
 
@@ -29,7 +29,7 @@ public class Report1Builder implements ReportBuilder {
 		columnNames.add("Imię i nazwisko");
 		columnNames.add("Liczba godzin");
 
-		List<Employee> employeeList = model.getEmployeeList();
+		List<Employee> employeeList = employees;
 		employeeList.sort(Comparator.comparing(Employee::getSurname));
 
 		for (Employee employee : employeeList) {

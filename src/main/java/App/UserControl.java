@@ -6,7 +6,10 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+
 import Model.*;
+import Reader.FilesScanner;
 import Reader.ScanErrorsHolder;
 import Report.*;
 
@@ -16,15 +19,24 @@ public class UserControl {
     private Scanner sc = new Scanner(System.in);
     private String userOption;
     private String path;
-    private Model model;
     private ReportBuilder reportBuilder;
     private Report report;
     private ReportXlsExporter reportToXls;
 
+    private List<Employee> employeeList = new ArrayList<Employee>();
+    
     public UserControl(String path) {
         this.path = path;
-        model = new Model(path);
         reportToXls = new ReportXlsExporter();
+        
+        try {
+            FilesScanner fileScanner = new FilesScanner();
+            employeeList = fileScanner.scanFiles(path);
+        } catch (IOException e){
+            System.err.println("Nie znaleziono pliku");
+        } catch ( InvalidFormatException e ){
+            System.err.println("Bład odczytu pliku");
+        }
     }
 
     public void controlLoop() {
@@ -103,7 +115,7 @@ public class UserControl {
             String year = reportYear.toString();
             if (dateList.contains(year)){
                 reportBuilder = new Report1Builder(reportYear);
-                report = reportBuilder.buildReport(model);
+                report = reportBuilder.buildReport(employeeList);
                 ReportPrinter.printReport(report);
                 saveReportToFile(report);
             } else {
@@ -126,7 +138,7 @@ public class UserControl {
             if (dateList.contains(year)) {
                 System.out.println();
                 reportBuilder = new Report2Builder(reportYear);
-                report = reportBuilder.buildReport(model);
+                report = reportBuilder.buildReport(employeeList);
                 ReportPrinter.printReport(report);
                 saveReportToFile(report);
                 System.out.println();
@@ -155,7 +167,7 @@ public class UserControl {
                 if (dateList.contains(year)) {
                     System.out.println();
                     reportBuilder = new Report3Builder(reportYear, name);
-                    report = reportBuilder.buildReport(model);
+                    report = reportBuilder.buildReport(employeeList);
                     ReportPrinter.printReport(report);
                     saveReportToFile(report);
                     System.out.println();
@@ -180,7 +192,7 @@ public class UserControl {
             String year = reportYear.toString();
             if (dateList.contains(year)) {
                 reportBuilder = new Report4Builder(reportYear);
-                report = reportBuilder.buildReport(model);
+                report = reportBuilder.buildReport(employeeList);
                 ReportPrinter.printReport(report);
                 saveReportToFile(report);
                 System.out.println();
@@ -199,7 +211,7 @@ public class UserControl {
         String projectName = sc.nextLine();
         if (projectsList.contains(projectName)) {
             reportBuilder = new Report5Builder(projectName);
-            report = reportBuilder.buildReport(model);
+            report = reportBuilder.buildReport(employeeList);
             ReportPrinter.printReport(report);
             saveReportToFile(report);
             System.out.println();
@@ -220,7 +232,7 @@ public class UserControl {
             if (dateList.contains(year)) {
                 System.out.println();
                 reportBuilder = new Report2Builder(reportYear);
-                report = reportBuilder.buildReport(model);
+                report = reportBuilder.buildReport(employeeList);
                 Report6Builder barChartReport = new Report6Builder();
                 barChartReport.plotBarChart(report, reportYear);
                 System.out.println();
@@ -247,7 +259,7 @@ public class UserControl {
                 String year = reportYear.toString();
                 if (dateList.contains(year)) {
                     reportBuilder = new Report4Builder(reportYear);
-                    report = reportBuilder.buildReport(model);
+                    report = reportBuilder.buildReport(employeeList);
                     Report7Builder report7 = new Report7Builder();
                     report7.plotChart(report, name, reportYear);
                     System.out.println();
@@ -310,7 +322,6 @@ public class UserControl {
     private List<String> dateRangeGenerator() {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
         List<String> yearProject = new ArrayList<>();
-        List<Employee> employeeList = model.getEmployeeList();
         for (Employee employee : employeeList) {
             List<Task> taskList = employee.getTaskList();
             for (Task task : taskList) {
@@ -327,7 +338,7 @@ public class UserControl {
 
     private List<String> employeeRangeGenerator() {
         List<String> employeeList = new ArrayList<>();
-        List<Employee> allEmployeeData = model.getEmployeeList();
+        List<Employee> allEmployeeData = this.employeeList;
         for (Employee employee : allEmployeeData) {
             String nameAndSurname = employee.getNameAndSurname();
             employeeList.add(nameAndSurname);
@@ -337,7 +348,7 @@ public class UserControl {
 
     private List<String> projectsRangeGenerator() {
         List<String> projects = new ArrayList<>();
-        List<Employee> allEmployeeData = model.getEmployeeList();
+        List<Employee> allEmployeeData =  this.employeeList;
         for (Employee employee : allEmployeeData) {
             Set<String> allProjects = employee.getProjects();
             for (String oneProject : allProjects) {
