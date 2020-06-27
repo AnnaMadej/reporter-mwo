@@ -3,7 +3,6 @@ package Report;
 import java.util.*;
 
 import Model.Employee;
-import Model.Model;
 import Model.Task;
 
 public class Report3Builder implements ReportBuilder {

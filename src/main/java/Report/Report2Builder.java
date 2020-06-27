@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import Model.Employee;
-import Model.Model;
 import Model.Task;
 
 public class Report2Builder implements ReportBuilder {

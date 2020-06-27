@@ -1,7 +1,6 @@
 package Report;
 
 import Model.Employee;
-import Model.Model;
 import Model.Task;
 import org.junit.Assert;
 import org.junit.Before;
@@ -12,7 +11,6 @@ import java.util.*;
 
 public class Report2Tests {
 
-    private Model model;
     private List<Employee> employees;
 
     @Before

@@ -1,6 +1,5 @@
 package Report;
 
-import Model.Model;
 import Model.Employee;
 import Model.Task;
 import org.junit.Assert;
@@ -12,7 +11,6 @@ import java.util.*;
 
 public class Report1Tests {
 
-    private Model model;
     private List<Employee> employees;
     private Employee employee1;
     private Employee employee2;

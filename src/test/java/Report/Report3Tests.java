@@ -1,18 +1,15 @@
 package Report;
 
-import Model.Model;
 import Model.Employee;
 import Model.Task;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mockito;
 
 import java.util.*;
 
 public class Report3Tests {
 
-    private Model model;
     private List<Employee> employees;
     private Employee employee1;
     private Employee employee2;

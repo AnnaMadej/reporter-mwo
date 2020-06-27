@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import Model.Employee;
-import Model.Model;
 import Model.Task;
 
 public class Report4Builder implements ReportBuilder {
