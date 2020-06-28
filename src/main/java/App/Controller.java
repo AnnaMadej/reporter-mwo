@@ -1,5 +1,7 @@
 package App;
 
+import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,10 +14,14 @@ import Reader.FilesScanner;
 import Report.Report;
 import Report.ReportBuilder;
 import Report.ReportBuilderFactory;
+import Report.ReportPrinter;
+import Report.ReportXlsExporter;
 
 public class Controller {
-	List<Employee> employees = new ArrayList<Employee>();
-	ReportBuilder reportBuilder;
+	private List<Employee> employees = new ArrayList<Employee>();
+	private ReportBuilder reportBuilder;
+	private Report report;
+	private String reportFilePath;
 
 	public void addReportInputParam(String inputParam) {
 		reportBuilder.addInputParam(inputParam);
@@ -29,23 +35,43 @@ public class Controller {
 		return reportBuilder.getPossibleInputParams();
 	}
 
-	public Report getReport() {
-		return reportBuilder.buildReport();
+	public void buildReport() {
+		this.report =  reportBuilder.buildReport();
+	}
+	
+	public String reportString() {
+		return ReportPrinter.stringReport(report);
+	}
+	
+	public String exportReport() throws IOException {
+		File file = ReportXlsExporter.exportToXls(report);
+		this.reportFilePath = file.getCanonicalPath();
+		return reportFilePath;
+	}
+	
+	public void openReport() throws IOException {
+			File file = new File(reportFilePath);
+			Desktop desktop = Desktop.getDesktop();
+			if (file.exists()) {
+				desktop.open(file);
+			}
 	}
 
-	public void setEmployees(String path) {
-		try {
+	public void readEmployees(String path) throws InvalidFormatException, IOException {
 			FilesScanner fileScanner = new FilesScanner();
 			employees = fileScanner.scanFiles(path);
-		} catch (IOException e) {
-			System.err.println("Nie znaleziono pliku");
-		} catch (InvalidFormatException e) {
-			System.err.println("Bład odczytu pliku");
-		}
 	}
 
 	public void setReportType(String userOption) {
 		this.reportBuilder = ReportBuilderFactory.getReportBuilder(userOption);
 		reportBuilder.setEmployees(employees);
+	}
+	
+	public void exportToXls() {
+		
+	}
+	
+	int getNumberOfEmployees() {
+		return employees.size();
 	}
 }

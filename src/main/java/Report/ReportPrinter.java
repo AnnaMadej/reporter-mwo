@@ -4,38 +4,63 @@ import java.util.Collections;
 import java.util.List;
 
 public class ReportPrinter {
-	public static void printReport(Report report) {
+	
+	static String reportPrint = "";
+	static List<String> columnNames;
+	static List<List<String>> rows;
+	static String title;
+	static int lineLength;
+	
+	public static String stringReport(Report report) {
 
-		List<String> columnNames = report.getColumnNames();
-		List<List<String>> rows = report.getRows();
-		String title = report.getTitle();
-		int lineLength = columnNames.size() * 32;
+		title = report.getTitle();
+		columnNames = report.getColumnNames();
+		rows = report.getRows();
+		report.getTitle();
+		lineLength = columnNames.size() * 32;
 
-		System.out.println(title);
+		addTitle();
+		
 		if (rows.size() == 0) {
-			System.out.println("RAPORT JEST PUSTY");
-			System.out.println();
+			addEmptyInfo();
 		} else {
-
-			System.out.println(String.join("", Collections.nCopies(lineLength, "-")));
-			for (String columnName : columnNames) {
-				System.out.format("%-1s %-30s", "|", columnName);
-
-			}
-
-			System.out.format("%-1s", "|");
-			System.out.println();
-			System.out.println(String.join("", Collections.nCopies(lineLength, "-")));
-			for (List<String> row : rows) {
-				for (String cell : row) {
-					System.out.format("%-1s %-30s", "|", cell);
-
-				}
-				System.out.format("%-1s", "|");
-				System.out.println();
-			}
-			System.out.println(String.join("", Collections.nCopies(lineLength, "-")));
-
+			addLine();
+			addColumnNames();
+			addLine();
+			addRows();
+			addLine();
 		}
+		String toReturn = reportPrint;
+		reportPrint = "";
+		return toReturn;
+	}
+
+	private static void addLine() {
+		reportPrint += String.join("", Collections.nCopies(lineLength, "-")) + "\n";
+	}
+
+	private static void addRows() {
+		for (List<String> row : rows) {
+			for (String cell : row) {
+				reportPrint += String.format("%-1s %-30s", "|", cell);
+
+			}
+			reportPrint += String.format("%-1s \n", "|");
+		}
+	}
+
+	private static void addColumnNames() {
+		for (String columnName : columnNames) {
+			reportPrint += String.format("%-1s %-30s", "|", columnName);
+		}
+		reportPrint += String.format("%-1s \n", "|");
+	}
+
+	private static void addEmptyInfo() {
+		reportPrint += "RAPORT JEST PUSTY" + "\n";
+	}
+
+	private static void addTitle() {
+		reportPrint += title + "\n";
 	}
 }

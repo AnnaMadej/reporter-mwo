@@ -10,24 +10,30 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+
 import Reader.ScanErrorsHolder;
-import Report.Report;
-import Report.ReportPrinter;
-import Report.ReportXlsExporter;
 
 public class UserInterface {
 
 	private Scanner sc = new Scanner(System.in);
-	private Report report;
-
-	private Set<String> possibleInputParams = new TreeSet<String>();
-	private List<String> paramNamesToDisplay = new ArrayList<String>();
+	private Controller controller = new Controller();
 	private List<String> reportOptions = Arrays.asList(new String[] { "1", "2", "3", "4", "5" });
 	private List<String> chartOptions = Arrays.asList(new String[] { "6", "7" });
-	private Controller controller = new Controller();
+
+	private Set<String> possibleInputParams = new TreeSet<String>();
+	private List<String> inputParamNames = new ArrayList<String>();
 
 	public UserInterface(String path) {
-		controller.setEmployees(path);
+		try {
+			controller.readEmployees(path);
+		} catch (InvalidFormatException e) {
+			System.out.println("invalidFormat!");
+		} catch (IOException e) {
+			System.out.println("IO exception!");
+		} catch (IllegalArgumentException e) {
+			System.out.println("Podałeś nieprawidłową ścieżkę do katalogów z raportami!");
+		}
 	}
 
 	private String askForOption() {
@@ -66,19 +72,23 @@ public class UserInterface {
 		return "Czy chcesz otworzyć plik xls? [t/n]";
 	}
 
-	public void controlLoop() {
-		String userOption;
-		do {
-			showHeaders();
-			userOption = takeUserInput(askForOption());
-			if (reportOptions.contains(userOption)) {
-				showReport(userOption);
-			} else if ("9".equals(userOption)) {
-				showErrorLogs();
-			}
-		} while (!userOption.equals("0"));
-		exit();
+	public void showMenu() {
 
+		if (controller.getNumberOfEmployees() != 0) {
+			String userOption;
+			do {
+				showHeaders();
+				userOption = takeUserInput(askForOption());
+				if (reportOptions.contains(userOption)) {
+					showReport(userOption);
+				} else if ("9".equals(userOption)) {
+					showErrorLogs();
+				}
+			} while (!userOption.equals("0"));
+		} else {
+			System.out.println("Ścieżka nie zawiera żadnych danych do raportów!");
+		}
+		exit();
 	}
 
 	private void exit() {
@@ -88,25 +98,20 @@ public class UserInterface {
 
 	private void exportToXls() {
 		String answer;
+		String filePath = "";
 		try {
-			File file = ReportXlsExporter.exportToXls(report);
-			System.out.println("Plik poprawnie wyeksportowany: " + file.getCanonicalPath());
-			answer = takeUserInput(askForXlsOpening());
-			if (answer.toLowerCase().equals("t")) {
-				openFile(file);
-			}
+			filePath = controller.exportReport();
 		} catch (IOException e) {
-			System.out.println("Nie udało się wyeksportowac pliku!");
+			System.out.println("Nie udało się wyeksportowac pliku xls!");
 		}
-	}
-
-	private void openFile(File generatedReport) throws IOException {
-		try {
-			Desktop desktop = Desktop.getDesktop();
-			if (generatedReport.exists()) {
-				desktop.open(generatedReport);
+		System.out.println("Plik poprawnie wyeksportowany: " + filePath);
+		answer = takeUserInput(askForXlsOpening());
+		if (answer.toLowerCase().equals("t")) {
+			try {
+				controller.openReport();
+			} catch (IOException e) {
+				System.out.println("Nie udało się otworzyc pliku xls!");
 			}
-		} catch (UnsupportedOperationException e) {
 		}
 	}
 
@@ -128,10 +133,9 @@ public class UserInterface {
 	private void showReport(String userOption) {
 		controller.setReportType(userOption);
 		boolean reportReady = false;
-		paramNamesToDisplay = controller.getInputParamNames();
-
-		for (int i = 0; i < paramNamesToDisplay.size(); i++) {
-			String inputParamName = paramNamesToDisplay.get(i);
+		inputParamNames = controller.getInputParamNames();
+		for (int i = 0; i < inputParamNames.size(); i++) {
+			String inputParamName = inputParamNames.get(i);
 			possibleInputParams = controller.getPossibleInputParams().get(i);
 			String question = askForParam(inputParamName);
 			String inputParam = takeUserInput(question);
@@ -145,8 +149,8 @@ public class UserInterface {
 			}
 		}
 		if (reportReady) {
-			report = controller.getReport();
-			ReportPrinter.printReport(report);
+			controller.buildReport();
+			System.out.println(controller.reportString());
 			String answer = takeUserInput(askForXlsCreation());
 			if (answer.toLowerCase().equals("t")) {
 				exportToXls();

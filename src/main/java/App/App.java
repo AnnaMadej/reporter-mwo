@@ -1,15 +1,19 @@
 package App;
 
+import java.io.IOException;
+
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
+
 public class App {
-	public static void main(String[] args) {
-		try {
-			String folderPath = args[0];
-			UserInterface userControl = new UserInterface(folderPath);
-			userControl.controlLoop();
-		} catch (ArrayIndexOutOfBoundsException e) {
-			System.out.println("Nie wprowadziłeś poprawnej ścieżki do folderu");
-		} catch (IllegalArgumentException e) {
-			System.out.println("Wprowadziłeś ścieżkę do folderu który nie istnieje lub jest pusty");
-		}
+	public static void main(String[] args){
+			if(args.length == 0) {
+				System.out.println("Nie podałeś ścieżki do pliku z raportami!");
+			}
+			else {
+				String folderPath = args[0];
+				UserInterface userInterface = new UserInterface(folderPath);
+				userInterface.showMenu();
+			}
+			
 	}
 }
