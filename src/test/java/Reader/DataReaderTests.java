@@ -1,7 +1,5 @@
 package Reader;
 
-import static org.junit.Assert.*;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,7 +11,6 @@ import java.util.Optional;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 
 import Model.Employee;
@@ -24,6 +21,69 @@ public class DataReaderTests {
 	@Before
 	public void cleanScanErrors() {
 		ScanErrorsHolder.clearScanErrors();
+	}
+
+	@Test
+	public void testContentOfTasksIsCorrect() throws InvalidFormatException, IOException {
+		FilesScanner filesScanner = new FilesScanner();
+		List<Employee> employees = filesScanner.scanFiles("src/test/testing-data/reporter-dane");
+
+		Optional<Employee> firstEmployee = employees.stream()
+				.filter(emp -> emp.getNameAndSurname().equals("Jan Kowalski")).findFirst();
+
+		List<Task> janTasks = new ArrayList<Task>();
+		Calendar calendar = new GregorianCalendar(2012, 0, 5);
+		Date date = calendar.getTime();
+		Task task1 = new Task(date, "Projekt1", "Specyfikacja wymagan niefuncjonalnych dot. technologii", 3);
+
+		calendar = new GregorianCalendar(2012, 0, 21);
+		date = calendar.getTime();
+		Task task2 = new Task(date, "Projekt2", "Analiza wymagań", 7);
+
+		calendar = new GregorianCalendar(2012, 0, 21);
+		date = calendar.getTime();
+		Task task3 = new Task(date, "Projekt2", "Projekt UML", 7);
+		date = calendar.getTime();
+		calendar = new GregorianCalendar(2012, 1, 8);
+		date = calendar.getTime();
+		Task task4 = new Task(date, "Projekt1", "Testy prototypu", 3);
+
+		calendar = new GregorianCalendar(2012, 1, 8);
+		date = calendar.getTime();
+		Task task5 = new Task(date, "Projekt1", "Przygotowanie pierwszej wersji dokumentacji użytkownika", 4);
+
+		calendar = new GregorianCalendar(2012, 1, 1);
+		date = calendar.getTime();
+		Task task6 = new Task(date, "Projekt2", "Wizyta u klienta, dopytanie o dane", 7.25);
+
+		janTasks.add(task1);
+		janTasks.add(task2);
+		janTasks.add(task3);
+		janTasks.add(task4);
+		janTasks.add(task5);
+		janTasks.add(task6);
+
+		Assert.assertEquals(janTasks.size(), firstEmployee.get().getTaskList().size());
+		Assert.assertTrue(firstEmployee.get().getTaskList().containsAll(janTasks));
+
+		Optional<Employee> secondEmployee = employees.stream()
+				.filter(emp -> emp.getNameAndSurname().equals("Piotr Nowak")).findFirst();
+
+		List<Task> piotrTasks = new ArrayList<Task>();
+
+		calendar = new GregorianCalendar(2012, 0, 13);
+		date = calendar.getTime();
+		Task task7 = new Task(date, "Projekt2", "Wizyta u klienta", 3);
+
+		calendar = new GregorianCalendar(2012, 0, 14);
+		date = calendar.getTime();
+		Task task8 = new Task(date, "Projekt2", "Podsumowanie spotkania", 1);
+
+		piotrTasks.add(task7);
+		piotrTasks.add(task8);
+
+		Assert.assertEquals(piotrTasks.size(), secondEmployee.get().getTaskList().size());
+		Assert.assertTrue(secondEmployee.get().getTaskList().containsAll(piotrTasks));
 	}
 
 	@Test
@@ -110,13 +170,6 @@ public class DataReaderTests {
 	}
 
 	@Test
-	public void testManyScanErrorsInManyFiles() throws InvalidFormatException, IOException {
-		FilesScanner filesScanner = new FilesScanner();
-		filesScanner.scanFiles("src/test/testing-data/reporter-dane-z-wieloma-bledami");
-		Assert.assertEquals(ScanErrorsHolder.getScanErrors().size(), 61);
-	}
-
-	@Test
 	public void testFilesWithNoErrors() throws InvalidFormatException, IOException {
 		FilesScanner filesScanner = new FilesScanner();
 		filesScanner.scanFiles("src/test/testing-data/reporter-dane");
@@ -127,23 +180,17 @@ public class DataReaderTests {
 	}
 
 	@Test
+	public void testManyScanErrorsInManyFiles() throws InvalidFormatException, IOException {
+		FilesScanner filesScanner = new FilesScanner();
+		filesScanner.scanFiles("src/test/testing-data/reporter-dane-z-wieloma-bledami");
+		Assert.assertEquals(ScanErrorsHolder.getScanErrors().size(), 61);
+	}
+
+	@Test
 	public void testNumberOfEmployeesIsCorrect() throws InvalidFormatException, IOException {
 		FilesScanner filesScanner = new FilesScanner();
 		List<Employee> employees = filesScanner.scanFiles("src/test/testing-data/reporter-dane");
 		Assert.assertEquals(employees.size(), 2);
-	}
-
-	@Test
-	public void testNumberOfTasksIsCorrect() throws InvalidFormatException, IOException {
-		FilesScanner filesScanner = new FilesScanner();
-		List<Employee> employees = filesScanner.scanFiles("src/test/testing-data/reporter-dane");
-
-		List<Task> tasks = new ArrayList<Task>();
-
-		for (Employee employee : employees) {
-			tasks.addAll(employee.getTaskList());
-		}
-		Assert.assertEquals(tasks.size(), 8);
 	}
 
 	@Test
@@ -161,66 +208,16 @@ public class DataReaderTests {
 	}
 
 	@Test
-	public void testContentOfTasksIsCorrect() throws InvalidFormatException, IOException {
+	public void testNumberOfTasksIsCorrect() throws InvalidFormatException, IOException {
 		FilesScanner filesScanner = new FilesScanner();
 		List<Employee> employees = filesScanner.scanFiles("src/test/testing-data/reporter-dane");
 
-		Optional<Employee> firstEmployee = employees.stream()
-				.filter(emp -> emp.getNameAndSurname().equals("Jan Kowalski")).findFirst();
+		List<Task> tasks = new ArrayList<Task>();
 
-		List<Task> janTasks = new ArrayList<Task>();
-		Calendar calendar = new GregorianCalendar(2012, 0, 5);
-		Date date = calendar.getTime();
-		Task task1 = new Task(date, "Projekt1", "Specyfikacja wymagan niefuncjonalnych dot. technologii", 3);
-
-		calendar = new GregorianCalendar(2012, 0, 21);
-		date = calendar.getTime();
-		Task task2 = new Task(date, "Projekt2", "Analiza wymagań", 7);
-
-		calendar = new GregorianCalendar(2012, 0, 21);
-		date = calendar.getTime();
-		Task task3 = new Task(date, "Projekt2", "Projekt UML", 7);
-		date = calendar.getTime();
-		calendar = new GregorianCalendar(2012, 1, 8);
-		date = calendar.getTime();
-		Task task4 = new Task(date, "Projekt1", "Testy prototypu", 3);
-
-		calendar = new GregorianCalendar(2012, 1, 8);
-		date = calendar.getTime();
-		Task task5 = new Task(date, "Projekt1", "Przygotowanie pierwszej wersji dokumentacji użytkownika", 4);
-
-		calendar = new GregorianCalendar(2012, 1, 1);
-		date = calendar.getTime();
-		Task task6 = new Task(date, "Projekt2", "Wizyta u klienta, dopytanie o dane", 7.25);
-
-		janTasks.add(task1);
-		janTasks.add(task2);
-		janTasks.add(task3);
-		janTasks.add(task4);
-		janTasks.add(task5);
-		janTasks.add(task6);
-
-		Assert.assertEquals(janTasks.size(), firstEmployee.get().getTaskList().size());
-		Assert.assertTrue(firstEmployee.get().getTaskList().containsAll(janTasks));
-
-		Optional<Employee> secondEmployee = employees.stream()
-				.filter(emp -> emp.getNameAndSurname().equals("Piotr Nowak")).findFirst();
-
-		List<Task> piotrTasks = new ArrayList<Task>();
-
-		calendar = new GregorianCalendar(2012, 0, 13);
-		date = calendar.getTime();
-		Task task7 = new Task(date, "Projekt2", "Wizyta u klienta", 3);
-
-		calendar = new GregorianCalendar(2012, 0, 14);
-		date = calendar.getTime();
-		Task task8 = new Task(date, "Projekt2", "Podsumowanie spotkania", 1);
-		
-		piotrTasks.add(task7);
-		piotrTasks.add(task8);
-
-		Assert.assertEquals(piotrTasks.size(), secondEmployee.get().getTaskList().size());
-		Assert.assertTrue(secondEmployee.get().getTaskList().containsAll(piotrTasks));
+		for (Employee employee : employees) {
+			tasks.addAll(employee.getTaskList());
+		}
+		Assert.assertEquals(tasks.size(), 8);
 	}
 
 }

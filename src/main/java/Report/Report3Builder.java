@@ -1,6 +1,11 @@
 package Report;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
 
 import Model.Employee;
 import Model.Task;
@@ -9,14 +14,14 @@ import services.PossibleYearRetriever;
 
 public class Report3Builder extends ReportBuilder {
 
+	private int year;
+
+	private String id;
 	public Report3Builder() {
 		super();
 		this.inputParamsNames.add("imię i nazwisko");
 		this.inputParamsNames.add("rok");
 	}
-
-	private int year;
-	private String id;
 
 	@Override
 	public Report buildReport() {

@@ -1,9 +1,5 @@
 package services;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
@@ -15,8 +11,7 @@ public class PossibleProjectRetriever implements PossibleDataRetriever {
 
 	@Override
 	public Set<String> getPossibleData(List<Employee> employees) {
-		Set<String> possibleData= new TreeSet<String>();
-		
+		Set<String> possibleData = new TreeSet<String>();
 
 		for (Employee employee : employees) {
 			for (Task task : employee.getTaskList()) {

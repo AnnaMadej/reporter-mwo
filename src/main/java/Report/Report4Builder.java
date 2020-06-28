@@ -1,11 +1,9 @@
 package Report;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import Model.Employee;
 import Model.Task;
@@ -13,12 +11,12 @@ import services.PossibleYearRetriever;
 
 public class Report4Builder extends ReportBuilder {
 
+	private int year;
+
 	public Report4Builder() {
 		super();
 		this.inputParamsNames.add("rok");
 	}
-
-	private int year;
 
 	@Override
 	public Report buildReport() {
@@ -34,7 +32,7 @@ public class Report4Builder extends ReportBuilder {
 				Date date = task.getTaskDate();
 				Calendar calendar = Calendar.getInstance();
 				calendar.setTime(date);
-				if (calendar.get(Calendar.YEAR) == (Integer) this.year) {
+				if (calendar.get(Calendar.YEAR) == this.year) {
 					filteredTasks.add(task);
 				}
 			}

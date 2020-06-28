@@ -1,9 +1,5 @@
 package Report;
 
-import java.util.List;
-
-import Model.Employee;
-
 public class ReportBuilderFactory {
 	public static ReportBuilder getReportBuilder(String number) {
 		switch (number) {

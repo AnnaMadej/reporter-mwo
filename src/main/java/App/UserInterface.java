@@ -3,103 +3,34 @@ package App;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.Set;
+import java.util.TreeSet;
 
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-
-import Model.*;
-import Reader.FilesScanner;
 import Reader.ScanErrorsHolder;
-import Report.*;
+import Report.Report;
+import Report.ReportPrinter;
+import Report.ReportXlsExporter;
 
 public class UserInterface {
 
 	private Scanner sc = new Scanner(System.in);
-	private ReportBuilder reportBuilder;
 	private Report report;
 
-	Set<String> possibleInputParams = new TreeSet<String>();
-	List<String> reportOptions = Arrays.asList(new String[] { "1", "2", "3", "4", "5" });
-	List<String> chartOptions = Arrays.asList(new String[] { "6", "7" });
-	Controller controller = new Controller();
-	private List<Employee> employees = new ArrayList<Employee>();
+	private Set<String> possibleInputParams = new TreeSet<String>();
+	private List<String> paramNamesToDisplay = new ArrayList<String>();
+	private List<String> reportOptions = Arrays.asList(new String[] { "1", "2", "3", "4", "5" });
+	private List<String> chartOptions = Arrays.asList(new String[] { "6", "7" });
+	private Controller controller = new Controller();
 
 	public UserInterface(String path) {
-		this.employees = controller.getEmployeesFromFiles(path);
+		controller.setEmployees(path);
 	}
 
-	public void controlLoop() {
-		String userOption;
-		do {
-
-			showHeaders();
-			userOption = takeUserInput(showOptions());
-
-			if (reportOptions.contains(userOption)) {
-				generateReport(userOption);
-			} else if ("9".equals(userOption)) {
-				showErrorLogs();
-			}
-		} while (!userOption.equals("0"));
-		exit();
-
-	}
-
-	private void generateReport(String userOption) {
-		this.reportBuilder = ReportBuilderFactory.getReportBuilder(userOption);
-		reportBuilder.setEmployees(employees);
-		boolean reportReady;
-		if (reportBuilder != null) {
-			reportReady = false;
-			for (int i = 0; i < reportBuilder.getInputParamsNames().size(); i++) {
-				String inputParamsName = reportBuilder.getInputParamsNames().get(i);
-				this.possibleInputParams = reportBuilder.getPossibleInputParams().get(i);
-				String question = showPossibleInputParams(inputParamsName);
-
-				String inputParam = takeUserInput(question);
-				if (possibleInputParams.contains(inputParam)) {
-					reportBuilder.addInputParam(inputParam);
-					reportReady = true;
-				} else {
-					System.out.println("Nie podałeś parametru z wyświetlonej listy!");
-					reportReady = false;
-					break;
-				}
-			}
-			if (reportReady) {
-				report = reportBuilder.buildReport();
-				ReportPrinter.printReport(report);
-				String answer = takeUserInput("Czy chcesz wyeksportować raport do pliku xls? [t/n]");
-				if (answer.toLowerCase().equals("t")) {
-					try {
-						File file = ReportXlsExporter.exportToXls(report);
-						System.out.println("Plik poprawnie wyeksportowany: " + file.getCanonicalPath());
-						answer = takeUserInput("Czy chcesz otworzyć plik xls? [t/n]");
-						if (answer.toLowerCase().equals("t")) {
-							openFile(file);
-						}
-					} catch (IOException e) {
-						System.out.println("Nie udało się wyeksportowa pliku!");
-					}
-				}
-			}
-
-		}
-	}
-
-	private String showPossibleInputParams(String inputParamsName) {
-		StringBuilder question = new StringBuilder();
-		question.append("Podaj parametr: " + inputParamsName + "\n");
-		question.append("Możliwe wartości: \n");
-		for (String possibleParam : possibleInputParams) {
-			question.append("[ " + possibleParam + " ]");
-		}
-		question.append("\n");
-		return question.toString();
-	}
-
-	public String showOptions() {
+	private String askForOption() {
 		StringBuilder option = new StringBuilder();
 
 		option.append("WYBIERZ OPCJE:\n");
@@ -116,8 +47,57 @@ public class UserInterface {
 		return option.toString();
 	}
 
-	private void showErrorLogs() {
-		ScanErrorsHolder.showScanErrors();
+	private String askForParam(String inputParamsName) {
+		StringBuilder question = new StringBuilder();
+		question.append("Podaj parametr: " + inputParamsName + "\n");
+		question.append("Możliwe wartości: \n");
+		for (String possibleParam : possibleInputParams) {
+			question.append("[ " + possibleParam + " ]");
+		}
+		question.append("\n");
+		return question.toString();
+	}
+
+	private String askForXlsCreation() {
+		return "Czy chcesz wyeksportować raport do pliku xls? [t/n]";
+	}
+
+	private String askForXlsOpening() {
+		return "Czy chcesz otworzyć plik xls? [t/n]";
+	}
+
+	public void controlLoop() {
+		String userOption;
+		do {
+			showHeaders();
+			userOption = takeUserInput(askForOption());
+			if (reportOptions.contains(userOption)) {
+				showReport(userOption);
+			} else if ("9".equals(userOption)) {
+				showErrorLogs();
+			}
+		} while (!userOption.equals("0"));
+		exit();
+
+	}
+
+	private void exit() {
+		System.out.println("Copyright © 2020 RunTime Terror, All Rights Reserved. ");
+		sc.close();
+	}
+
+	private void exportToXls() {
+		String answer;
+		try {
+			File file = ReportXlsExporter.exportToXls(report);
+			System.out.println("Plik poprawnie wyeksportowany: " + file.getCanonicalPath());
+			answer = takeUserInput(askForXlsOpening());
+			if (answer.toLowerCase().equals("t")) {
+				openFile(file);
+			}
+		} catch (IOException e) {
+			System.out.println("Nie udało się wyeksportowac pliku!");
+		}
 	}
 
 	private void openFile(File generatedReport) throws IOException {
@@ -128,6 +108,10 @@ public class UserInterface {
 			}
 		} catch (UnsupportedOperationException e) {
 		}
+	}
+
+	private void showErrorLogs() {
+		ScanErrorsHolder.showScanErrors();
 	}
 
 	private void showHeaders() {
@@ -141,14 +125,33 @@ public class UserInterface {
 		System.out.println("----------------------------\n");
 	}
 
-	private void exit() {
-		System.out.println("Copyright © 2020 RunTime Terror, All Rights Reserved. ");
-		sc.close();
-	}
+	private void showReport(String userOption) {
+		controller.setReportType(userOption);
+		boolean reportReady = false;
+		paramNamesToDisplay = controller.getInputParamNames();
 
-	public void printOptions() {
-		String option = showOptions();
-		System.out.println(option);
+		for (int i = 0; i < paramNamesToDisplay.size(); i++) {
+			String inputParamName = paramNamesToDisplay.get(i);
+			possibleInputParams = controller.getPossibleInputParams().get(i);
+			String question = askForParam(inputParamName);
+			String inputParam = takeUserInput(question);
+			if (possibleInputParams.contains(inputParam)) {
+				controller.addReportInputParam(inputParam);
+				reportReady = true;
+			} else {
+				System.out.println("Nie podałeś parametru z wyświetlonej listy!");
+				reportReady = false;
+				break;
+			}
+		}
+		if (reportReady) {
+			report = controller.getReport();
+			ReportPrinter.printReport(report);
+			String answer = takeUserInput(askForXlsCreation());
+			if (answer.toLowerCase().equals("t")) {
+				exportToXls();
+			}
+		}
 	}
 
 	private String takeUserInput(String question) {

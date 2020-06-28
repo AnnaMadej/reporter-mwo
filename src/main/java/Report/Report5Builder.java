@@ -6,16 +6,15 @@ import java.util.List;
 import Model.Employee;
 import Model.Task;
 import services.PossibleProjectRetriever;
-import services.PossibleYearRetriever;
 
 public class Report5Builder extends ReportBuilder {
+
+	private String projectName;
 
 	public Report5Builder() {
 		super();
 		this.inputParamsNames.add("nazwa projektu");
 	}
-
-	private String projectName;
 
 	@Override
 	public Report buildReport() {

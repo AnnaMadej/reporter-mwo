@@ -1,7 +1,5 @@
 package Report;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,8 +8,6 @@ import java.util.List;
 
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-
-import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -68,7 +64,7 @@ public class ReportXlsExporterTest {
 
 		ReportXlsExporter exp = new ReportXlsExporter();
 
-		File file = exp.exportToXls(report);
+		File file = ReportXlsExporter.exportToXls(report);
 		Assert.assertTrue(file.exists());
 
 		Workbook wb = WorkbookFactory.create(file);
@@ -86,7 +82,7 @@ public class ReportXlsExporterTest {
 		for (int i = 0; i < report.getRows().size(); i++) {
 			List<String> row = report.getRows().get(i);
 			for (int j = 0; j < row.size(); j++) {
-				Row currentRow = sheet.getRow(6+i);
+				Row currentRow = sheet.getRow(6 + i);
 				Assert.assertEquals(rows.get(i).get(j), currentRow.getCell(j).getStringCellValue());
 			}
 		}

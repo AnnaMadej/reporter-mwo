@@ -16,15 +16,13 @@ public class ReportPrinter {
 			System.out.println("RAPORT JEST PUSTY");
 			System.out.println();
 		} else {
-		
-		
-		System.out.println(String.join("", Collections.nCopies(lineLength, "-")));
-		for (String columnName : columnNames) {
-			System.out.format("%-1s %-30s", "|", columnName);
 
-		}
+			System.out.println(String.join("", Collections.nCopies(lineLength, "-")));
+			for (String columnName : columnNames) {
+				System.out.format("%-1s %-30s", "|", columnName);
 
-	
+			}
+
 			System.out.format("%-1s", "|");
 			System.out.println();
 			System.out.println(String.join("", Collections.nCopies(lineLength, "-")));
@@ -39,5 +37,5 @@ public class ReportPrinter {
 			System.out.println(String.join("", Collections.nCopies(lineLength, "-")));
 
 		}
-}
+	}
 }

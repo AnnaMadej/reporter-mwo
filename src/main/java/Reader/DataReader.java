@@ -21,6 +21,14 @@ import Model.Task;
 
 public class DataReader {
 
+	private String extractEmployeeName(String fileName) {
+		return fileName.substring(fileName.indexOf("_") + 1, fileName.indexOf("."));
+	}
+
+	private String extractEmployeeSurname(String fileName) {
+		return fileName.substring(0, fileName.indexOf("_"));
+	}
+
 	public Employee readFile(File file) throws IOException, InvalidFormatException {
 
 		String fileLocation = file.getParent();
@@ -137,8 +145,8 @@ public class DataReader {
 					Cell dateCell = row.getCell(0);
 					Cell descriptionCell = row.getCell(1);
 					Cell timeCell = row.getCell(2);
-					
-					if(descriptionCell.getStringCellValue().trim().equals("")) {
+
+					if (descriptionCell.getStringCellValue().trim().equals("")) {
 						ScanErrorsHolder.addScanError(new ScanError(file.getPath(), sheet.getSheetName(), j + 1, "OPIS",
 								"pusty opis w komórce!"));
 						continue;
@@ -165,7 +173,6 @@ public class DataReader {
 						continue;
 					}
 
-					
 					description = descriptionCell.getStringCellValue();
 					time = timeCell.getNumericCellValue();
 					Task task = new Task(date, project, description, time);
@@ -177,14 +184,6 @@ public class DataReader {
 		}
 		wb.close();
 		return employee;
-	}
-
-	private String extractEmployeeSurname(String fileName) {
-		return fileName.substring(0, fileName.indexOf("_"));
-	}
-
-	private String extractEmployeeName(String fileName) {
-		return fileName.substring(fileName.indexOf("_") + 1, fileName.indexOf("."));
 	}
 
 }
