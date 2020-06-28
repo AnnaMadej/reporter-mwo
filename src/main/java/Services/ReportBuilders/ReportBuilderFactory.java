@@ -1,4 +1,6 @@
-package Report;
+package Services.ReportBuilders;
+
+import Services.ReportBuilders.*;
 
 public class ReportBuilderFactory {
 	public static ReportBuilder getReportBuilder(String number) {

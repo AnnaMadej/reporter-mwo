@@ -11,6 +11,8 @@ import org.knowm.xchart.CategoryChartBuilder;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.style.Styler;
 
+import Model.Report;
+
 public class Report6Builder {
 
 	public CategoryChart plotBarChart(Report report, int year) {

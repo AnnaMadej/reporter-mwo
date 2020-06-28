@@ -1,8 +1,10 @@
-package Reader;
+package Services;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import Model.ScanError;
 
 public class ScanErrorsHolder {
 

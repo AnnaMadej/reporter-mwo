@@ -1,4 +1,4 @@
-package App;
+package View;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -12,7 +12,8 @@ import java.util.TreeSet;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
-import Reader.ScanErrorsHolder;
+import Controller.Controller;
+import Services.ScanErrorsHolder;
 
 public class UserInterface {
 
@@ -27,10 +28,9 @@ public class UserInterface {
 	public UserInterface(String path) {
 		try {
 			controller.readEmployees(path);
-		} catch (InvalidFormatException e) {
-			System.out.println("invalidFormat!");
-		} catch (IOException e) {
-			System.out.println("IO exception!");
+		} catch (IOException  | InvalidFormatException e) {
+			System.out.println("Błąd odczytu plików! \n"
+					+ "Sprawdz czy nie są uszkodzone lub otwarte w innym programie.");
 		} catch (IllegalArgumentException e) {
 			System.out.println("Podałeś nieprawidłową ścieżkę do katalogów z raportami!");
 		}
@@ -85,9 +85,7 @@ public class UserInterface {
 					showErrorLogs();
 				}
 			} while (!userOption.equals("0"));
-		} else {
-			System.out.println("Ścieżka nie zawiera żadnych danych do raportów!");
-		}
+		} 
 		exit();
 	}
 

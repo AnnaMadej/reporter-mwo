@@ -1,4 +1,4 @@
-package Report;
+package Services.ReportBuilders;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -8,9 +8,10 @@ import java.util.HashMap;
 import java.util.List;
 
 import Model.Employee;
+import Model.Report;
 import Model.Task;
-import services.PossiblePersonRetriever;
-import services.PossibleYearRetriever;
+import Services.PossiblePersonRetriever;
+import Services.PossibleYearRetriever;
 
 public class Report3Builder extends ReportBuilder {
 

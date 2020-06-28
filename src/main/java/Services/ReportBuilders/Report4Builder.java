@@ -1,4 +1,4 @@
-package Report;
+package Services.ReportBuilders;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -6,8 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 import Model.Employee;
+import Model.Report;
 import Model.Task;
-import services.PossibleYearRetriever;
+import Services.PossibleYearRetriever;
 
 public class Report4Builder extends ReportBuilder {
 

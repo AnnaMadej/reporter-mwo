@@ -1,4 +1,4 @@
-package Reader;
+package Services;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +17,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 
 import Model.Employee;
+import Model.ScanError;
 import Model.Task;
 
 public class DataReader {

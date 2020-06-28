@@ -1,11 +1,12 @@
-package Report;
+package Services.ReportBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
 import Model.Employee;
-import services.PossibleDataRetriever;
+import Model.Report;
+import Services.PossibleDataRetriever;
 
 public abstract class ReportBuilder {
 	protected List<String> inputParamsNames = new ArrayList<String>();

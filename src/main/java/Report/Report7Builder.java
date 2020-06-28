@@ -10,6 +10,8 @@ import org.knowm.xchart.PieChartBuilder;
 import org.knowm.xchart.SwingWrapper;
 import org.knowm.xchart.style.Styler;
 
+import Model.Report;
+
 public class Report7Builder {
 
 	public List<String> findEmployee(List<List<String>> rows, String name) {

@@ -1,11 +1,12 @@
-package Report;
+package Services.ReportBuilders;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import Model.Employee;
+import Model.Report;
 import Model.Task;
-import services.PossibleProjectRetriever;
+import Services.PossibleProjectRetriever;
 
 public class Report5Builder extends ReportBuilder {
 

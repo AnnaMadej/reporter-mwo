@@ -1,4 +1,4 @@
-package App;
+package Controller;
 
 import java.awt.Desktop;
 import java.io.File;
@@ -10,12 +10,12 @@ import java.util.Set;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
 import Model.Employee;
+import Model.Report;
 import Reader.FilesScanner;
-import Report.Report;
-import Report.ReportBuilder;
-import Report.ReportBuilderFactory;
-import Report.ReportPrinter;
-import Report.ReportXlsExporter;
+import Services.ReportPrinter;
+import Services.ReportXlsExporter;
+import Services.ReportBuilders.ReportBuilder;
+import Services.ReportBuilders.ReportBuilderFactory;
 
 public class Controller {
 	private List<Employee> employees = new ArrayList<Employee>();
@@ -71,7 +71,7 @@ public class Controller {
 		
 	}
 	
-	int getNumberOfEmployees() {
+	public int getNumberOfEmployees() {
 		return employees.size();
 	}
 }
