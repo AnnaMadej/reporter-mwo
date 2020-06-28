@@ -14,24 +14,18 @@ import services.PossibleYearRetriever;
 
 public class Report2Builder extends ReportBuilder {
 
-	public Report2Builder(List<Employee> employees) {
-		super(employees);
+	public Report2Builder() {
+		super();
 		this.inputParamsNames.add("rok");
-		possibleDataRetriever = new PossibleYearRetriever();
-		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
+
 	}
-
-
 
 	private int year;
 
-
-
 	@Override
-	public Report buildReport() {	
-		
-		Report report = new Report();
+	public Report buildReport() {
 
+		Report report = new Report();
 
 		this.year = Integer.valueOf(this.inputParams.get(0));
 		report.setTitle("Raport godzin projektów w roku: " + year);
@@ -45,7 +39,6 @@ public class Report2Builder extends ReportBuilder {
 		columnNames.add("Ilość godzin");
 
 		TreeMap<String, Double> projectsMap = new TreeMap<>();
-		
 
 		for (Employee employee : employees) {
 			for (Task task : employee.getTaskList()) {
@@ -72,10 +65,16 @@ public class Report2Builder extends ReportBuilder {
 			rowsCounter++;
 		}
 
-
 		report.setColumnNames(columnNames);
 		report.setRows(rows);
 		return report;
+	}
+
+	@Override
+	public void retrievePossibleInputData() {
+		possibleDataRetriever = new PossibleYearRetriever();
+		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
+
 	}
 
 }

@@ -16,7 +16,7 @@ public class UserControlTest {
     @Before
     public void setUp() throws Exception {
     }
-    UserControl userControl = new UserControl(folderPath);
+    UserInterface userControl = new UserInterface(folderPath);
 
     @Test
     public void controlLoop() {

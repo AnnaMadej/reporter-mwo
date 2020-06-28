@@ -10,23 +10,16 @@ import services.PossibleYearRetriever;
 
 public class Report5Builder extends ReportBuilder {
 
-	public Report5Builder(List<Employee> employees) {
-		super(employees);
+	public Report5Builder() {
+		super();
 		this.inputParamsNames.add("nazwa projektu");
-		possibleDataRetriever = new PossibleProjectRetriever();
-		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
-		
 	}
-
-
 
 	private String projectName;
 
-	
-
 	@Override
 	public Report buildReport() {
-		
+
 		this.projectName = this.inputParams.get(0);
 		Report report = new Report();
 
@@ -79,8 +72,15 @@ public class Report5Builder extends ReportBuilder {
 
 			}
 		}
-		
+
 		report.setRows(rows);
 		return report;
+	}
+
+	@Override
+	public void retrievePossibleInputData() {
+		possibleDataRetriever = new PossibleProjectRetriever();
+		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
+
 	}
 }

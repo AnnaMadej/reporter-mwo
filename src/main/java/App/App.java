@@ -4,7 +4,7 @@ public class App {
     public static void main(String[] args) {
         try {
             String folderPath = args[0];
-            UserControl userControl = new UserControl(folderPath);
+            UserInterface userControl = new UserInterface(folderPath);
             userControl.controlLoop();
         } catch (ArrayIndexOutOfBoundsException e) {
             System.out.println("Nie wprowadziłeś poprawnej ścieżki do folderu");

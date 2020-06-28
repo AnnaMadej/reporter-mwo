@@ -50,7 +50,7 @@ public class DataReaderTests {
 				"src\\test\\testing-data\\reporter-dane-z-bledami\\2012\\03\\Nowak_Piotr.xls", "Projekt1", 11,
 				"pusty wiersz!");
 		myScanErrors.add(scanError4);
-		ScanErrorsHolder.printScanErrors();
+		ScanErrorsHolder.showScanErrors();
 
 		ScanError scanerror5 = new ScanError(
 				"src\\test\\testing-data\\reporter-dane-z-bledami\\2012\\03\\Wisniewski_Marek.xls", "Projekt1", 11,
@@ -120,7 +120,7 @@ public class DataReaderTests {
 	public void testFilesWithNoErrors() throws InvalidFormatException, IOException {
 		FilesScanner filesScanner = new FilesScanner();
 		filesScanner.scanFiles("src/test/testing-data/reporter-dane");
-		ScanErrorsHolder.printScanErrors();
+		ScanErrorsHolder.showScanErrors();
 
 		Assert.assertEquals(ScanErrorsHolder.getScanErrors().size(), 0);
 

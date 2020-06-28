@@ -13,22 +13,16 @@ import services.PossibleYearRetriever;
 
 public class Report4Builder extends ReportBuilder {
 
-	public Report4Builder(List<Employee> employees) {
-		super(employees);
+	public Report4Builder() {
+		super();
 		this.inputParamsNames.add("rok");
-		possibleDataRetriever = new PossibleYearRetriever();
-		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
 	}
-
-
 
 	private int year;
 
-
-
 	@Override
 	public Report buildReport() {
-		
+
 		Report report = new Report();
 		List<Employee> modelEmployees = employees;
 		List<Employee> filteredEmployees = new ArrayList<Employee>();
@@ -50,9 +44,9 @@ public class Report4Builder extends ReportBuilder {
 				filteredEmployees.add(employeeCopy);
 			}
 		}
-		
+
 		report.setTitle("Procentowy udział projektów w pracy osób dla roku: " + year);
-		
+
 		List<String> columnNames = new ArrayList<String>();
 		columnNames.add("L.p.");
 		columnNames.add("Imię i nazwisko");
@@ -66,7 +60,7 @@ public class Report4Builder extends ReportBuilder {
 				}
 			}
 		}
-		
+
 		List<List<String>> rows = new ArrayList<List<String>>();
 		Integer rowsCounter = 1;
 
@@ -95,12 +89,11 @@ public class Report4Builder extends ReportBuilder {
 
 				Double projectHours = employee.getProjectHours(project);
 				Double percentHours = (projectHours * 100) / totalHours;
-				
-				percentHours = percentHours*100;
+
+				percentHours = percentHours * 100;
 				percentHours = (double) Math.round(percentHours);
-				percentHours = percentHours/100;
-				
-				
+				percentHours = percentHours / 100;
+
 				rowToAdd.set(indexOfProject, percentHours.toString() + "%");
 				if (!rowExists) {
 					rows.add(rowToAdd);
@@ -111,5 +104,12 @@ public class Report4Builder extends ReportBuilder {
 		report.setRows(rows);
 
 		return report;
+	}
+
+	@Override
+	public void retrievePossibleInputData() {
+		possibleDataRetriever = new PossibleYearRetriever();
+		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
+
 	}
 }

@@ -8,7 +8,7 @@ public class ScanErrorsHolder {
 	
 	private static  List<ScanError> scanErrors = new ArrayList<ScanError>();
 	
-	public static void printScanErrors() {
+	public static void showScanErrors() {
 		
 		if(scanErrors.size()==0) {
 			System.out.println();

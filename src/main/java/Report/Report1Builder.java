@@ -8,12 +8,9 @@ import services.PossibleYearRetriever;
 
 public class Report1Builder extends ReportBuilder {
 
-	public Report1Builder(List<Employee> employees) {
-		super(employees);
+	public Report1Builder() {
+		super();
 		this.inputParamsNames.add("rok");
-		possibleDataRetriever = new PossibleYearRetriever();
-		System.out.println(employees);
-		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
 	}
 
 	private int year;
@@ -66,6 +63,12 @@ public class Report1Builder extends ReportBuilder {
 			}
 		}
 		return sum;
+	}
+
+	@Override
+	public void retrievePossibleInputData() {
+		possibleDataRetriever = new PossibleYearRetriever();
+		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
 	}
 
 }

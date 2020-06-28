@@ -15,11 +15,6 @@ public abstract class ReportBuilder {
 	protected PossibleDataRetriever possibleDataRetriever;
 	protected List<Employee> employees;
 	
-	
-	public ReportBuilder(List<Employee> employees) {
-		super();
-		this.employees = employees;
-	}
 
 
 
@@ -53,4 +48,10 @@ public abstract class ReportBuilder {
 		this.inputParams.add(inputParam);
 	}
 	
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
+		retrievePossibleInputData();
+	}
+	
+	public abstract void retrievePossibleInputData();
 }
