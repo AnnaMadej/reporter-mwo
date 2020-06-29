@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.poi.xwpf.model.WMLHelper;
+
 import Model.Employee;
 import Model.Report;
 import Services.EmployeeFilters.EmployeesFilter;
@@ -18,7 +20,7 @@ public abstract class ReportBuilder {
 	protected List<EmployeesFilter> filters = new ArrayList<EmployeesFilter>();
 
 	public Report buildReport() {
-		filterEmployees();
+		//filterEmployees();
 		setReportTitle();
 		setReportCollumnNames();
 		setReportRows();
@@ -51,7 +53,7 @@ public abstract class ReportBuilder {
 		return filters.get(filterIndex).getFilterParameterName();
 	}
 
-	public Set<String> getPossibleFilterData(List<Employee> employees, int filterIndex) {
+	public Set<String> getPossibleFilterData(int filterIndex) {
 		return filters.get(filterIndex).getPossibleData(employees);
 	}
 
@@ -63,5 +65,13 @@ public abstract class ReportBuilder {
 		for (EmployeesFilter filter : filters) {
 			this.employees = filter.filterEmployees(employees);
 		}
+	}
+	
+	public void usefilter(int filterIndex) {
+		this.employees = filters.get(filterIndex).filterEmployees(employees);
+	}
+
+	public List<Employee> getEmployees() {
+		return this.employees;
 	}
 }

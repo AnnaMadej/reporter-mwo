@@ -70,11 +70,15 @@ public class Controller {
 	}
 
 	public Set<String> getPossibleFilterData(int filterIndex) {
-		return reportBuilder.getPossibleFilterData(employees, filterIndex);
+		return reportBuilder.getPossibleFilterData(filterIndex);
 	}
 
 	public void addFilterParam(int filterIndex, String filterParameter) {
 		reportBuilder.addInputParam(filterIndex, filterParameter);
+	}
+	
+	public void useFilter(int filterIndex) {
+		reportBuilder.usefilter(filterIndex);
 	}
 
 }

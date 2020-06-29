@@ -140,6 +140,7 @@ public class UserInterface {
 			String inputParam = takeUserInput(question);
 			if (possibleInputParams.contains(inputParam)) {
 				controller.addFilterParam(filterIndex, inputParam);
+				controller.useFilter(filterIndex);
 				reportReady = true;
 			} else {
 				System.out.println("Nie podałeś parametru z wyświetlonej listy!");
