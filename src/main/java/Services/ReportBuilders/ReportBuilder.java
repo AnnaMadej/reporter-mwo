@@ -6,19 +6,19 @@ import java.util.Set;
 
 import Model.Employee;
 import Model.Report;
+import Services.EmployeesFilter;
 import Services.PossibleDataRetriever;
 
 
 
 public abstract class ReportBuilder {
 
-	protected List<String> inputParams = new ArrayList<String>();
 	protected List<Employee> employees = new ArrayList<Employee>();
 	protected Report report = new Report();
-	protected List<String> inputParamsNames = new ArrayList<String>();
-	protected List<Set<String>> possibleInputParams = new ArrayList<Set<String>>();
 	protected PossibleDataRetriever possibleDataRetriever;
 	
+	
+	protected List<EmployeesFilter> filters = new ArrayList<EmployeesFilter>();
 	
 
 	public Report buildReport() {
@@ -37,24 +37,31 @@ public abstract class ReportBuilder {
 
 	abstract void setReportRows();
 
-	public void addInputParam(String... params) {
-		for (String param : params) {
-			this.inputParams.add(param);
-		}
-	}
-	
-	public List<String> getInputParamsNames() {
-		return inputParamsNames;
-	}
-	
-	public List<Set<String>> getPossibleInputParams() {
-		return possibleInputParams;
+	public void addInputParam(int filterIndex, String filterParameter) {
+		this.filters.get(filterIndex).setFilterParameter(filterParameter);
 	}
 	
 	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
-		retrievePossibleInputData();
+	}
+		
+	protected void addEmployeesFilter(EmployeesFilter employeesFilter) {
+		this.filters.add(employeesFilter);
 	}
 	
-	public abstract void retrievePossibleInputData();
+	public int getNumberOfFilters() {
+		return filters.size();
+	}
+	
+	public String getFilterParamName(int filterIndex) {
+		return filters.get(filterIndex).getFilterParameterName();
+	}
+	
+	public Set<String> getPossibleFilterData(List<Employee> employees, int filterIndex){
+		return filters.get(filterIndex).getPossibleData(employees);	
+	}
+	
+	public void setFilterParameter(String filterParameter, int filterIndex) {
+		filters.get(filterIndex).setFilterParameter(filterParameter);
+	}
 }

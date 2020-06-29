@@ -1,40 +1,27 @@
 package Services.ReportBuilders;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import Model.Employee;
 import Model.Task;
+import Services.EmployeesFilter;
+import Services.EmployeesFilterByProjectName;
+import Services.EmployeesFilterByYear;
 import Services.PossibleProjectRetriever;
-
-
 
 public class Report5Builder extends ReportBuilder {
 
 	public Report5Builder() {
 		super();
-		this.inputParamsNames.add("nazwa projektu");
+		this.addEmployeesFilter(new EmployeesFilterByProjectName());
 	}
-	
-	
+
 	@Override
 	void filterEmployees() {
-		List<Employee> filteredEmployees = new ArrayList<Employee>();
-
-		for (Employee employee : employees) {
-			List<Task> filteredTasks = new ArrayList<Task>();
-			for (Task task : employee.getTaskList()) {
-				if (task.getProjectName().equalsIgnoreCase((String) inputParams.get(0))) {
-					filteredTasks.add(task);
-				}
-			}
-			if (filteredTasks.size() > 0) {
-				Employee employeeCopy = (Employee) employee.clone();
-				employeeCopy.setTaskList(filteredTasks);
-				filteredEmployees.add(employeeCopy);
-			}
+		for (EmployeesFilter filter : filters) {
+			this.employees = filter.filterEmployees(employees);
 		}
-
-		employees = filteredEmployees;
 	}
 
 	@Override
@@ -90,11 +77,5 @@ public class Report5Builder extends ReportBuilder {
 		}
 		report.setRows(rows);
 	}
-	
-	@Override
-	public void retrievePossibleInputData() {
-		possibleDataRetriever = new PossibleProjectRetriever();
-		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
 
-	}
 }

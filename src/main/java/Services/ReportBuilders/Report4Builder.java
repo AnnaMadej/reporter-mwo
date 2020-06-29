@@ -1,7 +1,5 @@
 package Services.ReportBuilders;
 
-
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -9,16 +7,17 @@ import java.util.List;
 
 import Model.Employee;
 import Model.Task;
+import Services.EmployeesFilter;
+import Services.EmployeesFilterByYear;
 import Services.PossibleYearRetriever;
 
 public class Report4Builder extends ReportBuilder {
 
 	public Report4Builder() {
 		super();
-		this.inputParamsNames.add("rok");
+		this.addEmployeesFilter(new EmployeesFilterByYear());
 	}
-	
-		
+
 	@Override
 	void setReportRows() {
 		List<List<String>> rows = new ArrayList<List<String>>();
@@ -50,9 +49,9 @@ public class Report4Builder extends ReportBuilder {
 				Double projectHours = employee.getProjectHours(project);
 				Double percentHours = (projectHours * 100) / totalHours;
 
-				percentHours = percentHours*100;
+				percentHours = percentHours * 100;
 				percentHours = (double) Math.round(percentHours);
-				percentHours = percentHours/100;
+				percentHours = percentHours / 100;
 
 				rowToAdd.set(indexOfProject, percentHours.toString() + "%");
 				if (!rowExists) {
@@ -88,33 +87,9 @@ public class Report4Builder extends ReportBuilder {
 
 	@Override
 	void filterEmployees() {
-		List<Employee> filteredEmployees = new ArrayList<Employee>();
-
-		for (Employee employee : employees) {
-			List<Task> filteredTasks = new ArrayList<Task>();
-			for (Task task : employee.getTaskList()) {
-				Date date = task.getTaskDate();
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(date);
-				if (calendar.get(Calendar.YEAR) == Integer.parseInt(inputParams.get(0))) {
-					filteredTasks.add(task);
-				}
-			}
-			if (filteredTasks.size() > 0) {
-				Employee employeeCopy = (Employee) employee.clone();
-				employeeCopy.setTaskList(filteredTasks);
-				filteredEmployees.add(employeeCopy);
-			}
+		for (EmployeesFilter filter : filters) {
+			this.employees = filter.filterEmployees(employees);
 		}
-
-		employees = filteredEmployees;
-	}
-	
-	@Override
-	public void retrievePossibleInputData() {
-		possibleDataRetriever = new PossibleYearRetriever();
-		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
-
 	}
 
 }

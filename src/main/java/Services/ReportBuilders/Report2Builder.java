@@ -10,46 +10,29 @@ import java.util.TreeMap;
 import Model.Employee;
 import Model.Report;
 import Model.Task;
+import Services.EmployeesFilter;
+import Services.EmployeesFilterByYear;
 import Services.PossibleYearRetriever;
-
 
 public class Report2Builder extends ReportBuilder {
 
 	public Report2Builder() {
 		super();
-		this.inputParamsNames.add("rok");
+		this.addEmployeesFilter(new EmployeesFilterByYear());
 
 	}
-	
-	
+
 	@Override
 	void filterEmployees() {
-		List<Employee> filteredEmployees = new ArrayList<Employee>();
-
-		for (Employee employee : employees) {
-			List<Task> filteredTasks = new ArrayList<Task>();
-			for (Task task : employee.getTaskList()) {
-				Date date = task.getTaskDate();
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(date);
-				if (calendar.get(Calendar.YEAR) == Integer.parseInt(inputParams.get(0))) {
-					filteredTasks.add(task);
-				}
-			}
-			if (filteredTasks.size() > 0) {
-				Employee employeeCopy = (Employee) employee.clone();
-				employeeCopy.setTaskList(filteredTasks);
-				filteredEmployees.add(employeeCopy);
-			}
+		for (EmployeesFilter filter  : filters) {
+			this.employees = filter.filterEmployees(employees);
 		}
-
-		employees = filteredEmployees;
 	}
 
 	@Override
 	void setReportTitle() {
 		Report report = new Report();
-		report.setTitle("Raport listy projektów za podany rok " + inputParams.get(0));
+		report.setTitle("Raport listy projektów za podany rok ");
 	}
 
 	@Override
@@ -93,13 +76,6 @@ public class Report2Builder extends ReportBuilder {
 		}
 
 		report.setRows(rows);
-	}
-	
-	@Override
-	public void retrievePossibleInputData() {
-		possibleDataRetriever = new PossibleYearRetriever();
-		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
-
 	}
 
 }

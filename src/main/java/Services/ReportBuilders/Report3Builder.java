@@ -9,6 +9,9 @@ import java.util.Map;
 
 import Model.Employee;
 import Model.Task;
+import Services.EmployeesFilter;
+import Services.EmployeesFilterByPerson;
+import Services.EmployeesFilterByYear;
 import Services.PossiblePersonRetriever;
 import Services.PossibleYearRetriever;
 
@@ -16,40 +19,21 @@ public class Report3Builder extends ReportBuilder {
 
 	public Report3Builder() {
 		super();
-		this.inputParamsNames.add("imię i nazwisko");
-		this.inputParamsNames.add("rok");
+		this.addEmployeesFilter(new EmployeesFilterByYear());
+		this.addEmployeesFilter(new EmployeesFilterByPerson());
 	}
 
 	@Override
 	void filterEmployees() {
-		List<Employee> filteredEmployees = new ArrayList<Employee>();
 
-		for (Employee employee : employees) {
-			List<Task> filteredTasks = new ArrayList<Task>();
-			for (Task task : employee.getTaskList()) {
-				Date date = task.getTaskDate();
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(date);
-				if (calendar.get(Calendar.YEAR) == Integer.parseInt(inputParams.get(1))
-						&& ((String) inputParams.get(0)).toLowerCase().contains(employee.getName().toLowerCase())
-						&& ((String) inputParams.get(0)).toLowerCase().contains(employee.getSurname().toLowerCase())) {
-					filteredTasks.add(task);
-				}
-			}
-			if (filteredTasks.size() > 0) {
-				Employee employeeCopy = (Employee) employee.clone();
-				employeeCopy.setTaskList(filteredTasks);
-				filteredEmployees.add(employeeCopy);
-			}
+		for (EmployeesFilter filter : filters) {
+			this.employees = filter.filterEmployees(employees);
 		}
-
-		employees = filteredEmployees;
-
 	}
 
 	@Override
 	void setReportTitle() {
-		report.setTitle("Rok: " + inputParams.get(1) + "; Imię i nazwisko: " + (String) inputParams.get(0));
+		report.setTitle("Rok:  Imię i nazwisko: ");
 	}
 
 	@Override
@@ -100,21 +84,12 @@ public class Report3Builder extends ReportBuilder {
 		for (Task task : foundEmployee.getTaskList()) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(task.getTaskDate());
-			if (task.getProjectName().equals(project) && calendar.get(Calendar.MONTH) == monthIndex
-					&& calendar.get(Calendar.YEAR) == Integer.parseInt(inputParams.get(1))) {
+			if (task.getProjectName().equals(project) && calendar.get(Calendar.MONTH) == monthIndex) {
 				hoursSum += task.getHours();
 			}
 		}
 		return hoursSum;
 	}
 
-	@Override
-	public void retrievePossibleInputData() {
-		possibleDataRetriever = new PossiblePersonRetriever();
-		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
 
-		possibleDataRetriever = new PossibleYearRetriever();
-		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
-
-	}
 }

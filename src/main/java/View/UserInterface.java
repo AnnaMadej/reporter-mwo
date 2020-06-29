@@ -23,11 +23,11 @@ public class UserInterface {
 	private List<String> chartOptions = Arrays.asList(new String[] { "6", "7" });
 
 	private Set<String> possibleInputParams = new TreeSet<String>();
-	private List<String> inputParamNames = new ArrayList<String>();
+
 
 	public UserInterface(String path) {
 		try {
-			controller.readEmployees(path);
+			controller.readEmployeesData(path);
 		} catch (IOException  | InvalidFormatException e) {
 			System.out.println("Błąd odczytu plików! \n"
 					+ "Sprawdz czy nie są uszkodzone lub otwarte w innym programie.");
@@ -131,14 +131,15 @@ public class UserInterface {
 	private void showReport(String userOption) {
 		controller.setReportType(userOption);
 		boolean reportReady = false;
-		inputParamNames = controller.getInputParamNames();
-		for (int i = 0; i < inputParamNames.size(); i++) {
-			String inputParamName = inputParamNames.get(i);
-			possibleInputParams = controller.getPossibleInputParams().get(i);
+		
+		int numberOfFilters = controller.getNumberOfFilters();
+		for (int filterIndex = 0; filterIndex < numberOfFilters; filterIndex++) {
+			String inputParamName = controller.getInputParamName(filterIndex);
+			possibleInputParams = controller.getPossibleFilterData(filterIndex);
 			String question = askForParam(inputParamName);
 			String inputParam = takeUserInput(question);
 			if (possibleInputParams.contains(inputParam)) {
-				controller.addReportInputParam(inputParam);
+				controller.addFilterParam(filterIndex, inputParam);
 				reportReady = true;
 			} else {
 				System.out.println("Nie podałeś parametru z wyświetlonej listy!");
@@ -148,7 +149,7 @@ public class UserInterface {
 		}
 		if (reportReady) {
 			controller.buildReport();
-			System.out.println(controller.reportString());
+			System.out.println(controller.stringReport());
 			String answer = takeUserInput(askForXlsCreation());
 			if (answer.toLowerCase().equals("t")) {
 				exportToXls();

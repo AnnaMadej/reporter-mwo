@@ -22,58 +22,59 @@ public class Controller {
 	private ReportBuilder reportBuilder;
 	private Report report;
 	private String reportFilePath;
-	
-	
 
-	public void addReportInputParam(String inputParam) {
-		reportBuilder.addInputParam(inputParam);
-	}
 
-	public List<String> getInputParamNames() {
-		return reportBuilder.getInputParamsNames();
-	}
-
-	public List<Set<String>> getPossibleInputParams() {
-		return reportBuilder.getPossibleInputParams();
-	}
 
 	public void buildReport() {
-		this.report =  reportBuilder.buildReport();
+		this.report = reportBuilder.buildReport();
 	}
-	
-	public String reportString() {
+
+	public String stringReport() {
 		return ReportPrinter.stringReport(report);
 	}
-	
+
 	public String exportReport() throws IOException {
 		File file = ReportXlsExporter.exportToXls(report);
 		this.reportFilePath = file.getCanonicalPath();
 		return reportFilePath;
 	}
-	
+
 	public void openReport() throws IOException {
-			File file = new File(reportFilePath);
-			Desktop desktop = Desktop.getDesktop();
-			if (file.exists()) {
-				desktop.open(file);
-			}
+		File file = new File(reportFilePath);
+		Desktop desktop = Desktop.getDesktop();
+		if (file.exists()) {
+			desktop.open(file);
+		}
 	}
 
-	public void readEmployees(String path) throws InvalidFormatException, IOException {
-			FilesScanner fileScanner = new FilesScanner();
-			employees = fileScanner.scanFiles(path);
+	public void readEmployeesData(String path) throws InvalidFormatException, IOException {
+		FilesScanner fileScanner = new FilesScanner();
+		employees = fileScanner.scanFiles(path);
 	}
 
 	public void setReportType(String userOption) {
 		this.reportBuilder = ReportBuilderFactory.getReportBuilder(userOption);
 		reportBuilder.setEmployees(employees);
 	}
-	
-	public void exportToXls() {
-		
-	}
-	
+
 	public int getNumberOfEmployees() {
 		return employees.size();
 	}
+
+	public int getNumberOfFilters() {
+		return reportBuilder.getNumberOfFilters();
+	}
+
+	public String getInputParamName(int filterIndex) {
+		return reportBuilder.getFilterParamName(filterIndex);
+	}
+
+	public Set<String> getPossibleFilterData(int filterIndex) {
+		return reportBuilder.getPossibleFilterData(employees, filterIndex);
+	}
+
+	public void addFilterParam(int filterIndex, String filterParameter) {
+		reportBuilder.addInputParam(filterIndex, filterParameter);
+	}
+
 }
