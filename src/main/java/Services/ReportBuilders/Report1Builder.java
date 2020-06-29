@@ -2,79 +2,83 @@ package Services.ReportBuilders;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import Model.Employee;
-import Model.Report;
 import Model.Task;
 import Services.PossibleYearRetriever;
 
-public class Report1Builder extends ReportBuilder {
 
-	private int year;
+public class Report1Builder extends ReportBuilder {
 
 	public Report1Builder() {
 		super();
 		this.inputParamsNames.add("rok");
 	}
+	
+	@Override
+	void filterEmployees() {
+
+		List<Model.Employee> filteredEmployees = new ArrayList<Employee>();
+
+		for (Model.Employee employee : employees) {
+			List<Task> filteredTasks = new ArrayList<Task>();
+			for (Task task : employee.getTaskList()) {
+				Date date = task.getTaskDate();
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(date);
+				if (calendar.get(Calendar.YEAR) == Integer.parseInt(inputParams.get(0))) {
+					filteredTasks.add(task);
+				}
+			}
+			if (filteredTasks.size() > 0) {
+				Employee employeeCopy = (Employee) employee.clone();
+				employeeCopy.setTaskList(filteredTasks);
+				filteredEmployees.add(employeeCopy);
+			}
+		}
+
+		employees = filteredEmployees;
+	}
 
 	@Override
-	public Report buildReport() {
+	void setReportTitle() {
+		Integer year = Integer.parseInt(this.inputParams.get(0));
+		report.setTitle("Sumaryczna liczba godzin za rok " + String.valueOf(year));
+	}
 
-		Report report = new Report();
-
-		this.year = Integer.valueOf(this.inputParams.get(0));
-		report.setTitle("Raport godzin pracowników w roku: " + year);
-
+	@Override
+	void setReportCollumnNames() {
 		List<String> columnNames = new ArrayList<String>();
-		List<List<String>> rows = new ArrayList<List<String>>();
-		Integer rowsCounter = 1;
-
-		columnNames.add("L.p.");
+		columnNames.add("L.p");
 		columnNames.add("Imię i nazwisko");
 		columnNames.add("Liczba godzin");
-
-		List<Employee> employeeList = employees;
-		employeeList.sort(Comparator.comparing(Employee::getSurname));
-
-		for (Employee employee : employeeList) {
-			if (getTotalHours(employee, year) != 0) {
-				List<String> newRow = new ArrayList();
-				newRow.add(rowsCounter.toString());
-				newRow.add(employee.getNameAndSurname());
-				newRow.add(String.valueOf(getTotalHours(employee, year)));
-				rows.add(newRow);
-				rowsCounter++;
-			}
-		}
-
 		report.setColumnNames(columnNames);
-		report.setRows(rows);
 
-		return report;
 	}
 
-	public double getTotalHours(Employee employee, int year) {
-		List<Task> taskList = employee.getTaskList();
-		double sum = 0;
-		for (Task task : taskList) {
-			Date date = task.getTaskDate();
-			Calendar calendar = new GregorianCalendar();
-			calendar.setTime(date);
-			if (calendar.get(Calendar.YEAR) == year) {
-				sum += task.getHours();
-			}
+	@Override
+	void setReportRows() {
+		List<List<String>> rows = new ArrayList<List<String>>();
+		Integer rowsCounter = 1;
+		for (Employee employee : employees) {
+			List<String> newRow = new ArrayList();
+			newRow.add(rowsCounter.toString());
+			newRow.add(employee.getNameAndSurname());
+			newRow.add(String.valueOf(employee.getTotalHours()));
+			rows.add(newRow);
+			rowsCounter++;
 		}
-		return sum;
+		report.setRows(rows);
 	}
-
+	
 	@Override
 	public void retrievePossibleInputData() {
 		possibleDataRetriever = new PossibleYearRetriever();
 		this.possibleInputParams.add(possibleDataRetriever.getPossibleData(employees));
 	}
+	
+
 
 }

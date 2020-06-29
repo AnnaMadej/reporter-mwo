@@ -12,47 +12,74 @@ import Model.Report;
 import Model.Task;
 import Services.PossibleYearRetriever;
 
-public class Report2Builder extends ReportBuilder {
 
-	private int year;
+public class Report2Builder extends ReportBuilder {
 
 	public Report2Builder() {
 		super();
 		this.inputParamsNames.add("rok");
 
 	}
+	
+	
+	@Override
+	void filterEmployees() {
+		List<Employee> filteredEmployees = new ArrayList<Employee>();
+
+		for (Employee employee : employees) {
+			List<Task> filteredTasks = new ArrayList<Task>();
+			for (Task task : employee.getTaskList()) {
+				Date date = task.getTaskDate();
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(date);
+				if (calendar.get(Calendar.YEAR) == Integer.parseInt(inputParams.get(0))) {
+					filteredTasks.add(task);
+				}
+			}
+			if (filteredTasks.size() > 0) {
+				Employee employeeCopy = (Employee) employee.clone();
+				employeeCopy.setTaskList(filteredTasks);
+				filteredEmployees.add(employeeCopy);
+			}
+		}
+
+		employees = filteredEmployees;
+	}
 
 	@Override
-	public Report buildReport() {
-
+	void setReportTitle() {
 		Report report = new Report();
+		report.setTitle("Raport listy projektów za podany rok " + inputParams.get(0));
+	}
 
-		this.year = Integer.valueOf(this.inputParams.get(0));
-		report.setTitle("Raport godzin projektów w roku: " + year);
+	@Override
+	void setReportCollumnNames() {
 
 		List<String> columnNames = new ArrayList<String>();
-		List<List<String>> rows = new ArrayList<List<String>>();
-		Integer rowsCounter = 1;
 
-		columnNames.add("L.p.");
+		columnNames.add("L.p");
 		columnNames.add("Projekt");
 		columnNames.add("Ilość godzin");
+		report.setColumnNames(columnNames);
+
+	}
+
+	@Override
+	void setReportRows() {
+		List<List<String>> rows = new ArrayList<List<String>>();
+		Integer rowsCounter = 1;
 
 		TreeMap<String, Double> projectsMap = new TreeMap<>();
 
 		for (Employee employee : employees) {
 			for (Task task : employee.getTaskList()) {
-				Date date = task.getTaskDate();
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(date);
-				if (calendar.get(Calendar.YEAR) == year) {
-					String projectName = task.getProjectName();
-					if (projectsMap.containsKey(projectName)) {
-						projectsMap.replace(projectName, projectsMap.get(projectName) + task.getHours());
-					} else {
-						projectsMap.put(projectName, task.getHours());
-					}
+				String projectName = task.getProjectName();
+				if (projectsMap.containsKey(projectName)) {
+					projectsMap.replace(projectName, projectsMap.get(projectName) + task.getHours());
+				} else {
+					projectsMap.put(projectName, task.getHours());
 				}
+
 			}
 		}
 
@@ -65,11 +92,9 @@ public class Report2Builder extends ReportBuilder {
 			rowsCounter++;
 		}
 
-		report.setColumnNames(columnNames);
 		report.setRows(rows);
-		return report;
 	}
-
+	
 	@Override
 	public void retrievePossibleInputData() {
 		possibleDataRetriever = new PossibleYearRetriever();

@@ -3,21 +3,17 @@ package Services.ReportBuilders;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import Model.Employee;
-import Model.Report;
 import Model.Task;
 import Services.PossiblePersonRetriever;
 import Services.PossibleYearRetriever;
 
 public class Report3Builder extends ReportBuilder {
 
-	private int year;
-
-	private String id;
 	public Report3Builder() {
 		super();
 		this.inputParamsNames.add("imię i nazwisko");
@@ -25,85 +21,85 @@ public class Report3Builder extends ReportBuilder {
 	}
 
 	@Override
-	public Report buildReport() {
+	void filterEmployees() {
+		List<Employee> filteredEmployees = new ArrayList<Employee>();
 
-		this.id = this.inputParams.get(0);
-		this.year = Integer.valueOf(this.inputParams.get(1));
+		for (Employee employee : employees) {
+			List<Task> filteredTasks = new ArrayList<Task>();
+			for (Task task : employee.getTaskList()) {
+				Date date = task.getTaskDate();
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(date);
+				if (calendar.get(Calendar.YEAR) == Integer.parseInt(inputParams.get(1))
+						&& ((String) inputParams.get(0)).toLowerCase().contains(employee.getName().toLowerCase())
+						&& ((String) inputParams.get(0)).toLowerCase().contains(employee.getSurname().toLowerCase())) {
+					filteredTasks.add(task);
+				}
+			}
+			if (filteredTasks.size() > 0) {
+				Employee employeeCopy = (Employee) employee.clone();
+				employeeCopy.setTaskList(filteredTasks);
+				filteredEmployees.add(employeeCopy);
+			}
+		}
 
-		Report report = new Report();
+		employees = filteredEmployees;
+
+	}
+
+	@Override
+	void setReportTitle() {
+		report.setTitle("Rok: " + inputParams.get(1) + "; Imię i nazwisko: " + (String) inputParams.get(0));
+	}
+
+	@Override
+	void setReportCollumnNames() {
 		List<String> columnNames = new ArrayList<String>();
-		List<List<String>> rows = new ArrayList<List<String>>();
-		Integer rowsCounter = 1;
-
-		report.setTitle("Raport godzin przepracowanych przez: " + id + " w roku: " + year);
-
-		columnNames.add("L.p.");
+		columnNames.add("L.p");
 		columnNames.add("Miesiąc");
 		columnNames.add("Projekt");
 		columnNames.add("Liczba godzin");
+		report.setColumnNames(columnNames);
+	}
+
+	@Override
+	void setReportRows() {
+
+		List<List<String>> rows = new ArrayList<List<String>>();
+		Integer rowsCounter = 1;
 
 		String[] polishMonths = { "Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec", "Lipiec", "Sierpień",
 				"Wrzesień", "Pażdziernik", "Listopad", "Grudzień" };
 
-		Employee foundEmployee = findEmployee(employees, id);
+		if (employees.size() > 0) {
 
-		if (foundEmployee != null) {
-			for (int i = 0; i < 12; i++) {
-				HashMap<String, Double> hours = getHoursByProject(foundEmployee, year, i);
-				for (String project : hours.keySet()) {
-					if (hours.get(project) != 0) {
-						List<String> newRow = new ArrayList();
-						newRow.add(rowsCounter.toString());
-						newRow.add(polishMonths[i]);
-						newRow.add(project);
-						newRow.add(String.valueOf(hours.get(project)));
-						rows.add(newRow);
-						rowsCounter++;
+			Employee foundEmployee = employees.get(0);
+
+			for (int monthIndex = 0; monthIndex < 12; monthIndex++) {
+				for (String project : foundEmployee.getProjects()) {
+					Double hoursSum = 0.0;
+					for (Task task : foundEmployee.getTaskList()) {
+
+						Calendar calendar = Calendar.getInstance();
+						calendar.setTime(task.getTaskDate());
+						if (task.getProjectName().equals(project) && calendar.get(Calendar.MONTH) == monthIndex
+								&& calendar.get(Calendar.YEAR) == Integer.parseInt(inputParams.get(1))) {
+							hoursSum += task.getHours();
+						}
 					}
+					List<String> newRow = new ArrayList();
+					newRow.add(rowsCounter.toString());
+					newRow.add(polishMonths[monthIndex]);
+					newRow.add(project);
+					newRow.add(hoursSum.toString());
+
+					rows.add(newRow);
+					rowsCounter++;
 				}
 			}
-		} else {
-			System.out.println("Pracownik nie istnieje w bazie lub w tym roku nie wykonywał prac");
-		}
 
-		report.setColumnNames(columnNames);
+		}
 		report.setRows(rows);
-		return report;
-	}
-
-	public Employee findEmployee(List<Employee> employeeList, String id) {
-		String[] listOfWords = id.toLowerCase().trim().split(" +");
-
-		for (Employee employee : employeeList) {
-			if ((listOfWords[0].equals(employee.getName().toLowerCase())
-					&& listOfWords[1].equals(employee.getSurname().toLowerCase()))
-					|| (listOfWords[1].equals(employee.getName().toLowerCase())
-							&& listOfWords[0].equals(employee.getSurname().toLowerCase()))) {
-				return employee;
-			}
-		}
-		return null;
-	}
-
-	public HashMap<String, Double> getHoursByProject(Employee employee, int year, int month) {
-		List<Task> taskList = employee.getTaskList();
-		HashMap<String, Double> projectsHours = new HashMap<>();
-		for (Task task : taskList) {
-			Date date = task.getTaskDate();
-			Calendar calendar = new GregorianCalendar();
-			calendar.setTime(date);
-
-			if (calendar.get(Calendar.YEAR) == year && calendar.get(Calendar.MONTH) == month) {
-				String project = task.getProjectName();
-				if (projectsHours.containsKey(project)) {
-					Double d = projectsHours.get(project);
-					projectsHours.put(project, task.getHours() + d);
-				} else {
-					projectsHours.put(project, task.getHours());
-				}
-			}
-		}
-		return projectsHours;
 	}
 
 	@Override

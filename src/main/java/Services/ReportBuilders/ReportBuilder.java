@@ -8,39 +8,53 @@ import Model.Employee;
 import Model.Report;
 import Services.PossibleDataRetriever;
 
+
+
 public abstract class ReportBuilder {
-	protected List<String> inputParamsNames = new ArrayList<String>();
+
 	protected List<String> inputParams = new ArrayList<String>();
+	protected List<Employee> employees = new ArrayList<Employee>();
+	protected Report report = new Report();
+	protected List<String> inputParamsNames = new ArrayList<String>();
 	protected List<Set<String>> possibleInputParams = new ArrayList<Set<String>>();
 	protected PossibleDataRetriever possibleDataRetriever;
-	protected List<Employee> employees;
+	
+	
 
-	public void addInputParam(String inputParam) {
-		this.inputParams.add(inputParam);
+	public Report buildReport() {
+		filterEmployees();
+		setReportTitle();
+		setReportCollumnNames();
+		setReportRows();
+		return report;
+	};
+
+	abstract void filterEmployees();
+
+	abstract void setReportTitle();
+
+	abstract void setReportCollumnNames();
+
+	abstract void setReportRows();
+
+	public void addInputParam(String... params) {
+		for (String param : params) {
+			this.inputParams.add(param);
+		}
 	}
-
-	public abstract Report buildReport();
-
+	
 	public List<String> getInputParamsNames() {
 		return inputParamsNames;
 	}
-
+	
 	public List<Set<String>> getPossibleInputParams() {
 		return possibleInputParams;
 	}
-
-	public abstract void retrievePossibleInputData();
-
+	
 	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
 		retrievePossibleInputData();
 	}
-
-	public void setInputParamsNames(List<String> inputParamsNames) {
-		this.inputParamsNames = inputParamsNames;
-	}
-
-	public void setPossibleInputParams(List<Set<String>> possibleInputParams) {
-		this.possibleInputParams = possibleInputParams;
-	}
+	
+	public abstract void retrievePossibleInputData();
 }

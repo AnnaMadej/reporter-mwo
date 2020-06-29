@@ -22,6 +22,8 @@ public class Controller {
 	private ReportBuilder reportBuilder;
 	private Report report;
 	private String reportFilePath;
+	
+	
 
 	public void addReportInputParam(String inputParam) {
 		reportBuilder.addInputParam(inputParam);

@@ -1,9 +1,12 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.SortedSet;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 public class Employee implements Cloneable {
@@ -142,6 +145,20 @@ public class Employee implements Cloneable {
 	@Override
 	public String toString() {
 		return "Employee [taskList=" + taskList + ", name=" + name + ", surname=" + surname + "]";
+	}
+
+	public Map<String, Double> getHoursByProject(int i) {
+		Map<String, Double> hours = new TreeMap<String, Double> ();
+		for (Task task : this.getTaskList()) {
+			String projectName = task.getProjectName();
+			if(hours.containsKey(projectName)) {
+				hours.put(projectName, hours.get(projectName) + task.getHours());
+			}
+			else {
+				hours.put(projectName, task.getHours());
+			}
+		}
+		return hours;
 	}
 
 }
