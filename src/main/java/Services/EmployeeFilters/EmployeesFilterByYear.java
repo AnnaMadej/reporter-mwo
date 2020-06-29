@@ -1,4 +1,4 @@
-package Services;
+package Services.EmployeeFilters;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -7,12 +7,13 @@ import java.util.List;
 
 import Model.Employee;
 import Model.Task;
+import Services.PossibleDataRetrievers.PossibleYearRetriever;
 
-public class EmployeesFilterByProjectName extends EmployeesFilter {
+public class EmployeesFilterByYear extends EmployeesFilter {
 	
-	public EmployeesFilterByProjectName() {
-		this.filterParameterName = "nazwa projektu";
-		this.possibleDataRetriever = new PossibleProjectRetriever();
+	public EmployeesFilterByYear() {
+		this.filterParameterName = "rok";
+		this.possibleDataRetriever = new PossibleYearRetriever();
 	}
 
 	public List<Employee> filterEmployees(List<Employee> employees){
@@ -21,8 +22,10 @@ public class EmployeesFilterByProjectName extends EmployeesFilter {
 		for (Model.Employee employee : employees) {
 			List<Task> filteredTasks = new ArrayList<Task>();
 			for (Task task : employee.getTaskList()) {
-				
-				if (task.getProjectName().equals(this.filterParameter)) {
+				Date date = task.getTaskDate();
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(date);
+				if (calendar.get(Calendar.YEAR) == Integer.parseInt(this.filterParameter)) {
 					filteredTasks.add(task);
 				}
 			}

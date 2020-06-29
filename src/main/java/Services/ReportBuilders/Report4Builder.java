@@ -7,9 +7,9 @@ import java.util.List;
 
 import Model.Employee;
 import Model.Task;
-import Services.EmployeesFilter;
-import Services.EmployeesFilterByYear;
-import Services.PossibleYearRetriever;
+import Services.EmployeeFilters.EmployeesFilter;
+import Services.EmployeeFilters.EmployeesFilterByYear;
+import Services.PossibleDataRetrievers.PossibleYearRetriever;
 
 public class Report4Builder extends ReportBuilder {
 
@@ -83,13 +83,6 @@ public class Report4Builder extends ReportBuilder {
 	@Override
 	void setReportTitle() {
 		this.report.setTitle("Procentowy udział danego pracownika w projekt za dany rok");
-	}
-
-	@Override
-	void filterEmployees() {
-		for (EmployeesFilter filter : filters) {
-			this.employees = filter.filterEmployees(employees);
-		}
 	}
 
 }

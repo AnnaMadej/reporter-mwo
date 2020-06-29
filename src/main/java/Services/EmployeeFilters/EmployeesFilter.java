@@ -1,9 +1,10 @@
-package Services;
+package Services.EmployeeFilters;
 
 import java.util.List;
 import java.util.Set;
 
 import Model.Employee;
+import Services.PossibleDataRetrievers.PossibleDataRetriever;
 
 public abstract class EmployeesFilter {
 	protected PossibleDataRetriever possibleDataRetriever;

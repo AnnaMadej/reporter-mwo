@@ -1,4 +1,4 @@
-package Services;
+package Services.EmployeeFilters;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -7,6 +7,7 @@ import java.util.List;
 
 import Model.Employee;
 import Model.Task;
+import Services.PossibleDataRetrievers.PossiblePersonRetriever;
 
 public class EmployeesFilterByPerson extends EmployeesFilter {
 	

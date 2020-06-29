@@ -5,23 +5,16 @@ import java.util.List;
 
 import Model.Employee;
 import Model.Task;
-import Services.EmployeesFilter;
-import Services.EmployeesFilterByProjectName;
-import Services.EmployeesFilterByYear;
-import Services.PossibleProjectRetriever;
+import Services.EmployeeFilters.EmployeesFilter;
+import Services.EmployeeFilters.EmployeesFilterByProjectName;
+import Services.EmployeeFilters.EmployeesFilterByYear;
+import Services.PossibleDataRetrievers.PossibleProjectRetriever;
 
 public class Report5Builder extends ReportBuilder {
 
 	public Report5Builder() {
 		super();
 		this.addEmployeesFilter(new EmployeesFilterByProjectName());
-	}
-
-	@Override
-	void filterEmployees() {
-		for (EmployeesFilter filter : filters) {
-			this.employees = filter.filterEmployees(employees);
-		}
 	}
 
 	@Override

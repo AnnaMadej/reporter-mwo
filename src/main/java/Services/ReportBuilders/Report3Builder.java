@@ -9,11 +9,11 @@ import java.util.Map;
 
 import Model.Employee;
 import Model.Task;
-import Services.EmployeesFilter;
-import Services.EmployeesFilterByPerson;
-import Services.EmployeesFilterByYear;
-import Services.PossiblePersonRetriever;
-import Services.PossibleYearRetriever;
+import Services.EmployeeFilters.EmployeesFilter;
+import Services.EmployeeFilters.EmployeesFilterByPerson;
+import Services.EmployeeFilters.EmployeesFilterByYear;
+import Services.PossibleDataRetrievers.PossiblePersonRetriever;
+import Services.PossibleDataRetrievers.PossibleYearRetriever;
 
 public class Report3Builder extends ReportBuilder {
 
@@ -21,14 +21,6 @@ public class Report3Builder extends ReportBuilder {
 		super();
 		this.addEmployeesFilter(new EmployeesFilterByYear());
 		this.addEmployeesFilter(new EmployeesFilterByPerson());
-	}
-
-	@Override
-	void filterEmployees() {
-
-		for (EmployeesFilter filter : filters) {
-			this.employees = filter.filterEmployees(employees);
-		}
 	}
 
 	@Override
