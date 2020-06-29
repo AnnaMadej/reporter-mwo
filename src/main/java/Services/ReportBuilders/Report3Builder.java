@@ -77,29 +77,35 @@ public class Report3Builder extends ReportBuilder {
 
 			for (int monthIndex = 0; monthIndex < 12; monthIndex++) {
 				for (String project : foundEmployee.getProjects()) {
-					Double hoursSum = 0.0;
-					for (Task task : foundEmployee.getTaskList()) {
-
-						Calendar calendar = Calendar.getInstance();
-						calendar.setTime(task.getTaskDate());
-						if (task.getProjectName().equals(project) && calendar.get(Calendar.MONTH) == monthIndex
-								&& calendar.get(Calendar.YEAR) == Integer.parseInt(inputParams.get(1))) {
-							hoursSum += task.getHours();
-						}
+					Double hoursSum = countHoursSum(foundEmployee, monthIndex, project);
+					if (hoursSum != 0.0) {
+						List<String> newRow = new ArrayList();
+						newRow.add(rowsCounter.toString());
+						newRow.add(polishMonths[monthIndex]);
+						newRow.add(project);
+						newRow.add(hoursSum.toString());
+						rows.add(newRow);
+						rowsCounter++;
 					}
-					List<String> newRow = new ArrayList();
-					newRow.add(rowsCounter.toString());
-					newRow.add(polishMonths[monthIndex]);
-					newRow.add(project);
-					newRow.add(hoursSum.toString());
 
-					rows.add(newRow);
-					rowsCounter++;
 				}
 			}
 
 		}
 		report.setRows(rows);
+	}
+
+	private Double countHoursSum(Employee foundEmployee, int monthIndex, String project) {
+		Double hoursSum = 0.0;
+		for (Task task : foundEmployee.getTaskList()) {
+			Calendar calendar = Calendar.getInstance();
+			calendar.setTime(task.getTaskDate());
+			if (task.getProjectName().equals(project) && calendar.get(Calendar.MONTH) == monthIndex
+					&& calendar.get(Calendar.YEAR) == Integer.parseInt(inputParams.get(1))) {
+				hoursSum += task.getHours();
+			}
+		}
+		return hoursSum;
 	}
 
 	@Override
