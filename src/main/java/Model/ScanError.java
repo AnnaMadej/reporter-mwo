@@ -40,77 +40,90 @@ public class ScanError {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (this.getClass() != obj.getClass()) {
 			return false;
+		}
 		ScanError other = (ScanError) obj;
-		if (cell == null) {
-			if (other.cell != null)
+		if (this.cell == null) {
+			if (other.cell != null) {
 				return false;
-		} else if (!cell.equals(other.cell))
+			}
+		} else if (!this.cell.equals(other.cell)) {
 			return false;
-		if (description == null) {
-			if (other.description != null)
+		}
+		if (this.description == null) {
+			if (other.description != null) {
 				return false;
-		} else if (!description.equals(other.description))
+			}
+		} else if (!this.description.equals(other.description)) {
 			return false;
-		if (filename == null) {
-			if (other.filename != null)
+		}
+		if (this.filename == null) {
+			if (other.filename != null) {
 				return false;
-		} else if (!filename.equals(other.filename))
+			}
+		} else if (!this.filename.equals(other.filename)) {
 			return false;
-		if (project == null) {
-			if (other.project != null)
+		}
+		if (this.project == null) {
+			if (other.project != null) {
 				return false;
-		} else if (!project.equals(other.project))
+			}
+		} else if (!this.project.equals(other.project)) {
 			return false;
-		if (row == null) {
-			if (other.row != null)
+		}
+		if (this.row == null) {
+			if (other.row != null) {
 				return false;
-		} else if (!row.equals(other.row))
+			}
+		} else if (!this.row.equals(other.row)) {
 			return false;
+		}
 		return true;
 	}
 
 	public String getCell() {
-		return cell;
+		return this.cell;
 	}
 
 	public String getDescription() {
-		return description;
+		return this.description;
 	}
 
 	public String getFilename() {
-		return filename;
+		return this.filename;
 	}
 
 	public String getProject() {
-		return project;
+		return this.project;
 	}
 
 	public Integer getRow() {
-		return row;
+		return this.row;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((cell == null) ? 0 : cell.hashCode());
-		result = prime * result + ((description == null) ? 0 : description.hashCode());
-		result = prime * result + ((filename == null) ? 0 : filename.hashCode());
-		result = prime * result + ((project == null) ? 0 : project.hashCode());
-		result = prime * result + ((row == null) ? 0 : row.hashCode());
+		result = prime * result + (this.cell == null ? 0 : this.cell.hashCode());
+		result = prime * result + (this.description == null ? 0 : this.description.hashCode());
+		result = prime * result + (this.filename == null ? 0 : this.filename.hashCode());
+		result = prime * result + (this.project == null ? 0 : this.project.hashCode());
+		result = prime * result + (this.row == null ? 0 : this.row.hashCode());
 		return result;
 	}
 
 	@Override
 	public String toString() {
-		return "ScanError [filename=" + filename + ", project=" + project + ", row=" + row + ", cell=" + cell
-				+ ", description=" + description + "]" + "\n";
+		return "ScanError [filename=" + this.filename + ", project=" + this.project + ", row=" + this.row + ", cell="
+				+ this.cell + ", description=" + this.description + "]" + "\n";
 	}
 
 }

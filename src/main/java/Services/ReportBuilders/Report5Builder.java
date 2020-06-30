@@ -5,21 +5,13 @@ import java.util.List;
 
 import Model.Employee;
 import Model.Task;
-import Services.EmployeeFilters.EmployeesFilter;
 import Services.EmployeeFilters.EmployeesFilterByProjectName;
-import Services.EmployeeFilters.EmployeesFilterByYear;
-import Services.PossibleDataRetrievers.PossibleProjectRetriever;
 
 public class Report5Builder extends ReportBuilder {
 
 	public Report5Builder() {
 		super();
 		this.addEmployeesFilter(new EmployeesFilterByProjectName());
-	}
-
-	@Override
-	void setReportTitle() {
-		report.setTitle("Szczegółowy wykaz pracy pracowników w danym projekcie");
 	}
 
 	@Override
@@ -31,7 +23,7 @@ public class Report5Builder extends ReportBuilder {
 		columnNames.add("Projekt");
 		columnNames.add("Ilość godzin");
 
-		report.setColumnNames(columnNames);
+		this.report.setColumnNames(columnNames);
 	}
 
 	@Override
@@ -39,13 +31,13 @@ public class Report5Builder extends ReportBuilder {
 		List<List<String>> rows = new ArrayList<List<String>>();
 		Integer rowsCounter = 1;
 
-		for (Employee employee : employees) {
+		for (Employee employee : this.employees) {
 			for (Task task : employee.getTaskList()) {
 
 				Integer indexOfRowToChange = null;
 				for (List<String> row : rows) {
 					String employeeInRow = row.get(1);
-					String projectInRow = row.get(2);
+					row.get(2);
 
 					if (employeeInRow.equals(employee.getNameAndSurname())) {
 						indexOfRowToChange = rows.indexOf(row);
@@ -68,7 +60,12 @@ public class Report5Builder extends ReportBuilder {
 				}
 			}
 		}
-		report.setRows(rows);
+		this.report.setRows(rows);
+	}
+
+	@Override
+	void setReportTitle() {
+		this.report.setTitle("Szczegółowy wykaz pracy pracowników w danym projekcie");
 	}
 
 }

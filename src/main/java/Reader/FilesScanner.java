@@ -25,13 +25,13 @@ public class FilesScanner {
 
 	public List<Employee> scanFiles(String path) throws InvalidFormatException, IOException {
 
-		List<File> files = findFiles(path);
+		List<File> files = this.findFiles(path);
 
 		List<Employee> employees = new ArrayList();
 
 		for (File file : files) {
 			Employee employee = new Employee();
-			employee = dataReader.readFile(file);
+			employee = this.dataReader.readFile(file);
 
 			if (employee != null) {
 				if (employees.contains(employee)) {

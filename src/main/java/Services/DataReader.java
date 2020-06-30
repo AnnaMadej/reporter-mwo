@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.List;
 
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
@@ -66,10 +65,10 @@ public class DataReader {
 		}
 
 		String fileName = file.getName();
-		String employeeName = extractEmployeeName(fileName);
-		String employeeSurname = extractEmployeeSurname(fileName);
+		String employeeName = this.extractEmployeeName(fileName);
+		String employeeSurname = this.extractEmployeeSurname(fileName);
 		Employee employee = new Employee(employeeName, employeeSurname);
-		List<Task> tasks = new ArrayList<Task>();
+		new ArrayList<Task>();
 		Workbook wb = WorkbookFactory.create(file);
 
 		String project;
@@ -92,8 +91,6 @@ public class DataReader {
 			}
 			project = sheet.getSheetName();
 			for (int j = 1; j <= sheet.getLastRowNum(); j++) {
-
-				boolean error = false;
 
 				if (sheet.getRow(j) == null) {
 					ScanErrorsHolder

@@ -19,8 +19,8 @@ public class Report7Builder {
 
 		for (List<String> row : rows) {
 			String[] splitID = row.get(1).toLowerCase().trim().split(" +");
-			if ((splitName[0].equals(splitID[0]) && splitName[1].equals(splitID[1]))
-					|| (splitName[1].equals(splitID[0]) && splitName[0].equals(splitID[1]))) {
+			if (splitName[0].equals(splitID[0]) && splitName[1].equals(splitID[1])
+					|| splitName[1].equals(splitID[0]) && splitName[0].equals(splitID[1])) {
 				return row;
 			}
 		}
@@ -31,7 +31,7 @@ public class Report7Builder {
 
 		List<List<String>> rows = report.getRows();
 		List<String> columnNames = report.getColumnNames();
-		List<String> row = findEmployee(rows, name);
+		List<String> row = this.findEmployee(rows, name);
 
 		PieChart chart = new PieChartBuilder().width(800).height(600)
 				.title(name + ". Procentowe zaangażowanie w projekty za rok " + year).build();

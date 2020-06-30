@@ -10,13 +10,14 @@ import Model.Task;
 import Services.PossibleDataRetrievers.PossibleYearRetriever;
 
 public class EmployeesFilterByYear extends EmployeesFilter {
-	
+
 	public EmployeesFilterByYear() {
 		this.filterParameterName = "rok";
 		this.possibleDataRetriever = new PossibleYearRetriever();
 	}
 
-	public List<Employee> filterEmployees(List<Employee> employees){
+	@Override
+	public List<Employee> filterEmployees(List<Employee> employees) {
 		List<Model.Employee> filteredEmployees = new ArrayList<Employee>();
 
 		for (Model.Employee employee : employees) {
@@ -37,7 +38,6 @@ public class EmployeesFilterByYear extends EmployeesFilter {
 		}
 
 		return filteredEmployees;
-	};
-	
+	}
 
 }

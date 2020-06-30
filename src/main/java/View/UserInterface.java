@@ -1,9 +1,6 @@
 package View;
 
-import java.awt.Desktop;
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
@@ -24,13 +21,12 @@ public class UserInterface {
 
 	private Set<String> possibleInputParams = new TreeSet<String>();
 
-
 	public UserInterface(String path) {
 		try {
-			controller.readEmployeesData(path);
-		} catch (IOException  | InvalidFormatException e) {
-			System.out.println("Błąd odczytu plików! \n"
-					+ "Sprawdz czy nie są uszkodzone lub otwarte w innym programie.");
+			this.controller.readEmployeesData(path);
+		} catch (IOException | InvalidFormatException e) {
+			System.out.println(
+					"Błąd odczytu plików! \n" + "Sprawdz czy nie są uszkodzone lub otwarte w innym programie.");
 		} catch (IllegalArgumentException e) {
 			System.out.println("Podałeś nieprawidłową ścieżkę do katalogów z raportami!");
 		}
@@ -57,8 +53,8 @@ public class UserInterface {
 		StringBuilder question = new StringBuilder();
 		question.append("Podaj parametr: " + inputParamsName + "\n");
 		question.append("Możliwe wartości: \n");
-		for (String possibleParam : possibleInputParams) {
-			question.append("[ " + possibleParam + " ]");
+		for (String possibleParam : this.possibleInputParams) {
+			question.append("\t\t\t [ " + possibleParam + " ]  \n");
 		}
 		question.append("\n");
 		return question.toString();
@@ -72,41 +68,24 @@ public class UserInterface {
 		return "Czy chcesz otworzyć plik xls? [t/n]";
 	}
 
-	public void showMenu() {
-
-		if (controller.getNumberOfEmployees() != 0) {
-			String userOption;
-			do {
-				showHeaders();
-				userOption = takeUserInput(askForOption());
-				if (reportOptions.contains(userOption)) {
-					showReport(userOption);
-				} else if ("9".equals(userOption)) {
-					showErrorLogs();
-				}
-			} while (!userOption.equals("0"));
-		} 
-		exit();
-	}
-
 	private void exit() {
 		System.out.println("Copyright © 2020 RunTime Terror, All Rights Reserved. ");
-		sc.close();
+		this.sc.close();
 	}
 
 	private void exportToXls() {
 		String answer;
 		String filePath = "";
 		try {
-			filePath = controller.exportReport();
+			filePath = this.controller.exportReport();
 		} catch (IOException e) {
 			System.out.println("Nie udało się wyeksportowac pliku xls!");
 		}
 		System.out.println("Plik poprawnie wyeksportowany: " + filePath);
-		answer = takeUserInput(askForXlsOpening());
+		answer = this.takeUserInput(this.askForXlsOpening());
 		if (answer.toLowerCase().equals("t")) {
 			try {
-				controller.openReport();
+				this.controller.openReport();
 			} catch (IOException e) {
 				System.out.println("Nie udało się otworzyc pliku xls!");
 			}
@@ -128,19 +107,35 @@ public class UserInterface {
 		System.out.println("----------------------------\n");
 	}
 
+	public void showMenu() {
+
+		if (this.controller.getNumberOfEmployees() != 0) {
+			String userOption;
+			do {
+				this.showHeaders();
+				userOption = this.takeUserInput(this.askForOption());
+				if (this.reportOptions.contains(userOption)) {
+					this.showReport(userOption);
+				} else if ("9".equals(userOption)) {
+					this.showErrorLogs();
+				}
+			} while (!userOption.equals("0"));
+		}
+		this.exit();
+	}
+
 	private void showReport(String userOption) {
-		controller.setReportType(userOption);
+		this.controller.setReportType(userOption);
 		boolean reportReady = false;
-		
-		int numberOfFilters = controller.getNumberOfFilters();
+
+		int numberOfFilters = this.controller.getNumberOfFilters();
 		for (int filterIndex = 0; filterIndex < numberOfFilters; filterIndex++) {
-			String inputParamName = controller.getInputParamName(filterIndex);
-			possibleInputParams = controller.getPossibleFilterData(filterIndex);
-			String question = askForParam(inputParamName);
-			String inputParam = takeUserInput(question);
-			if (possibleInputParams.contains(inputParam)) {
-				controller.addFilterParam(filterIndex, inputParam);
-				controller.useFilter(filterIndex);
+			String inputParamName = this.controller.getInputParamName(filterIndex);
+			this.possibleInputParams = this.controller.getPossibleFilterData(filterIndex);
+			String question = this.askForParam(inputParamName);
+			String inputParam = this.takeUserInput(question);
+			if (this.possibleInputParams.contains(inputParam)) {
+				this.controller.addFilterParam(filterIndex, inputParam);
 				reportReady = true;
 			} else {
 				System.out.println("Nie podałeś parametru z wyświetlonej listy!");
@@ -149,17 +144,17 @@ public class UserInterface {
 			}
 		}
 		if (reportReady) {
-			controller.buildReport();
-			System.out.println(controller.stringReport());
-			String answer = takeUserInput(askForXlsCreation());
+			this.controller.buildReport();
+			System.out.println(this.controller.stringReport());
+			String answer = this.takeUserInput(this.askForXlsCreation());
 			if (answer.toLowerCase().equals("t")) {
-				exportToXls();
+				this.exportToXls();
 			}
 		}
 	}
 
 	private String takeUserInput(String question) {
 		System.out.println(question);
-		return sc.nextLine();
+		return this.sc.nextLine();
 	}
 }

@@ -10,15 +10,15 @@ public class Report {
 	protected List<List<String>> rows = new ArrayList<List<String>>();
 
 	public List<String> getColumnNames() {
-		return columnNames;
+		return this.columnNames;
 	}
 
 	public List<List<String>> getRows() {
-		return rows;
+		return this.rows;
 	}
 
 	public String getTitle() {
-		return title;
+		return this.title;
 	}
 
 	public void setColumnNames(List<String> columnNames) {

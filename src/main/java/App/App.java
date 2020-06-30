@@ -1,21 +1,16 @@
 package App;
 
-import java.io.IOException;
-
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-
 import View.UserInterface;
 
 public class App {
-	public static void main(String[] args){
-			if(args.length == 0) {
-				System.out.println("Nie podałeś ścieżki do pliku z raportami!");
-			}
-			else {
-				String folderPath = args[0];
-				UserInterface userInterface = new UserInterface(folderPath);
-				userInterface.showMenu();
-			}
-			
+	public static void main(String[] args) {
+		if (args.length == 0) {
+			System.out.println("Nie podałeś ścieżki do pliku z raportami!");
+		} else {
+			String folderPath = args[0];
+			UserInterface userInterface = new UserInterface(folderPath);
+			userInterface.showMenu();
+		}
+
 	}
 }

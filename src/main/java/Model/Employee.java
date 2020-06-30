@@ -1,7 +1,6 @@
 package Model;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -51,28 +50,48 @@ public class Employee implements Cloneable {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (this.getClass() != obj.getClass()) {
 			return false;
+		}
 		Employee other = (Employee) obj;
-		if (name == null) {
-			if (other.name != null)
+		if (this.name == null) {
+			if (other.name != null) {
 				return false;
-		} else if (!name.equals(other.name))
+			}
+		} else if (!this.name.equals(other.name)) {
 			return false;
-		if (surname == null) {
-			if (other.surname != null)
+		}
+		if (this.surname == null) {
+			if (other.surname != null) {
 				return false;
-		} else if (!surname.equals(other.surname))
+			}
+		} else if (!this.surname.equals(other.surname)) {
 			return false;
+		}
 		return true;
 	}
 
+	public Map<String, Double> getHoursByProject(int i) {
+		Map<String, Double> hours = new TreeMap<String, Double>();
+		for (Task task : this.getTaskList()) {
+			String projectName = task.getProjectName();
+			if (hours.containsKey(projectName)) {
+				hours.put(projectName, hours.get(projectName) + task.getHours());
+			} else {
+				hours.put(projectName, task.getHours());
+			}
+		}
+		return hours;
+	}
+
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public String getNameAndSurname() {
@@ -96,16 +115,16 @@ public class Employee implements Cloneable {
 	}
 
 	public String getSurname() {
-		return surname;
+		return this.surname;
 	}
 
 	public List<Task> getTaskList() {
-		return taskList;
+		return this.taskList;
 	}
 
 	public double getTotalHours() {
 		double sum = 0;
-		for (Task task : taskList) {
+		for (Task task : this.taskList) {
 			sum += task.getHours();
 		}
 		return sum;
@@ -115,15 +134,15 @@ public class Employee implements Cloneable {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((name == null) ? 0 : name.hashCode());
-		result = prime * result + ((surname == null) ? 0 : surname.hashCode());
+		result = prime * result + (this.name == null ? 0 : this.name.hashCode());
+		result = prime * result + (this.surname == null ? 0 : this.surname.hashCode());
 		return result;
 	}
 
 	public void removeTask(Task task) {
 		this.taskList.remove(task);
 		boolean removeProjectName = true;
-		for (Task tsk : taskList) {
+		for (Task tsk : this.taskList) {
 			if (tsk.getProjectName().equals(task.getProjectName())) {
 				removeProjectName = false;
 			}
@@ -144,21 +163,7 @@ public class Employee implements Cloneable {
 
 	@Override
 	public String toString() {
-		return "Employee [taskList=" + taskList + ", name=" + name + ", surname=" + surname + "]";
-	}
-
-	public Map<String, Double> getHoursByProject(int i) {
-		Map<String, Double> hours = new TreeMap<String, Double> ();
-		for (Task task : this.getTaskList()) {
-			String projectName = task.getProjectName();
-			if(hours.containsKey(projectName)) {
-				hours.put(projectName, hours.get(projectName) + task.getHours());
-			}
-			else {
-				hours.put(projectName, task.getHours());
-			}
-		}
-		return hours;
+		return "Employee [taskList=" + this.taskList + ", name=" + this.name + ", surname=" + this.surname + "]";
 	}
 
 }

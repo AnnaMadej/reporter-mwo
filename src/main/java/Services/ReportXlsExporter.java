@@ -31,6 +31,7 @@ public class ReportXlsExporter {
 
 	static List<List<String>> rows = new ArrayList<List<String>>();
 	static String title = "";
+
 	private static void createHeaders(int columnNamesRow) {
 		Row row = sheet1.createRow(columnNamesRow);
 		int cellsCounter = 0;
@@ -67,7 +68,7 @@ public class ReportXlsExporter {
 			}
 			cellsCounter = 0;
 		}
-		Date date = new Date();
+		new Date();
 	}
 
 	private static void createTittle(int titleRow) {
@@ -105,7 +106,6 @@ public class ReportXlsExporter {
 
 		int titleRow = 3;
 		createTittle(titleRow);
-		int columnNamesRow = 5;
 		createHeaders(5);
 		createRows();
 
@@ -128,6 +128,4 @@ public class ReportXlsExporter {
 		}
 		return file;
 	}
-
-	private String generatedReportsPath = "generated-reports";
 }

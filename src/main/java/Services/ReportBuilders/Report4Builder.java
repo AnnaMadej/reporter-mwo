@@ -1,15 +1,10 @@
 package Services.ReportBuilders;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import Model.Employee;
-import Model.Task;
-import Services.EmployeeFilters.EmployeesFilter;
 import Services.EmployeeFilters.EmployeesFilterByYear;
-import Services.PossibleDataRetrievers.PossibleYearRetriever;
 
 public class Report4Builder extends ReportBuilder {
 
@@ -19,15 +14,32 @@ public class Report4Builder extends ReportBuilder {
 	}
 
 	@Override
+	void setReportCollumnNames() {
+		List<String> columnNames = new ArrayList<String>();
+		columnNames.add("L.p");
+		columnNames.add("Imię i nazwisko");
+		this.report.setColumnNames(columnNames);
+		this.report.setColumnNames(columnNames);
+
+		for (Employee employee : this.employees) {
+			for (String project : employee.getProjects()) {
+				if (!columnNames.contains(project)) {
+					columnNames.add(project);
+				}
+			}
+		}
+	}
+
+	@Override
 	void setReportRows() {
 		List<List<String>> rows = new ArrayList<List<String>>();
 		Integer rowsCounter = 1;
 
-		for (Employee employee : employees) {
+		for (Employee employee : this.employees) {
 			Double totalHours = employee.getTotalHours();
 			for (String project : employee.getProjects()) {
 				List<String> rowToAdd = new ArrayList<String>();
-				for (int i = 0; i < report.getColumnNames().size(); i++) {
+				for (int i = 0; i < this.report.getColumnNames().size(); i++) {
 					rowToAdd.add("");
 				}
 				String employeeName = employee.getNameAndSurname();
@@ -44,10 +56,10 @@ public class Report4Builder extends ReportBuilder {
 					rowsCounter++;
 					rowToAdd.set(1, employee.getNameAndSurname());
 				}
-				Integer indexOfProject = report.getColumnNames().indexOf(project);
+				Integer indexOfProject = this.report.getColumnNames().indexOf(project);
 
 				Double projectHours = employee.getProjectHours(project);
-				Double percentHours = (projectHours * 100) / totalHours;
+				Double percentHours = projectHours * 100 / totalHours;
 
 				percentHours = percentHours * 100;
 				percentHours = (double) Math.round(percentHours);
@@ -60,24 +72,7 @@ public class Report4Builder extends ReportBuilder {
 			}
 		}
 
-		report.setRows(rows);
-	}
-
-	@Override
-	void setReportCollumnNames() {
-		List<String> columnNames = new ArrayList<String>();
-		columnNames.add("L.p");
-		columnNames.add("Imię i nazwisko");
-		report.setColumnNames(columnNames);
-		report.setColumnNames(columnNames);
-
-		for (Employee employee : employees) {
-			for (String project : employee.getProjects()) {
-				if (!columnNames.contains(project)) {
-					columnNames.add(project);
-				}
-			}
-		}
+		this.report.setRows(rows);
 	}
 
 	@Override

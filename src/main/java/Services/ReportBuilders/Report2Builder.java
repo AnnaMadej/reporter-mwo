@@ -1,8 +1,6 @@
 package Services.ReportBuilders;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -10,9 +8,7 @@ import java.util.TreeMap;
 import Model.Employee;
 import Model.Report;
 import Model.Task;
-import Services.EmployeeFilters.EmployeesFilter;
 import Services.EmployeeFilters.EmployeesFilterByYear;
-import Services.PossibleDataRetrievers.PossibleYearRetriever;
 
 public class Report2Builder extends ReportBuilder {
 
@@ -23,12 +19,6 @@ public class Report2Builder extends ReportBuilder {
 	}
 
 	@Override
-	void setReportTitle() {
-		Report report = new Report();
-		report.setTitle("Raport listy projektów za podany rok ");
-	}
-
-	@Override
 	void setReportCollumnNames() {
 
 		List<String> columnNames = new ArrayList<String>();
@@ -36,7 +26,7 @@ public class Report2Builder extends ReportBuilder {
 		columnNames.add("L.p");
 		columnNames.add("Projekt");
 		columnNames.add("Ilość godzin");
-		report.setColumnNames(columnNames);
+		this.report.setColumnNames(columnNames);
 
 	}
 
@@ -47,7 +37,7 @@ public class Report2Builder extends ReportBuilder {
 
 		TreeMap<String, Double> projectsMap = new TreeMap<>();
 
-		for (Employee employee : employees) {
+		for (Employee employee : this.employees) {
 			for (Task task : employee.getTaskList()) {
 				String projectName = task.getProjectName();
 				if (projectsMap.containsKey(projectName)) {
@@ -68,7 +58,13 @@ public class Report2Builder extends ReportBuilder {
 			rowsCounter++;
 		}
 
-		report.setRows(rows);
+		this.report.setRows(rows);
+	}
+
+	@Override
+	void setReportTitle() {
+		Report report = new Report();
+		report.setTitle("Raport listy projektów za podany rok ");
 	}
 
 }

@@ -18,60 +18,71 @@ public class Task {
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (this.getClass() != obj.getClass()) {
 			return false;
+		}
 		Task other = (Task) obj;
-		if (hours == null) {
-			if (other.hours != null)
+		if (this.hours == null) {
+			if (other.hours != null) {
 				return false;
-		} else if (!hours.equals(other.hours))
+			}
+		} else if (!this.hours.equals(other.hours)) {
 			return false;
-		if (projectName == null) {
-			if (other.projectName != null)
+		}
+		if (this.projectName == null) {
+			if (other.projectName != null) {
 				return false;
-		} else if (!projectName.equals(other.projectName))
+			}
+		} else if (!this.projectName.equals(other.projectName)) {
 			return false;
-		if (taskDate == null) {
-			if (other.taskDate != null)
+		}
+		if (this.taskDate == null) {
+			if (other.taskDate != null) {
 				return false;
-		} else if (!taskDate.equals(other.taskDate))
+			}
+		} else if (!this.taskDate.equals(other.taskDate)) {
 			return false;
-		if (taskName == null) {
-			if (other.taskName != null)
+		}
+		if (this.taskName == null) {
+			if (other.taskName != null) {
 				return false;
-		} else if (!taskName.equals(other.taskName))
+			}
+		} else if (!this.taskName.equals(other.taskName)) {
 			return false;
+		}
 		return true;
 	}
 
 	public Double getHours() {
-		return hours;
+		return this.hours;
 	}
 
 	public java.lang.String getProjectName() {
-		return projectName;
+		return this.projectName;
 	}
 
 	public Date getTaskDate() {
-		return taskDate;
+		return this.taskDate;
 	}
 
 	public java.lang.String getTaskName() {
-		return taskName;
+		return this.taskName;
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((hours == null) ? 0 : hours.hashCode());
-		result = prime * result + ((projectName == null) ? 0 : projectName.hashCode());
-		result = prime * result + ((taskDate == null) ? 0 : taskDate.hashCode());
-		result = prime * result + ((taskName == null) ? 0 : taskName.hashCode());
+		result = prime * result + (this.hours == null ? 0 : this.hours.hashCode());
+		result = prime * result + (this.projectName == null ? 0 : this.projectName.hashCode());
+		result = prime * result + (this.taskDate == null ? 0 : this.taskDate.hashCode());
+		result = prime * result + (this.taskName == null ? 0 : this.taskName.hashCode());
 		return result;
 	}
 
@@ -93,8 +104,8 @@ public class Task {
 
 	@Override
 	public String toString() {
-		return "Task [taskDate=" + taskDate + ", projectName=" + projectName + ", taskName=" + taskName + ", hours="
-				+ hours + "]";
+		return "Task [taskDate=" + this.taskDate + ", projectName=" + this.projectName + ", taskName=" + this.taskName
+				+ ", hours=" + this.hours + "]";
 	}
 
 }

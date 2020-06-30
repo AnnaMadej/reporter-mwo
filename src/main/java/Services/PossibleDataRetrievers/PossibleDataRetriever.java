@@ -7,6 +7,6 @@ import Model.Employee;
 
 public interface PossibleDataRetriever {
 
-	public Set<String> getPossibleData(List<Employee> employees);
+	Set<String> getPossibleData(List<Employee> employees);
 
 }
