@@ -92,6 +92,42 @@ public class UserInterface {
 		}
 	}
 
+	private boolean filterData() {
+		boolean reportReady = false;
+
+		int numberOfFilters = this.controller.getNumberOfFilters();
+		for (int filterIndex = 0; filterIndex < numberOfFilters; filterIndex++) {
+			String inputParamName = this.controller.getInputParamName(filterIndex);
+			this.possibleInputParams = this.controller.getPossibleFilterData(filterIndex);
+			String question = this.askForParam(inputParamName);
+			String inputParam = this.takeUserInput(question);
+			if (this.possibleInputParams.contains(inputParam)) {
+				this.controller.addFilterParam(filterIndex, inputParam);
+				reportReady = true;
+			} else {
+				System.out.println("Nie podałeś parametru z wyświetlonej listy!");
+				reportReady = false;
+				break;
+			}
+		}
+		return reportReady;
+	}
+
+	private void showChart(String userOption) {
+		if (userOption.equals("6")) {
+			userOption = "2";
+		}
+		if (userOption.equals("7")) {
+			userOption = "4";
+		}
+		this.controller.setReportType(userOption);
+		boolean reportReady = this.filterData();
+		if (reportReady) {
+			this.controller.buildReport();
+			this.controller.showChart();
+		}
+	}
+
 	private void showErrorLogs() {
 		ScanErrorsHolder.showScanErrors();
 	}
@@ -128,20 +164,9 @@ public class UserInterface {
 
 	}
 
-	private void showChart(String userOption) {
-		if(userOption.equals("6")) userOption = "2";
-		if(userOption.equals("7")) userOption = "4";
-		this.controller.setReportType(userOption);
-		boolean reportReady = filterData();
-		if (reportReady) {
-			this.controller.buildReport();
-			this.controller.showChart();
-		}
-	}
-
 	private void showReport(String userOption) {
 		this.controller.setReportType(userOption);
-		boolean reportReady = filterData();
+		boolean reportReady = this.filterData();
 		if (reportReady) {
 			this.controller.buildReport();
 			System.out.println(this.controller.stringReport());
@@ -150,27 +175,6 @@ public class UserInterface {
 				this.exportToXls();
 			}
 		}
-	}
-
-	private boolean filterData() {
-		boolean reportReady = false;
-
-		int numberOfFilters = this.controller.getNumberOfFilters();
-		for (int filterIndex = 0; filterIndex < numberOfFilters; filterIndex++) {
-			String inputParamName = this.controller.getInputParamName(filterIndex);
-			this.possibleInputParams = this.controller.getPossibleFilterData(filterIndex);
-			String question = this.askForParam(inputParamName);
-			String inputParam = this.takeUserInput(question);
-			if (this.possibleInputParams.contains(inputParam)) {
-				this.controller.addFilterParam(filterIndex, inputParam);
-				reportReady = true;
-			} else {
-				System.out.println("Nie podałeś parametru z wyświetlonej listy!");
-				reportReady = false;
-				break;
-			}
-		}
-		return reportReady;
 	}
 
 	private String takeUserInput(String question) {

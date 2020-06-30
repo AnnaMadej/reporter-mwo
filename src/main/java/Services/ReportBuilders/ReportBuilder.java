@@ -15,7 +15,7 @@ public abstract class ReportBuilder {
 	protected List<Employee> employees = new ArrayList<Employee>();
 	protected Report report = new Report();
 	protected PossibleDataRetriever possibleDataRetriever;
-	protected  ReportChartMaker reportChartMaker = null;
+	protected ReportChartMaker reportChartMaker = null;
 
 	protected List<EmployeesFilter> filters = new ArrayList<EmployeesFilter>();
 
@@ -59,6 +59,12 @@ public abstract class ReportBuilder {
 		return this.filters.get(filterIndex).getPossibleData(this.employees);
 	}
 
+	public void makeChart() {
+		if (this.reportChartMaker != null && this.report.getRows().size() > 0) {
+			this.reportChartMaker.makeChart(this.report);
+		}
+	}
+
 	public void setEmployees(List<Employee> employees) {
 		this.employees = employees;
 	}
@@ -75,11 +81,5 @@ public abstract class ReportBuilder {
 
 	private void usefilter(int filterIndex) {
 		this.employees = this.filters.get(filterIndex).filterEmployees(this.employees);
-	}
-	
-	public void makeChart() {
-		if(this.reportChartMaker != null && this.report.getRows().size()>0) {
-			reportChartMaker.makeChart(report);
-		}
 	}
 }

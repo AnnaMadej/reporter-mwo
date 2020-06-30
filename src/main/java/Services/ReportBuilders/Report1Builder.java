@@ -40,7 +40,7 @@ public class Report1Builder extends ReportBuilder {
 
 	@Override
 	void setReportTitle() {
-		this.report.setTitle("Sumaryczna liczba godzin za rok ");
+		this.report.setTitle("Raport godzin pracowników w roku " + this.filters.get(0).getFilterParameter());
 	}
 
 }

@@ -71,12 +71,12 @@ public class Controller {
 		this.reportBuilder.setEmployees(this.employees);
 	}
 
-	public String stringReport() {
-		return ReportPrinter.stringReport(this.report);
-	}
-	
 	public void showChart() {
 		this.reportBuilder.makeChart();
+	}
+
+	public String stringReport() {
+		return ReportPrinter.stringReport(this.report);
 	}
 
 }

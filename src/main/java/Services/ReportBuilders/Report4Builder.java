@@ -79,7 +79,8 @@ public class Report4Builder extends ReportBuilder {
 
 	@Override
 	void setReportTitle() {
-		this.report.setTitle("Procentowy udział danego pracownika w projekt za dany rok");
+		this.report.setTitle(
+				"Procentowy udział projektów w pracy osob w roku: " + this.filters.get(0).getFilterParameter());
 	}
 
 }

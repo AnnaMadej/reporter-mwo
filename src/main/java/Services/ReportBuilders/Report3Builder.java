@@ -74,7 +74,8 @@ public class Report3Builder extends ReportBuilder {
 
 	@Override
 	void setReportTitle() {
-		this.report.setTitle("Rok:  Imię i nazwisko: ");
+		this.report.setTitle("Raport godzin przepracowanych miesięcznie przez: "
+				+ this.filters.get(0).getFilterParameter() + ", w roku: " + this.filters.get(0).getFilterParameter());
 	}
 
 }

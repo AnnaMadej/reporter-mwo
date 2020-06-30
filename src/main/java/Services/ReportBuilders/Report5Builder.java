@@ -65,7 +65,8 @@ public class Report5Builder extends ReportBuilder {
 
 	@Override
 	void setReportTitle() {
-		this.report.setTitle("Szczegółowy wykaz pracy pracowników w danym projekcie");
+		this.report.setTitle("Raport ilości przepracowanych godzin pracowników projekcie: "
+				+ this.filters.get(0).getFilterParameter());
 	}
 
 }

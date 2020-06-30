@@ -13,6 +13,10 @@ public abstract class EmployeesFilter {
 
 	public abstract List<Employee> filterEmployees(List<Employee> employees);
 
+	public String getFilterParameter() {
+		return this.filterParameter;
+	}
+
 	public String getFilterParameterName() {
 		return this.filterParameterName;
 	}

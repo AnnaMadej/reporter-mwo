@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import Model.Employee;
-import Model.Report;
 import Model.Task;
 import Services.ChartMakers.Report2BarChartMaker;
 import Services.EmployeeFilters.EmployeesFilterByYear;
@@ -65,8 +64,7 @@ public class Report2Builder extends ReportBuilder {
 
 	@Override
 	void setReportTitle() {
-		Report report = new Report();
-		report.setTitle("Raport listy projektów za podany rok ");
+		this.report.setTitle("Raport godzin projektów w  roku " + this.filters.get(0).getFilterParameter());
 	}
 
 }
