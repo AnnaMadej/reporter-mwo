@@ -14,7 +14,7 @@ public class Report1Builder extends ReportBuilder {
 	}
 
 	@Override
-	void setReportCollumnNames() {
+	protected void setReportCollumnNames() {
 		List<String> columnNames = new ArrayList<String>();
 		columnNames.add("L.p");
 		columnNames.add("Imię i nazwisko");
@@ -24,7 +24,7 @@ public class Report1Builder extends ReportBuilder {
 	}
 
 	@Override
-	void setReportRows() {
+	protected void setReportRows() {
 		List<List<String>> rows = new ArrayList<List<String>>();
 		Integer rowsCounter = 1;
 		for (Employee employee : this.employees) {
@@ -32,15 +32,20 @@ public class Report1Builder extends ReportBuilder {
 			newRow.add(rowsCounter.toString());
 			newRow.add(employee.getNameAndSurname());
 			newRow.add(String.valueOf(employee.getTotalHours()));
-			rows.add(newRow);
-			rowsCounter++;
+			if(!newRow.get(newRow.size()-1).equals("0.0")) {
+				rows.add(newRow);
+				rowsCounter++;
+			}
+			
 		}
 		this.report.setRows(rows);
 	}
 
 	@Override
-	void setReportTitle() {
-		this.report.setTitle("Raport godzin pracowników w roku " + this.filters.get(0).getFilterParameter());
+	protected void setReportTitle() {
+		String title = "Raport godzin pracowników ";
+		if(this.filters.get(0).getFilterParameter()!= null) title += "w roku: " + this.filters.get(0).getFilterParameter();
+		this.report.setTitle(title);
 	}
 
 }

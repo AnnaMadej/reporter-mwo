@@ -27,7 +27,7 @@
 //        Task task1 = new Task(date1,"project1", "meeting", 0);
 //        employee1.addTask(task1);
 //        employees.add(employee1);
-//     
+//
 //        ReportBuilder reportBuilder = new Report3Builder(employees);
 //        Report report = reportBuilder.buildReport("Jan Turnia", "2012");
 //
@@ -65,7 +65,7 @@
 //        employee1.addTask(task2);
 //        employee1.addTask(task3);
 //        employees.add(employee1);
-//        
+//
 //        ReportBuilder reportBuilder = new Report3Builder(employees);
 //        Report report = reportBuilder.buildReport("Jan Turnia", "2012");
 //

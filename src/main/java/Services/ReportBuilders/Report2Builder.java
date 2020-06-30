@@ -19,7 +19,7 @@ public class Report2Builder extends ReportBuilder {
 	}
 
 	@Override
-	void setReportCollumnNames() {
+	protected void setReportCollumnNames() {
 
 		List<String> columnNames = new ArrayList<String>();
 
@@ -32,7 +32,7 @@ public class Report2Builder extends ReportBuilder {
 	}
 
 	@Override
-	void setReportRows() {
+	protected void setReportRows() {
 		List<List<String>> rows = new ArrayList<List<String>>();
 		Integer rowsCounter = 1;
 
@@ -63,7 +63,7 @@ public class Report2Builder extends ReportBuilder {
 	}
 
 	@Override
-	void setReportTitle() {
+	protected void setReportTitle() {
 		this.report.setTitle("Raport godzin projektów w  roku " + this.filters.get(0).getFilterParameter());
 	}
 

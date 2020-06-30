@@ -24,7 +24,7 @@ public class Controller {
 	private String reportFilePath;
 
 	public void addFilterParam(int filterIndex, String filterParameter) {
-		this.reportBuilder.addInputParam(filterIndex, filterParameter);
+		this.reportBuilder.setInputParam(filterIndex, filterParameter);
 	}
 
 	public void buildReport() {

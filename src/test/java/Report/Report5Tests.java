@@ -31,7 +31,7 @@
 //		employees.add(employee2);
 //		ReportBuilder rBuilder = new Report5Builder(employees);
 //		Report report = rBuilder.buildReport("jakisProjekt");
-//	
+//
 //		Assert.assertTrue(report.getRows().stream().anyMatch(row -> row.get(1).equals("Paweł Kwiatkowski")));
 //		Assert.assertTrue(report.getRows().stream().anyMatch(row -> row.get(1).equals("Jan Nowak")));
 //	}
@@ -58,7 +58,7 @@
 //	@Test
 //	public void testNotCountingHoursFromDifferentProject() throws IOException {
 //		List<Employee> employees = new ArrayList<Employee>();
-//		
+//
 //		Employee employee1 = new Employee("Jan", "Nowak");
 //		Calendar myCalendar = new GregorianCalendar(2012, 2, 11);
 //		Date date = myCalendar.getTime();
@@ -89,7 +89,7 @@
 //		Assert.assertTrue((report.getRows().size() == 1));
 //		Assert.assertEquals("11.0", report.getRows().get(0).get(3));
 //	}
-//	
+//
 //	@Test
 //	public void testReport5() {
 //		List<Employee> employees = new ArrayList<Employee>();
@@ -112,7 +112,7 @@
 //		Assert.assertEquals("3.0", report.getRows().get(0).get(3));
 //		Assert.assertEquals("7.0", report.getRows().get(1).get(3));
 //	}
-//	
+//
 //	@Test
 //	public void testNoRowsIfNoEmployeesData() throws IOException {
 //
@@ -123,7 +123,7 @@
 //
 //		Assert.assertEquals(0, report.getRows().size());
 //	}
-//	
+//
 //	@Test
 //	public void testEmptyReportIfNotExistingProject() throws IOException {
 //		List<Employee> employees = new ArrayList<Employee>();
@@ -141,6 +141,6 @@
 //		Report report = rBuilder2.buildReport("Nieistniejący projekt");
 //		Assert.assertEquals(0, report.getRows().size());
 //	}
-//	
+//
 //
 //}

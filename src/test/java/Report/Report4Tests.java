@@ -16,7 +16,7 @@
 //import Model.Task;
 //
 //public class Report4Tests {
-//	
+//
 //	@Test
 //	public void testNumberOfColumnsIsCorrect() {
 //		List<Employee> employees = new ArrayList<Employee>();
@@ -31,16 +31,16 @@
 //		employee1.addTask(task2);
 //
 //		employees.add(employee1);
-//		
+//
 //		ReportBuilder rBuilder = new Report4Builder(employees);
 //
 //		Report report = rBuilder.buildReport("2012");
-//		
+//
 //		Assert.assertEquals(report.getColumnNames().size(), 4);
-//		
-//		
+//
+//
 //	}
-//	
+//
 //	@Test
 //	public void testNumberOfRowsIsCorrect() {
 //		List<Employee> employees = new ArrayList<Employee>();
@@ -55,7 +55,7 @@
 //		employee1.addTask(task2);
 //
 //		employees.add(employee1);
-//		
+//
 //		Employee employee2 = new Employee("Patryk", "Taki");
 //
 //		myCalendar = new GregorianCalendar(2012, 2, 11);
@@ -72,10 +72,10 @@
 //
 //		Report report = rBuilder.buildReport("2012");
 //
-//		
+//
 //		Assert.assertEquals(2, report.getRows().size());
-//	
-//		
+//
+//
 //	}
 //
 //	@Test
@@ -124,7 +124,7 @@
 //
 //		employees.add(employee1);
 //		employees.add(employee2);
-//		
+//
 //		ReportBuilder rBuilder = new Report4Builder(employees);
 //
 //		Report report = rBuilder.buildReport("2012");
@@ -214,7 +214,7 @@
 //
 //		Assert.assertTrue(proj1PercentsDouble + proj2PercentsDouble == 100);
 //	}
-//	
+//
 //	@Test
 //	public void testNoRowsIfNoEmployeesData() throws IOException {
 //

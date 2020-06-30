@@ -16,7 +16,7 @@ public class Report4Builder extends ReportBuilder {
 	}
 
 	@Override
-	void setReportCollumnNames() {
+	protected void setReportCollumnNames() {
 		List<String> columnNames = new ArrayList<String>();
 		columnNames.add("L.p");
 		columnNames.add("Imię i nazwisko");
@@ -33,7 +33,7 @@ public class Report4Builder extends ReportBuilder {
 	}
 
 	@Override
-	void setReportRows() {
+	protected void setReportRows() {
 		List<List<String>> rows = new ArrayList<List<String>>();
 		Integer rowsCounter = 1;
 
@@ -78,7 +78,7 @@ public class Report4Builder extends ReportBuilder {
 	}
 
 	@Override
-	void setReportTitle() {
+	protected void setReportTitle() {
 		this.report.setTitle(
 				"Procentowy udział projektów w pracy osob w roku: " + this.filters.get(0).getFilterParameter());
 	}

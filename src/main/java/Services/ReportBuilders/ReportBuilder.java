@@ -23,7 +23,7 @@ public abstract class ReportBuilder {
 		this.filters.add(employeesFilter);
 	}
 
-	public void addInputParam(int filterIndex, String filterParameter) {
+	public void setInputParam(int filterIndex, String filterParameter) {
 		this.filters.get(filterIndex).setFilterParameter(filterParameter);
 		this.usefilter(filterIndex);
 
@@ -73,11 +73,11 @@ public abstract class ReportBuilder {
 		this.filters.get(filterIndex).setFilterParameter(filterParameter);
 	}
 
-	abstract void setReportCollumnNames();
+	abstract protected void setReportCollumnNames();
 
-	abstract void setReportRows();
+	abstract protected void setReportRows();
 
-	abstract void setReportTitle();
+	abstract protected void setReportTitle();
 
 	private void usefilter(int filterIndex) {
 		this.employees = this.filters.get(filterIndex).filterEmployees(this.employees);

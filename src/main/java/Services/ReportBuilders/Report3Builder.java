@@ -30,7 +30,7 @@ public class Report3Builder extends ReportBuilder {
 	}
 
 	@Override
-	void setReportCollumnNames() {
+	protected void setReportCollumnNames() {
 		List<String> columnNames = new ArrayList<String>();
 		columnNames.add("L.p");
 		columnNames.add("Miesiąc");
@@ -40,7 +40,7 @@ public class Report3Builder extends ReportBuilder {
 	}
 
 	@Override
-	void setReportRows() {
+	protected void setReportRows() {
 
 		List<List<String>> rows = new ArrayList<List<String>>();
 		Integer rowsCounter = 1;
@@ -73,7 +73,7 @@ public class Report3Builder extends ReportBuilder {
 	}
 
 	@Override
-	void setReportTitle() {
+	protected void setReportTitle() {
 		this.report.setTitle("Raport godzin przepracowanych miesięcznie przez: "
 				+ this.filters.get(0).getFilterParameter() + ", w roku: " + this.filters.get(0).getFilterParameter());
 	}
