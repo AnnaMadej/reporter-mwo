@@ -6,6 +6,7 @@ import java.util.Set;
 
 import Model.Employee;
 import Model.Report;
+import Services.ChartMakers.ReportChartMaker;
 import Services.EmployeeFilters.EmployeesFilter;
 import Services.PossibleDataRetrievers.PossibleDataRetriever;
 
@@ -14,6 +15,7 @@ public abstract class ReportBuilder {
 	protected List<Employee> employees = new ArrayList<Employee>();
 	protected Report report = new Report();
 	protected PossibleDataRetriever possibleDataRetriever;
+	protected  ReportChartMaker reportChartMaker = null;
 
 	protected List<EmployeesFilter> filters = new ArrayList<EmployeesFilter>();
 
@@ -73,5 +75,11 @@ public abstract class ReportBuilder {
 
 	private void usefilter(int filterIndex) {
 		this.employees = this.filters.get(filterIndex).filterEmployees(this.employees);
+	}
+	
+	public void makeChart() {
+		if(this.reportChartMaker != null && this.report.getRows().size()>0) {
+			reportChartMaker.makeChart(report);
+		}
 	}
 }

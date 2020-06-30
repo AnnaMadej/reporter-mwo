@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.Employee;
+import Services.ChartMakers.Report4PieChartMaker;
 import Services.EmployeeFilters.EmployeesFilterByYear;
 
 public class Report4Builder extends ReportBuilder {
@@ -11,6 +12,7 @@ public class Report4Builder extends ReportBuilder {
 	public Report4Builder() {
 		super();
 		this.addEmployeesFilter(new EmployeesFilterByYear());
+		this.reportChartMaker = new Report4PieChartMaker();
 	}
 
 	@Override

@@ -116,16 +116,43 @@ public class UserInterface {
 				userOption = this.takeUserInput(this.askForOption());
 				if (this.reportOptions.contains(userOption)) {
 					this.showReport(userOption);
+				} else if (this.chartOptions.contains(userOption)) {
+					this.showChart(userOption);
 				} else if ("9".equals(userOption)) {
+
 					this.showErrorLogs();
 				}
 			} while (!userOption.equals("0"));
 		}
 		this.exit();
+
+	}
+
+	private void showChart(String userOption) {
+		if(userOption.equals("6")) userOption = "2";
+		if(userOption.equals("7")) userOption = "4";
+		this.controller.setReportType(userOption);
+		boolean reportReady = filterData();
+		if (reportReady) {
+			this.controller.buildReport();
+			this.controller.showChart();
+		}
 	}
 
 	private void showReport(String userOption) {
 		this.controller.setReportType(userOption);
+		boolean reportReady = filterData();
+		if (reportReady) {
+			this.controller.buildReport();
+			System.out.println(this.controller.stringReport());
+			String answer = this.takeUserInput(this.askForXlsCreation());
+			if (answer.toLowerCase().equals("t")) {
+				this.exportToXls();
+			}
+		}
+	}
+
+	private boolean filterData() {
 		boolean reportReady = false;
 
 		int numberOfFilters = this.controller.getNumberOfFilters();
@@ -143,14 +170,7 @@ public class UserInterface {
 				break;
 			}
 		}
-		if (reportReady) {
-			this.controller.buildReport();
-			System.out.println(this.controller.stringReport());
-			String answer = this.takeUserInput(this.askForXlsCreation());
-			if (answer.toLowerCase().equals("t")) {
-				this.exportToXls();
-			}
-		}
+		return reportReady;
 	}
 
 	private String takeUserInput(String question) {

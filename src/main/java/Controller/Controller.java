@@ -74,5 +74,9 @@ public class Controller {
 	public String stringReport() {
 		return ReportPrinter.stringReport(this.report);
 	}
+	
+	public void showChart() {
+		this.reportBuilder.makeChart();
+	}
 
 }

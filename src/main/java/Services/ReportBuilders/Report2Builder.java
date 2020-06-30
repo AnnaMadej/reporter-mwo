@@ -8,6 +8,7 @@ import java.util.TreeMap;
 import Model.Employee;
 import Model.Report;
 import Model.Task;
+import Services.ChartMakers.Report2BarChartMaker;
 import Services.EmployeeFilters.EmployeesFilterByYear;
 
 public class Report2Builder extends ReportBuilder {
@@ -27,6 +28,7 @@ public class Report2Builder extends ReportBuilder {
 		columnNames.add("Projekt");
 		columnNames.add("Ilość godzin");
 		this.report.setColumnNames(columnNames);
+		this.reportChartMaker = new Report2BarChartMaker();
 
 	}
 
