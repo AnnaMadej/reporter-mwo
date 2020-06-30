@@ -22,7 +22,7 @@ public class EmployeesFilterByProjectName extends EmployeesFilter {
 			List<Task> filteredTasks = new ArrayList<Task>();
 			for (Task task : employee.getTaskList()) {
 
-				if (task.getProjectName().equals(this.filterParameter)) {
+				if (task.getProjectName().toLowerCase().equals(this.filterParameter.toLowerCase())) {
 					filteredTasks.add(task);
 				}
 			}

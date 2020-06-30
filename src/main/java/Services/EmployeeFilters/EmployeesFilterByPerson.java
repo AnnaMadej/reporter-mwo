@@ -18,7 +18,7 @@ public class EmployeesFilterByPerson extends EmployeesFilter {
 		List<Employee> filteredEmployees = new ArrayList<Employee>();
 
 		for (Employee employee : employees) {
-			if (employee.getNameAndSurname().equals(this.filterParameter)) {
+			if (employee.getNameAndSurname().toLowerCase().equals(this.filterParameter.toLowerCase())) {
 				filteredEmployees.add(employee);
 			}
 		}

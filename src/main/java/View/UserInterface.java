@@ -101,7 +101,7 @@ public class UserInterface {
 			this.possibleInputParams = this.controller.getPossibleFilterData(filterIndex);
 			String question = this.askForParam(inputParamName);
 			String inputParam = this.takeUserInput(question);
-			if (this.possibleInputParams.contains(inputParam)) {
+			if (this.possibleInputParams.stream().anyMatch(param-> param.toLowerCase().equals(inputParam.toLowerCase()))) {
 				this.controller.addFilterParam(filterIndex, inputParam);
 				reportReady = true;
 			} else {
@@ -133,7 +133,8 @@ public class UserInterface {
 	}
 
 	private void showHeaders() {
-		System.out.println("______                _____  _                    _____                                \n"
+		System.out.println(
+				  "______                _____  _                    _____                                \n"
 				+ "| ___ \\              |_   _|(_)                  |_   _|                               \n"
 				+ "| |_/ / _   _  _ __    | |   _  _ __ ___    ___    | |    ___  _ __  _ __   ___   _ __ \n"
 				+ "|    / | | | || '_ \\   | |  | || '_ ` _ \\  / _ \\   | |   / _ \\| '__|| '__| / _ \\ | '__|\n"
