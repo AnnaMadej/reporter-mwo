@@ -22,34 +22,35 @@ public class ScanErrorsHolder {
 		return scanErrors;
 	}
 
-	private static void printScanErrorsTable() {
-		System.out.println(String.join("", Collections.nCopies(25, "-")));
-		System.out.println("| Błędy odczytu plików: | ");
-		System.out.println(String.join("", Collections.nCopies(159, "-")));
-		System.out.format("%-80s%-14s%-10s%-10s%-45s%-1s", "| Plik", "| Projekt", "| Wiersz", "| Komórka",
-				"| Opis błędu", "|");
-		System.out.println();
-		System.out.println(String.join("", Collections.nCopies(159, "-")));
+	private static String stringScanErrorsTable() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format(String.join("", Collections.nCopies(25, "-"))));
+		sb.append(String.format("| Błędy odczytu plików: | "));
+		sb.append(String.format(String.join("", Collections.nCopies(149, "-"))));
+		sb.append("\n");
+		sb.append(String.format("%-120s%-14s%-10s%-10s%-45s%-1s", "| Plik", "| Projekt", "| Wiersz", "| Komórka",
+				"| Opis błędu", "|"));
+		sb.append("\n");
+		sb.append(String.join("", Collections.nCopies(199, "-")));
+		sb.append("\n");
 		for (ScanError scanError : scanErrors) {
-			System.out.format("%-80s%-14s%-10s%-10s%-45s%-1s", "| " + scanError.getFilename(),
+			sb.append(String.format("%-120s%-14s%-10s%-10s%-45s%-1s", "| " + scanError.getFilename(),
 					"| " + scanError.getProject(), scanError.getRow() == null ? "| " + "" : "| " + scanError.getRow(),
-					"| " + scanError.getCell(), "| " + scanError.getDescription(), "|");
-			System.out.println();
+					"| " + scanError.getCell(), "| " + scanError.getDescription(), "|"));
+			sb.append("\n");
 		}
-		System.out.println(String.join("", Collections.nCopies(159, "-")));
+		sb.append(String.join("", Collections.nCopies(199, "-")));
+		return sb.toString();
 	}
 
-	public static void showScanErrors() {
+	public static String showScanErrors() {
 
 		if (scanErrors.size() == 0) {
-			System.out.println();
-			System.out.println(">> Brak błędów w odczytanych plikach z danymi.");
-			System.out.println();
+			return ">> Brak błędów w odczytanych plikach z danymi.";
 		}
 
 		else {
-			printScanErrorsTable();
-
+			return stringScanErrorsTable();
 		}
 
 	}

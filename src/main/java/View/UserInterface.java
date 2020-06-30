@@ -129,7 +129,7 @@ public class UserInterface {
 	}
 
 	private void showErrorLogs() {
-		ScanErrorsHolder.showScanErrors();
+		System.out.println(ScanErrorsHolder.showScanErrors());
 	}
 
 	private void showHeaders() {
@@ -154,7 +154,7 @@ public class UserInterface {
 					this.showReport(userOption);
 				} else if (this.chartOptions.contains(userOption)) {
 					this.showChart(userOption);
-				} else if ("9".equals(userOption)) {
+				} else if ("8".equals(userOption)) {
 
 					this.showErrorLogs();
 				}

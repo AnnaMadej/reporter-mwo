@@ -7,39 +7,40 @@ import Model.Report;
 
 public class ReportPrinter {
 
-	static String reportPrint = "";
 	static List<String> columnNames;
 	static List<List<String>> rows;
 	static String title;
 	static int lineLength;
+	
+	static StringBuilder sb = new StringBuilder();
 
 	private static void addColumnNames() {
 		for (String columnName : columnNames) {
-			reportPrint += String.format("%-1s %-30s", "|", columnName);
+			sb.append(String.format("%-1s %-30s", "|", columnName));
 		}
-		reportPrint += String.format("%-1s \n", "|");
+		sb.append(String.format("%-1s \n", "|"));
 	}
 
 	private static void addEmptyInfo() {
-		reportPrint += "RAPORT JEST PUSTY" + "\n";
+		sb.append("RAPORT JEST PUSTY" + "\n");
 	}
 
 	private static void addLine() {
-		reportPrint += String.join("", Collections.nCopies(lineLength, "-")) + "\n";
+		sb.append(String.join("", Collections.nCopies(lineLength, "-")) + "\n");
 	}
 
 	private static void addRows() {
 		for (List<String> row : rows) {
 			for (String cell : row) {
-				reportPrint += String.format("%-1s %-30s", "|", cell);
+				sb.append(String.format("%-1s %-30s", "|", cell));
 
 			}
-			reportPrint += String.format("%-1s \n", "|");
+			sb.append(String.format("%-1s \n", "|"));
 		}
 	}
 
 	private static void addTitle() {
-		reportPrint += title + "\n";
+		sb.append(title + "\n");
 	}
 
 	public static String stringReport(Report report) {
@@ -61,8 +62,8 @@ public class ReportPrinter {
 			addRows();
 			addLine();
 		}
-		String toReturn = reportPrint;
-		reportPrint = "";
+		String toReturn = sb.toString();
+		sb = new StringBuilder();
 		return toReturn;
 	}
 }
