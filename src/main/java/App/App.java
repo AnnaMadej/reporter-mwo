@@ -8,9 +8,9 @@ public class App {
 			System.out.println("Nie podałeś ścieżki do pliku z raportami!");
 		} else {
 			String folderPath = args[0];
+			folderPath.replace('/', '\\');
 			UserInterface userInterface = new UserInterface(folderPath);
 			userInterface.showMenu();
 		}
-
 	}
 }
