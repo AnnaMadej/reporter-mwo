@@ -9,9 +9,11 @@ import java.util.List;
 import org.junit.Assert;
 import org.junit.Test;
 
-import Model.Employee;
-import Model.Report;
-import Model.Task;
+import model.Employee;
+import model.Report;
+import model.Task;
+import services.reportbuilders.Report3Builder;
+import services.reportbuilders.ReportBuilder;
 
 public class Report3BuilderTest {
 

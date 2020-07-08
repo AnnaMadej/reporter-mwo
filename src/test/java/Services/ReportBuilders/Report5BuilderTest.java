@@ -10,10 +10,12 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import Model.Employee;
-import Model.Report;
-import Model.Task;
-import Services.ReportPrinter;
+import model.Employee;
+import model.Report;
+import model.Task;
+import services.ReportPrinter;
+import services.reportbuilders.Report5Builder;
+import services.reportbuilders.ReportBuilder;
 
 public class Report5BuilderTest {
 
