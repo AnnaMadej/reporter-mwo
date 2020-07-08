@@ -5,13 +5,13 @@ import java.util.List;
 
 import Model.Employee;
 import Model.Task;
-import Services.EmployeeFilters.EmployeesFilterByProjectName;
+import Services.EmployeeFilters.EmployeesFilterFactory;
 
 public class Report5Builder extends ReportBuilder {
 
 	public Report5Builder() {
 		super();
-		this.addEmployeesFilter(new EmployeesFilterByProjectName());
+		this.addEmployeesFilter(EmployeesFilterFactory.getEmployeesFilter("project"));
 	}
 
 	@Override
@@ -37,9 +37,10 @@ public class Report5Builder extends ReportBuilder {
 				Integer indexOfRowToChange = null;
 				for (List<String> row : rows) {
 					String employeeInRow = row.get(1);
-					row.get(2);
+					String projectInRow = row.get(2);
 
-					if (employeeInRow.equals(employee.getNameAndSurname())) {
+					if (employeeInRow.equals(employee.getNameAndSurname())
+							&& projectInRow.equals(task.getProjectName())) {
 						indexOfRowToChange = rows.indexOf(row);
 					}
 				}
@@ -50,13 +51,16 @@ public class Report5Builder extends ReportBuilder {
 					Double newHours = hoursToChange + task.getHours();
 					rowToChange.set(3, newHours.toString());
 				} else {
-					List<String> newRow = new ArrayList<String>();
-					newRow.add(rowsCounter.toString());
-					newRow.add(employee.getNameAndSurname());
-					newRow.add(task.getProjectName());
-					newRow.add(task.getHours().toString());
-					rows.add(newRow);
-					rowsCounter++;
+					if (task.getHours() > 0) {
+						List<String> newRow = new ArrayList<String>();
+						newRow.add(rowsCounter.toString());
+						newRow.add(employee.getNameAndSurname());
+						newRow.add(task.getProjectName());
+						newRow.add(task.getHours().toString());
+						rows.add(newRow);
+						rowsCounter++;
+					}
+
 				}
 			}
 		}
@@ -65,8 +69,11 @@ public class Report5Builder extends ReportBuilder {
 
 	@Override
 	protected void setReportTitle() {
-		this.report.setTitle("Raport ilości przepracowanych godzin pracowników projekcie: "
-				+ this.filters.get(0).getFilterParameter());
+		String title = "Raport ilości przepracowanych godzin pracowników ";
+		if (this.filters.get(0).getFilterParameter() != null) {
+			title += "w projekcie: " + this.filters.get(0).getFilterParameter();
+		}
+		this.report.setTitle(title);
 	}
 
 }

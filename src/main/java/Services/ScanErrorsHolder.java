@@ -22,6 +22,18 @@ public class ScanErrorsHolder {
 		return scanErrors;
 	}
 
+	public static String showScanErrors() {
+
+		if (scanErrors.size() == 0) {
+			return ">> Brak błędów w odczytanych plikach z danymi.";
+		}
+
+		else {
+			return stringScanErrorsTable();
+		}
+
+	}
+
 	private static String stringScanErrorsTable() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(String.format(String.join("", Collections.nCopies(25, "-"))));
@@ -41,18 +53,6 @@ public class ScanErrorsHolder {
 		}
 		sb.append(String.join("", Collections.nCopies(199, "-")));
 		return sb.toString();
-	}
-
-	public static String showScanErrors() {
-
-		if (scanErrors.size() == 0) {
-			return ">> Brak błędów w odczytanych plikach z danymi.";
-		}
-
-		else {
-			return stringScanErrorsTable();
-		}
-
 	}
 
 }

@@ -11,7 +11,7 @@ public class ReportPrinter {
 	static List<List<String>> rows;
 	static String title;
 	static int lineLength;
-	
+
 	static StringBuilder sb = new StringBuilder();
 
 	private static void addColumnNames() {

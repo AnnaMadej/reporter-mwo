@@ -3,23 +3,23 @@ package Services.ReportBuilders;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Set;
+import java.util.TreeSet;
 
-import Model.Employee;
 import Model.Task;
-import Services.EmployeeFilters.EmployeesFilterByPerson;
-import Services.EmployeeFilters.EmployeesFilterByYear;
+import Services.EmployeeFilters.EmployeesFilterFactory;
 
 public class Report3Builder extends ReportBuilder {
 
 	public Report3Builder() {
 		super();
-		this.addEmployeesFilter(new EmployeesFilterByYear());
-		this.addEmployeesFilter(new EmployeesFilterByPerson());
+		this.addEmployeesFilter(EmployeesFilterFactory.getEmployeesFilter("year"));
+		this.addEmployeesFilter(EmployeesFilterFactory.getEmployeesFilter("person"));
 	}
 
-	private Double countHoursSum(Employee foundEmployee, int monthIndex, String project) {
+	private Double countHoursSum(List<Task> tasks, int monthIndex, String project) {
 		Double hoursSum = 0.0;
-		for (Task task : foundEmployee.getTaskList()) {
+		for (Task task : tasks) {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(task.getTaskDate());
 			if (task.getProjectName().equals(project) && calendar.get(Calendar.MONTH) == monthIndex) {
@@ -50,11 +50,17 @@ public class Report3Builder extends ReportBuilder {
 
 		if (this.employees.size() > 0) {
 
-			Employee foundEmployee = this.employees.get(0);
+			Set<String> projects = new TreeSet<String>();
+			List<Task> tasks = new ArrayList<Task>();
+
+			this.employees.stream().forEach(emp -> {
+				projects.addAll(emp.getProjects());
+				tasks.addAll(emp.getTaskList());
+			});
 
 			for (int monthIndex = 0; monthIndex < 12; monthIndex++) {
-				for (String project : foundEmployee.getProjects()) {
-					Double hoursSum = this.countHoursSum(foundEmployee, monthIndex, project);
+				for (String project : projects) {
+					Double hoursSum = this.countHoursSum(tasks, monthIndex, project);
 					if (hoursSum != 0.0) {
 						List<String> newRow = new ArrayList();
 						newRow.add(rowsCounter.toString());
@@ -64,7 +70,6 @@ public class Report3Builder extends ReportBuilder {
 						rows.add(newRow);
 						rowsCounter++;
 					}
-
 				}
 			}
 
@@ -74,8 +79,17 @@ public class Report3Builder extends ReportBuilder {
 
 	@Override
 	protected void setReportTitle() {
-		this.report.setTitle("Raport godzin przepracowanych miesięcznie przez: "
-				+ this.filters.get(0).getFilterParameter() + ", w roku: " + this.filters.get(0).getFilterParameter());
+		String title = "Raport godzin przepracowanych miesięcznie";
+		if (this.filters.get(1).getFilterParameter() != null) {
+			title += " przez: " + this.filters.get(1).getFilterParameter();
+		}
+		if (this.filters.get(0).getFilterParameter() != null) {
+			title += ", w roku: " + this.filters.get(0).getFilterParameter();
+		}
+		this.report.setTitle(title);
+
+//		this.report.setTitle("Raport godzin przepracowanych miesięcznie przez: "
+//				+ this.filters.get(1).getFilterParameter() + ", w roku: " + this.filters.get(0).getFilterParameter());
 	}
 
 }

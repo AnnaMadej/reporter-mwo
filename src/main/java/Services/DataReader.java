@@ -85,57 +85,57 @@ public class DataReader {
 					|| !sheet.getRow(0).getCell(0).getStringCellValue().equals("Data")
 					|| !sheet.getRow(0).getCell(1).getStringCellValue().equals("Zadanie")
 					|| !sheet.getRow(0).getCell(2).getStringCellValue().equals("Czas [h]")) {
-				ScanErrorsHolder.addScanError(
-						new ScanError(file.getCanonicalPath(), sheet.getSheetName(), "Arkusz nie zawiera odpowiednich kolumn"));
+				ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(),
+						"Arkusz nie zawiera odpowiednich kolumn"));
 				continue;
 			}
 			project = sheet.getSheetName();
 			for (int j = 1; j <= sheet.getLastRowNum(); j++) {
 
 				if (sheet.getRow(j) == null) {
-					ScanErrorsHolder
-							.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1, "pusty wiersz!"));
+					ScanErrorsHolder.addScanError(
+							new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1, "pusty wiersz!"));
 					continue;
 				}
 
 				Row row = sheet.getRow(j);
 
 				if (row.getCell(0) == null || row.getCell(0).getCellTypeEnum() == CellType.BLANK) {
-					ScanErrorsHolder.addScanError(
-							new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1, "DATA", "pusta komórka!"));
+					ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
+							"DATA", "pusta komórka!"));
 					continue;
 				}
 				if (!row.getCell(0).getCellTypeEnum().equals(CellType.NUMERIC)) {
-					ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1, "DATA",
-							"komórka nie zawiera wartości numerycznej!"));
+					ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
+							"DATA", "komórka nie zawiera wartości numerycznej!"));
 					continue;
 				}
 
 				if (row.getCell(1) == null || row.getCell(1).getCellTypeEnum() == CellType.BLANK) {
-					ScanErrorsHolder.addScanError(
-							new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1, "OPIS", "pusta komórka!"));
+					ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
+							"OPIS", "pusta komórka!"));
 					continue;
 				}
 				if (row.getCell(1).getCellTypeEnum() != CellType.STRING) {
-					ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1, "OPIS",
-							"komórka nie zawiera wartości numerycznej!"));
+					ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
+							"OPIS", "komórka nie zawiera wartości numerycznej!"));
 					continue;
 				}
 
 				if (row.getCell(2) == null || row.getCell(2).getCellTypeEnum() == CellType.BLANK) {
-					ScanErrorsHolder.addScanError(
-							new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1, "CZAS", "pusta komórka!"));
+					ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
+							"CZAS", "pusta komórka!"));
 					continue;
 
 				}
 				if (row.getCell(2).getCellTypeEnum() != CellType.NUMERIC) {
-					ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1, "CZAS",
-							"komórka nie zawiera wartości numerycznej!"));
+					ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
+							"CZAS", "komórka nie zawiera wartości numerycznej!"));
 					continue;
 				}
 				if (row.getCell(2).getNumericCellValue() > 24) {
-					ScanErrorsHolder.addScanError(
-							new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1, "CZAS", "nieodpowiednie dane!"));
+					ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
+							"CZAS", "nieodpowiednie dane!"));
 					continue;
 				}
 
@@ -145,8 +145,8 @@ public class DataReader {
 					Cell timeCell = row.getCell(2);
 
 					if (descriptionCell.getStringCellValue().trim().equals("")) {
-						ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1, "OPIS",
-								"pusty opis w komórce!"));
+						ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(),
+								j + 1, "OPIS", "pusty opis w komórce!"));
 						continue;
 					}
 
@@ -154,20 +154,20 @@ public class DataReader {
 						date = dateCell.getDateCellValue();
 						calendar.setTime(date);
 					} catch (NullPointerException e) {
-						ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1, "DATA",
-								"zle wpisana data!"));
+						ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(),
+								j + 1, "DATA", "zle wpisana data!"));
 						continue;
 					}
 
 					if (calendar.get(Calendar.YEAR) != fileYearFromLocation) {
-						ScanErrorsHolder.addScanError(
-								new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1, "DATA", "zły rok w dacie!"));
+						ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(),
+								j + 1, "DATA", "zły rok w dacie!"));
 						continue;
 					}
 
 					if (calendar.get(Calendar.MONTH) + 1 != fileMonthFromLocation) {
-						ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1, "DATA",
-								"zły miesiąc w dacie!"));
+						ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(),
+								j + 1, "DATA", "zły miesiąc w dacie!"));
 						continue;
 					}
 

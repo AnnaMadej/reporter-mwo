@@ -5,13 +5,13 @@ import java.util.List;
 
 import Model.Employee;
 import Services.ChartMakers.Report4PieChartMaker;
-import Services.EmployeeFilters.EmployeesFilterByYear;
+import Services.EmployeeFilters.EmployeesFilterFactory;
 
 public class Report4Builder extends ReportBuilder {
 
 	public Report4Builder() {
 		super();
-		this.addEmployeesFilter(new EmployeesFilterByYear());
+		this.addEmployeesFilter(EmployeesFilterFactory.getEmployeesFilter("year"));
 		this.reportChartMaker = new Report4PieChartMaker();
 	}
 
@@ -39,38 +39,42 @@ public class Report4Builder extends ReportBuilder {
 
 		for (Employee employee : this.employees) {
 			Double totalHours = employee.getTotalHours();
-			for (String project : employee.getProjects()) {
-				List<String> rowToAdd = new ArrayList<String>();
-				for (int i = 0; i < this.report.getColumnNames().size(); i++) {
-					rowToAdd.add("");
-				}
-				String employeeName = employee.getNameAndSurname();
+			if (totalHours > 0) {
 
-				boolean rowExists = false;
-				for (List<String> row : rows) {
-					if (row.get(1).contains(employeeName)) {
-						rowToAdd = row;
-						rowExists = true;
+				for (String project : employee.getProjects()) {
+					List<String> rowToAdd = new ArrayList<String>();
+					for (int i = 0; i < this.report.getColumnNames().size(); i++) {
+						rowToAdd.add("0.0%");
+					}
+					String employeeName = employee.getNameAndSurname();
+
+					boolean rowExists = false;
+					for (List<String> row : rows) {
+						if (row.get(1).contains(employeeName)) {
+							rowToAdd = row;
+							rowExists = true;
+						}
+					}
+					if (!rowExists) {
+						rowToAdd.set(0, rowsCounter.toString());
+						rowsCounter++;
+						rowToAdd.set(1, employee.getNameAndSurname());
+					}
+					Integer indexOfProject = this.report.getColumnNames().indexOf(project);
+
+					Double projectHours = employee.getProjectHours(project);
+					Double percentHours = projectHours * 100 / totalHours;
+
+					percentHours = percentHours * 100;
+					percentHours = (double) Math.round(percentHours);
+					percentHours = percentHours / 100;
+
+					rowToAdd.set(indexOfProject, percentHours.toString() + "%");
+					if (!rowExists) {
+						rows.add(rowToAdd);
 					}
 				}
-				if (!rowExists) {
-					rowToAdd.set(0, rowsCounter.toString());
-					rowsCounter++;
-					rowToAdd.set(1, employee.getNameAndSurname());
-				}
-				Integer indexOfProject = this.report.getColumnNames().indexOf(project);
 
-				Double projectHours = employee.getProjectHours(project);
-				Double percentHours = projectHours * 100 / totalHours;
-
-				percentHours = percentHours * 100;
-				percentHours = (double) Math.round(percentHours);
-				percentHours = percentHours / 100;
-
-				rowToAdd.set(indexOfProject, percentHours.toString() + "%");
-				if (!rowExists) {
-					rows.add(rowToAdd);
-				}
 			}
 		}
 
@@ -79,8 +83,11 @@ public class Report4Builder extends ReportBuilder {
 
 	@Override
 	protected void setReportTitle() {
-		this.report.setTitle(
-				"Procentowy udział projektów w pracy osob w roku: " + this.filters.get(0).getFilterParameter());
+		String title = "Procentowy udział projektów w pracy osób ";
+		if (this.filters.get(0).getFilterParameter() != null) {
+			title += "w roku: " + this.filters.get(0).getFilterParameter();
+		}
+		this.report.setTitle(title);
 	}
 
 }

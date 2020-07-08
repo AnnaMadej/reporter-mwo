@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Model.Employee;
-import Services.EmployeeFilters.EmployeesFilterByYear;
+import Services.EmployeeFilters.EmployeesFilterFactory;
 
 public class Report1Builder extends ReportBuilder {
 
 	public Report1Builder() {
 		super();
-		this.addEmployeesFilter(new EmployeesFilterByYear());
+		this.addEmployeesFilter(EmployeesFilterFactory.getEmployeesFilter("year"));
 	}
 
 	@Override
@@ -32,11 +32,11 @@ public class Report1Builder extends ReportBuilder {
 			newRow.add(rowsCounter.toString());
 			newRow.add(employee.getNameAndSurname());
 			newRow.add(String.valueOf(employee.getTotalHours()));
-			if(!newRow.get(newRow.size()-1).equals("0.0")) {
+			if (!newRow.get(newRow.size() - 1).equals("0.0")) {
 				rows.add(newRow);
 				rowsCounter++;
 			}
-			
+
 		}
 		this.report.setRows(rows);
 	}
@@ -44,7 +44,9 @@ public class Report1Builder extends ReportBuilder {
 	@Override
 	protected void setReportTitle() {
 		String title = "Raport godzin pracowników ";
-		if(this.filters.get(0).getFilterParameter()!= null) title += "w roku: " + this.filters.get(0).getFilterParameter();
+		if (this.filters.get(0).getFilterParameter() != null) {
+			title += "w roku: " + this.filters.get(0).getFilterParameter();
+		}
 		this.report.setTitle(title);
 	}
 

@@ -8,13 +8,13 @@ import java.util.TreeMap;
 import Model.Employee;
 import Model.Task;
 import Services.ChartMakers.Report2BarChartMaker;
-import Services.EmployeeFilters.EmployeesFilterByYear;
+import Services.EmployeeFilters.EmployeesFilterFactory;
 
 public class Report2Builder extends ReportBuilder {
 
 	public Report2Builder() {
 		super();
-		this.addEmployeesFilter(new EmployeesFilterByYear());
+		this.addEmployeesFilter(EmployeesFilterFactory.getEmployeesFilter("year"));
 
 	}
 
@@ -50,13 +50,16 @@ public class Report2Builder extends ReportBuilder {
 			}
 		}
 
-		for (Map.Entry project : projectsMap.entrySet()) {
+		for (Map.Entry<String, Double> project : projectsMap.entrySet()) {
 			List<String> newRow = new ArrayList<>();
 			newRow.add(rowsCounter.toString());
 			newRow.add(project.getKey().toString());
 			newRow.add(project.getValue().toString());
-			rows.add(newRow);
-			rowsCounter++;
+			if (project.getValue() > 0.0) {
+				rows.add(newRow);
+				rowsCounter++;
+			}
+
 		}
 
 		this.report.setRows(rows);
@@ -64,7 +67,11 @@ public class Report2Builder extends ReportBuilder {
 
 	@Override
 	protected void setReportTitle() {
-		this.report.setTitle("Raport godzin projektów w  roku " + this.filters.get(0).getFilterParameter());
+		String title = "Raport godzin projektów ";
+		if (this.filters.get(0).getFilterParameter() != null) {
+			title += "w roku: " + this.filters.get(0).getFilterParameter();
+		}
+		this.report.setTitle(title);
 	}
 
 }

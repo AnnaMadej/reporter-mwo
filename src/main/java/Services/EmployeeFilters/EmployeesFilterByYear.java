@@ -19,25 +19,28 @@ public class EmployeesFilterByYear extends EmployeesFilter {
 	@Override
 	public List<Employee> filterEmployees(List<Employee> employees) {
 		List<Model.Employee> filteredEmployees = new ArrayList<Employee>();
+		if (this.filterParameter != null) {
+			for (Model.Employee employee : employees) {
 
-		for (Model.Employee employee : employees) {
-			List<Task> filteredTasks = new ArrayList<Task>();
-			for (Task task : employee.getTaskList()) {
-				Date date = task.getTaskDate();
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(date);
-				if (calendar.get(Calendar.YEAR) == Integer.parseInt(this.filterParameter)) {
-					filteredTasks.add(task);
+				List<Task> filteredTasks = new ArrayList<Task>();
+				for (Task task : employee.getTaskList()) {
+					Date date = task.getTaskDate();
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(date);
+					if (calendar.get(Calendar.YEAR) == Integer.parseInt(this.filterParameter)) {
+						filteredTasks.add(task);
+					}
+				}
+				if (filteredTasks.size() > 0) {
+					Employee employeeCopy = (Employee) employee.clone();
+					employeeCopy.setTaskList(filteredTasks);
+					filteredEmployees.add(employeeCopy);
 				}
 			}
-			if (filteredTasks.size() > 0) {
-				Employee employeeCopy = (Employee) employee.clone();
-				employeeCopy.setTaskList(filteredTasks);
-				filteredEmployees.add(employeeCopy);
-			}
-		}
 
-		return filteredEmployees;
+			return filteredEmployees;
+		}
+		return employees;
 	}
 
 }

@@ -19,21 +19,24 @@ public class EmployeesFilterByProjectName extends EmployeesFilter {
 		List<Model.Employee> filteredEmployees = new ArrayList<Employee>();
 
 		for (Model.Employee employee : employees) {
-			List<Task> filteredTasks = new ArrayList<Task>();
-			for (Task task : employee.getTaskList()) {
+			if (this.filterParameter != null) {
+				List<Task> filteredTasks = new ArrayList<Task>();
+				for (Task task : employee.getTaskList()) {
 
-				if (task.getProjectName().toLowerCase().equals(this.filterParameter.toLowerCase())) {
-					filteredTasks.add(task);
+					if (task.getProjectName().toLowerCase().equals(this.filterParameter.toLowerCase())) {
+						filteredTasks.add(task);
+					}
+				}
+				if (filteredTasks.size() > 0) {
+					Employee employeeCopy = (Employee) employee.clone();
+					employeeCopy.setTaskList(filteredTasks);
+					filteredEmployees.add(employeeCopy);
 				}
 			}
-			if (filteredTasks.size() > 0) {
-				Employee employeeCopy = (Employee) employee.clone();
-				employeeCopy.setTaskList(filteredTasks);
-				filteredEmployees.add(employeeCopy);
-			}
-		}
 
-		return filteredEmployees;
+			return filteredEmployees;
+		}
+		return employees;
 	}
 
 }

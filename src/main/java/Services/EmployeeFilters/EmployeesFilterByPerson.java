@@ -15,14 +15,17 @@ public class EmployeesFilterByPerson extends EmployeesFilter {
 
 	@Override
 	public List<Employee> filterEmployees(List<Employee> employees) {
-		List<Employee> filteredEmployees = new ArrayList<Employee>();
+		if (this.filterParameter != null) {
+			List<Employee> filteredEmployees = new ArrayList<Employee>();
 
-		for (Employee employee : employees) {
-			if (employee.getNameAndSurname().toLowerCase().equals(this.filterParameter.toLowerCase())) {
-				filteredEmployees.add(employee);
+			for (Employee employee : employees) {
+				if (employee.getNameAndSurname().toLowerCase().equals(this.filterParameter.toLowerCase())) {
+					filteredEmployees.add(employee);
+				}
 			}
+			return filteredEmployees;
 		}
-		return filteredEmployees;
+		return employees;
 	}
 
 }
