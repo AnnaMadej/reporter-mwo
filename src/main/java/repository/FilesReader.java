@@ -45,20 +45,20 @@ public class FilesReader {
     }
 
     private boolean isValidDateCell(Cell dateCell) {
-        if (dateCell == null || dateCell.getCellTypeEnum() == CellType.BLANK) {
+        if (dateCell == null || dateCell.getCellType() == CellType.BLANK) {
             return false;
         }
-        if (!dateCell.getCellTypeEnum().equals(CellType.NUMERIC)) {
+        if (!dateCell.getCellType().equals(CellType.NUMERIC)) {
             return false;
         }
         return true;
     }
 
     private boolean isValidDesctiptionCell(Cell descriptionCell) {
-        if (descriptionCell == null || descriptionCell.getCellTypeEnum() == CellType.BLANK) {
+        if (descriptionCell == null || descriptionCell.getCellType() == CellType.BLANK) {
             return false;
         }
-        if (descriptionCell.getCellTypeEnum() != CellType.STRING) {
+        if (descriptionCell.getCellType() != CellType.STRING) {
             return false;
         }
         if (descriptionCell.getStringCellValue().trim().equals("")) {
@@ -68,10 +68,10 @@ public class FilesReader {
     }
 
     private boolean isValidHoursCell(Cell hoursCell) {
-        if (hoursCell == null || hoursCell.getCellTypeEnum() == CellType.BLANK) {
+        if (hoursCell == null || hoursCell.getCellType() == CellType.BLANK) {
             return false;
         }
-        if (hoursCell.getCellTypeEnum() != CellType.NUMERIC) {
+        if (hoursCell.getCellType() != CellType.NUMERIC) {
             return false;
         }
         final int maxNumberOfHours = 24;
@@ -255,9 +255,9 @@ public class FilesReader {
     private boolean sheetHasProperolumnNames(Sheet sheet) {
         if (sheet.getRow(0).getCell(0) == null || sheet.getRow(0).getCell(1) == null
                 || sheet.getRow(0).getCell(2) == null
-                || !sheet.getRow(0).getCell(0).getCellTypeEnum().equals(CellType.STRING)
-                || !sheet.getRow(0).getCell(1).getCellTypeEnum().equals(CellType.STRING)
-                || !sheet.getRow(0).getCell(2).getCellTypeEnum().equals(CellType.STRING)
+                || !sheet.getRow(0).getCell(0).getCellType().equals(CellType.STRING)
+                || !sheet.getRow(0).getCell(1).getCellType().equals(CellType.STRING)
+                || !sheet.getRow(0).getCell(2).getCellType().equals(CellType.STRING)
                 || !sheet.getRow(0).getCell(0).getStringCellValue().equals("Data")
                 || !sheet.getRow(0).getCell(1).getStringCellValue().equals("Zadanie")
                 || !sheet.getRow(0).getCell(2).getStringCellValue().equals("Czas [h]")) {
