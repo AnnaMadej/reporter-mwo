@@ -9,7 +9,7 @@ import java.util.Set;
 import model.Employee;
 import model.Report;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import reader.FilesScanner;
+import repository.FilesFinder;
 import services.ReportPrinter;
 import services.ReportXlsExporter;
 import services.reportbuilders.ReportBuilder;
@@ -60,7 +60,7 @@ public class Controller {
     }
 
     public void readEmployeesData(String path) throws InvalidFormatException, IOException {
-        FilesScanner fileScanner = new FilesScanner();
+        FilesFinder fileScanner = new FilesFinder();
         this.employees = fileScanner.scanFiles(path);
     }
 

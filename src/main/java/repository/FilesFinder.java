@@ -1,4 +1,4 @@
-package reader;
+package repository;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,11 +8,10 @@ import java.util.List;
 import model.Employee;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import services.DataReader;
 
-public class FilesScanner {
+public class FilesFinder {
 
-    DataReader dataReader = new DataReader();
+    FilesReader dataReader = new FilesReader();
 
     private List<File> findFiles(String path) throws IOException {
         File masterDirectory = new File(path);

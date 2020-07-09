@@ -1,4 +1,4 @@
-package services;
+package repository;
 
 import java.io.File;
 import java.io.IOException;
@@ -16,9 +16,9 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import services.ScanErrorsHolder;
 
-
-public class DataReader {
+public class FilesReader {
 
     private String extractEmployeeName(String fileName) {
         return fileName.substring(fileName.indexOf("_") + 1, fileName.indexOf("."));
