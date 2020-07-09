@@ -14,7 +14,8 @@ public class UserInterface {
 
     private Scanner sc = new Scanner(System.in);
     private Controller controller = new Controller();
-    private List<String> reportOptions = Arrays.asList(new String[] { "1", "2", "3", "4", "5" });
+    private List<String> reportOptions = Arrays
+            .asList(new String[] { "1", "2", "3", "4", "5" });
     private List<String> chartOptions = Arrays.asList(new String[] { "6", "7" });
 
     private Set<String> possibleInputParams = new TreeSet<String>();
@@ -36,14 +37,13 @@ public class UserInterface {
         option.append("WYBIERZ OPCJE:\n");
         option.append("1. Generuj raport godzin pracowników w podanym roku\n");
         option.append("2. Generuj raport godzin projektów w podanym roku\n");
-        option.append(
-                "3. Generuj raport godzin przepracowanych miesięcznie "
+        option.append("3. Generuj raport godzin przepracowanych miesięcznie "
                 + "przez pracownika w podanym roku\n");
-        option.append("4. Generuj procentowy udział projektów w pracy osob dla podanego roku\n");
+        option.append(
+                "4. Generuj procentowy udział projektów w pracy osob dla podanego roku\n");
         option.append("5. Generuj raport ilości godzin pracowników w podanym projekcie\n");
         option.append("6. Wyświetl wykres słupkowy godzin projektów w podanym roku\n");
-        option.append(
-                "7. Wyświetl wykres kołowy procentowego udziału "
+        option.append("7. Wyświetl wykres kołowy procentowego udziału "
                 + "projektów dla pracowników w podanym roku\n");
         option.append("8. Pokaż logi z odczytu plików\n");
         option.append("0. Zakończ pracę z programem\n");
@@ -136,23 +136,20 @@ public class UserInterface {
     }
 
     private void showHeaders() {
-        System.out.println(
-                "______                _____  _             "
+        System.out.println("______                _____  _             "
                 + "       _____                                \n"
-                        + "| ___ \\              |_   _|(_)       "
-                        + "           |_   _|                       "
-                        + "        \n"
-                        + "| |_/ / _   _  _ __    | |   _  _ __ ___  "
-                        + "  ___    | |    ___  _ __  _ __   ___   _ __ \n"
-                        + "|    / | | | || '_ \\   | |  | || '_ ` _ \\ "
-                        + " / _ \\   | |   / _ \\| '__|| '__| / _ \\ | '__|\n"
-                        + "| |\\ \\ | |_| || | | |  | |  | || | | | | ||"
-                        + "  __/   | |  |  __/| |   | |   | (_) || |   \n"
-                        + "\\_| \\_| \\__,_||_| |_|  \\_/  |_||_| |_| |_"
-                        + "| \\___|   \\_/   \\___||_|   |_|    \\___/ |"
-                        + "_|   \n"
-                        + "                                             "
-                        + "                                          \nversion 1.0.0");
+                + "| ___ \\              |_   _|(_)       "
+                + "           |_   _|                       " + "        \n"
+                + "| |_/ / _   _  _ __    | |   _  _ __ ___  "
+                + "  ___    | |    ___  _ __  _ __   ___   _ __ \n"
+                + "|    / | | | || '_ \\   | |  | || '_ ` _ \\ "
+                + " / _ \\   | |   / _ \\| '__|| '__| / _ \\ | '__|\n"
+                + "| |\\ \\ | |_| || | | |  | |  | || | | | | ||"
+                + "  __/   | |  |  __/| |   | |   | (_) || |   \n"
+                + "\\_| \\_| \\__,_||_| |_|  \\_/  |_||_| |_| |_"
+                + "| \\___|   \\_/   \\___||_|   |_|    \\___/ |" + "_|   \n"
+                + "                                             "
+                + "                                          \nversion 1.0.0");
         System.out.println("----------------------------\n");
     }
 

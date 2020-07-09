@@ -1,6 +1,5 @@
 package services.chartmakers;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JFrame;
@@ -33,7 +32,7 @@ public class Report4PieChartMaker extends ReportChartMaker {
     }
 
     private PieChart makeSingleChart(int employeeIndex) {
-        
+
         final int chartWidth = 400;
         final int chartHeight = 360;
         PieChart chart = new PieChartBuilder().width(chartWidth).height(chartHeight)

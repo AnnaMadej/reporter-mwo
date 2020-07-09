@@ -26,7 +26,8 @@ public class EmployeesFilterByYear extends EmployeesFilter {
                     Date date = task.getTaskDate();
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(date);
-                    if (calendar.get(Calendar.YEAR) == Integer.parseInt(this.filterParameter)) {
+                    if (calendar.get(Calendar.YEAR) == Integer
+                            .parseInt(this.filterParameter)) {
                         filteredTasks.add(task);
                     }
                 }

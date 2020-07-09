@@ -15,7 +15,8 @@ public class ScanError {
         this.description = description;
     }
 
-    public ScanError(String filename, String project, int row, String cell, String description) {
+    public ScanError(String filename, String project, int row, String cell,
+            String description) {
         super();
         this.filename = filename;
         this.project = project;

@@ -9,6 +9,7 @@ import model.Employee;
 import org.apache.commons.io.FileUtils;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 
+
 public class FilesFinder {
 
     FilesReader dataReader = new FilesReader();
@@ -17,8 +18,8 @@ public class FilesFinder {
         File masterDirectory = new File(path);
         masterDirectory.getCanonicalPath();
 
-        return (List<File>) FileUtils.listFiles(masterDirectory, new String[] { "xls", "xlsx" },
-                true);
+        return (List<File>) FileUtils.listFiles(masterDirectory,
+                new String[] { "xls", "xlsx" }, true);
     }
 
     public List<Employee> scanFiles(String path) throws InvalidFormatException, IOException {
@@ -33,7 +34,8 @@ public class FilesFinder {
 
             if (employee != null) {
                 if (employees.contains(employee)) {
-                    employees.get(employees.indexOf(employee)).addTasks(employee.getTaskList());
+                    employees.get(employees.indexOf(employee))
+                            .addTasks(employee.getTaskList());
                 } else {
                     employees.add(employee);
                 }

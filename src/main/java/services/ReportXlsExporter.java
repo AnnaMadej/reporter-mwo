@@ -74,7 +74,8 @@ public class ReportXlsExporter {
         Row row = sheet1.createRow(titleRow);
         Cell titleCell = row.createCell(0);
 
-        sheet1.addMergedRegion(new CellRangeAddress(titleRow, titleRow, 0, columnNames.size() - 1));
+        sheet1.addMergedRegion(
+                new CellRangeAddress(titleRow, titleRow, 0, columnNames.size() - 1));
         titleCell.setCellValue(title);
         CellStyle titleCellStyle = wb.createCellStyle();
         titleCellStyle.setAlignment(HorizontalAlignment.CENTER);
@@ -102,7 +103,6 @@ public class ReportXlsExporter {
         rows = report.getRows();
         title = report.getTitle();
 
-        
         final int reportWidth = 200 * 256;
 
         final int titleRow = 3;
@@ -119,8 +119,9 @@ public class ReportXlsExporter {
         int filesOfSameNameCounter = 0;
         do {
             filesOfSameNameCounter++;
-            String reportName = "report" + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())
-                    + "(" + filesOfSameNameCounter + ")";
+            String reportName = "report"
+                    + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + "("
+                    + filesOfSameNameCounter + ")";
             filePath = generatedReportsPath + "/" + reportName + ".xls";
             file = new File(filePath);
         } while (file.exists());
