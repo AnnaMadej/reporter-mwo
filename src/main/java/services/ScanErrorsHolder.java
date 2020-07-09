@@ -34,13 +34,14 @@ public class ScanErrorsHolder {
     private static String stringScanErrorsTable() {
         StringBuilder sb = new StringBuilder();
         final int numberOfLinesInHeader = 25;
-        sb.append(String.format(String.join("", Collections.nCopies(numberOfLinesInHeader, "-"))));
-        sb.append(String.format("| Błędy odczytu plików: | "));
+        sb.append(String
+                .format(String.join("", Collections.nCopies(numberOfLinesInHeader, "-"))));
+        sb.append(String.format("| Błędy odczytu plików (" + scanErrors.size() + "): | "));
         final int spacerLines = 149;
         sb.append(String.format(String.join("", Collections.nCopies(spacerLines, "-"))));
         sb.append("\n");
-        sb.append(String.format("%-120s%-14s%-10s%-10s%-45s%-1s", "| Plik", "| Projekt", "| Wiersz",
-                "| Komórka", "| Opis błędu", "|"));
+        sb.append(String.format("%-120s%-14s%-10s%-10s%-45s%-1s", "| Plik", "| Projekt",
+                "| Wiersz", "| Komórka", "| Opis błędu", "|"));
         sb.append("\n");
         final int numberOfLines = 199;
         sb.append(String.join("", Collections.nCopies(numberOfLines, "-")));
