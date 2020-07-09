@@ -63,7 +63,7 @@ public class Report3Builder extends ReportBuilder {
                 for (String project : projects) {
                     Double hoursSum = this.countHoursSum(tasks, monthIndex, project);
                     if (hoursSum != 0.0) {
-                        List<String> newRow = new ArrayList();
+                        List<String> newRow = new ArrayList<String>();
                         newRow.add(rowsCounter.toString());
                         newRow.add(polishMonths[monthIndex]);
                         newRow.add(project);

@@ -26,7 +26,7 @@ public class FilesFinder {
 
         List<File> files = this.findFiles(path);
 
-        List<Employee> employees = new ArrayList();
+        List<Employee> employees = new ArrayList<Employee>();
 
         for (File file : files) {
             Employee employee = new Employee();

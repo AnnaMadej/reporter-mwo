@@ -27,7 +27,7 @@ public class Report1Builder extends ReportBuilder {
         List<List<String>> rows = new ArrayList<List<String>>();
         Integer rowsCounter = 1;
         for (Employee employee : this.employees) {
-            List<String> newRow = new ArrayList();
+            List<String> newRow = new ArrayList<String>();
             newRow.add(rowsCounter.toString());
             newRow.add(employee.getNameAndSurname());
             newRow.add(String.valueOf(employee.getTotalHours()));
