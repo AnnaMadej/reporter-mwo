@@ -20,6 +20,10 @@ import services.ScanErrorsHolder;
 
 public class FilesReader {
 
+    private Integer fileMonthFromLocation;
+    private Integer fileYearFromLocation;
+    private String fileLocation;
+
     private String extractEmployeeName(String fileName) {
         return fileName.substring(fileName.indexOf("_") + 1, fileName.indexOf("."));
     }
@@ -30,47 +34,11 @@ public class FilesReader {
 
     public Employee readFile(File file) throws IOException, InvalidFormatException {
 
-        String fileLocation = file.getParent();
-        Integer fileMonthFromLocation;
-        Integer fileYearFromLocation;
+        extractFileLocation(file);
 
-        String filename = file.getName().substring(0, file.getName().indexOf("."));
-        if (!filename.matches("[A-z]+_[A-z]+")) {
-            ScanErrorsHolder.addScanError(
-                    new ScanError(file.getCanonicalPath(), "", "", "zła nazwa pliku!"));
-            return null;
-        }
-
-        try {
-            fileMonthFromLocation = Integer
-                    .valueOf(fileLocation.substring(fileLocation.length() - 2));
-            final int fileLocationYandM = 7;
-            final int fileExtensionSize = 3;
-            fileYearFromLocation = Integer
-                    .valueOf(fileLocation.substring(fileLocation.length() - fileLocationYandM,
-                            fileLocation.length() - fileExtensionSize));
-        } catch (NumberFormatException e) {
-            ScanErrorsHolder.addScanError(
-                    new ScanError(file.getCanonicalPath(), "", "", "zła lokalizacja pliku!"));
-            return null;
-        }
-
-        final int numberOfMonths = 12;
-        if (fileMonthFromLocation < 1 || fileMonthFromLocation > numberOfMonths) {
-            ScanErrorsHolder.addScanError(
-                    new ScanError(file.getCanonicalPath(), "", "", "zła lokalizacja pliku!"));
-            return null;
-        }
-
-        Date date = new Date();
-        Calendar calendar = new GregorianCalendar();
-        calendar.setTime(date);
-        int currentYear = calendar.get(Calendar.YEAR);
-        final int yearsRange = 15;
-        if (fileYearFromLocation < currentYear - yearsRange
-                || fileYearFromLocation > currentYear + yearsRange) {
-            ScanErrorsHolder.addScanError(
-                    new ScanError(file.getCanonicalPath(), "", "", "zła lokalizacja pliku!"));
+        if (!filenameIsValid(file) || !locationYearIsValid() || !locationMonthIsValid(file)) {
+            ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
+                    file.getCanonicalPath(), "Zła lokalizacja pliku!"));
             return null;
         }
 
@@ -87,110 +55,76 @@ public class FilesReader {
 
         for (int i = 0; i < wb.getNumberOfSheets(); i++) {
             Sheet sheet = wb.getSheetAt(i);
-            if (sheet.getRow(0).getCell(0) == null || sheet.getRow(0).getCell(1) == null
-                    || sheet.getRow(0).getCell(2) == null
-                    || !sheet.getRow(0).getCell(0).getCellTypeEnum().equals(CellType.STRING)
-                    || !sheet.getRow(0).getCell(1).getCellTypeEnum().equals(CellType.STRING)
-                    || !sheet.getRow(0).getCell(2).getCellTypeEnum().equals(CellType.STRING)
-                    || !sheet.getRow(0).getCell(0).getStringCellValue().equals("Data")
-                    || !sheet.getRow(0).getCell(1).getStringCellValue().equals("Zadanie")
-                    || !sheet.getRow(0).getCell(2).getStringCellValue().equals("Czas [h]")) {
+            if (!sheetHasProperolumnNames(sheet)) {
                 ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
                         sheet.getSheetName(), "Arkusz nie zawiera odpowiednich kolumn"));
                 continue;
             }
+
             project = sheet.getSheetName();
             for (int j = 1; j <= sheet.getLastRowNum(); j++) {
-
-                if (sheet.getRow(j) == null) {
+                Row row = sheet.getRow(j);
+                if (rowIsEmpty(row)) {
                     ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
                             sheet.getSheetName(), j + 1, "pusty wiersz!"));
                     continue;
                 }
 
-                Row row = sheet.getRow(j);
+                Cell dateCell = row.getCell(0);
 
-                if (row.getCell(0) == null || row.getCell(0).getCellTypeEnum() == CellType.BLANK) {
-                    ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
-                            sheet.getSheetName(), j + 1, "DATA", "pusta komórka!"));
-                    continue;
-                }
-                if (!row.getCell(0).getCellTypeEnum().equals(CellType.NUMERIC)) {
+                if (!isValidDateCell(dateCell)) {
                     ScanErrorsHolder.addScanError(
                             new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
-                                    "DATA", "komórka nie zawiera wartości numerycznej!"));
+                                    "DATA", "błędnie wypełniona komórka!"));
                     continue;
                 }
 
-                if (row.getCell(1) == null || row.getCell(1).getCellTypeEnum() == CellType.BLANK) {
-                    ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
-                            sheet.getSheetName(), j + 1, "OPIS", "pusta komórka!"));
-                    continue;
-                }
-                if (row.getCell(1).getCellTypeEnum() != CellType.STRING) {
+                Cell descriptionCell = row.getCell(1);
+                if (!isValidDesctiptionCell(descriptionCell)) {
                     ScanErrorsHolder.addScanError(
                             new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
-                                    "OPIS", "komórka nie zawiera wartości numerycznej!"));
+                                    "OPIS", "błędnie wypełniona komórka!"));
                     continue;
                 }
 
-                if (row.getCell(2) == null || row.getCell(2).getCellTypeEnum() == CellType.BLANK) {
-                    ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
-                            sheet.getSheetName(), j + 1, "CZAS", "pusta komórka!"));
-                    continue;
-
-                }
-                if (row.getCell(2).getCellTypeEnum() != CellType.NUMERIC) {
+                Cell hoursCell = row.getCell(2);
+                if (!isValidHoursCell(hoursCell)) {
                     ScanErrorsHolder.addScanError(
                             new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
-                                    "CZAS", "komórka nie zawiera wartości numerycznej!"));
-                    continue;
-                }
-                final int maxNumberOfHours = 24;
-                if (row.getCell(2).getNumericCellValue() > maxNumberOfHours) {
-                    ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
-                            sheet.getSheetName(), j + 1, "CZAS", "nieodpowiednie dane!"));
+                                    "CZAS", "błędnie wypełniona komórka!"));
                     continue;
                 }
 
-                if (row.getCell(0) != null) {
-                    Cell dateCell = row.getCell(0);
-                    Cell descriptionCell = row.getCell(1);
-                  
-
-                    if (descriptionCell.getStringCellValue().trim().equals("")) {
-                        ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
-                                sheet.getSheetName(), j + 1, "OPIS", "pusty opis w komórce!"));
-                        continue;
-                    }
-
-                    try {
-                        date = dateCell.getDateCellValue();
-                        calendar.setTime(date);
-                    } catch (NullPointerException e) {
-                        ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
-                                sheet.getSheetName(), j + 1, "DATA", "zle wpisana data!"));
-                        continue;
-                    }
-
-                    if (calendar.get(Calendar.YEAR) != fileYearFromLocation) {
-                        ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
-                                sheet.getSheetName(), j + 1, "DATA", "zły rok w dacie!"));
-                        continue;
-                    }
-
-                    if (calendar.get(Calendar.MONTH) + 1 != fileMonthFromLocation) {
-                        ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
-                                sheet.getSheetName(), j + 1, "DATA", "zły miesiąc w dacie!"));
-                        continue;
-                    }
-
-                    Cell timeCell = row.getCell(2);
-                    description = descriptionCell.getStringCellValue();
-                    time = timeCell.getNumericCellValue();
-                    Task task = new Task(date, project, description, time);
-                    employee.addTask(task);
+                Date date;
+                Calendar calendar = new GregorianCalendar();
+                try {
+                    date = dateCell.getDateCellValue();
+                    calendar.setTime(date);
+                } catch (NullPointerException e) {
+                    ScanErrorsHolder.addScanError(
+                            new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
+                                    "DATA", "błędnie wypełniona komórka!"));
+                    continue;
                 }
+                if (!locationYearEqualsTaskYear(calendar)) {
+                    ScanErrorsHolder.addScanError(
+                            new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
+                                    "DATA", "rok nie zgadza się z lokalizacją pliku!"));
+                    continue;
+                }
+
+                if (!locationMonthEqualsTaskMonth(calendar)) {
+                    ScanErrorsHolder.addScanError(
+                            new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
+                                    "DATA", "miesiąc nie zgadza się z lokalizacją pliku!"));
+                    continue;
+                }
+
+                description = descriptionCell.getStringCellValue();
+                time = hoursCell.getNumericCellValue();
+
+                Task task = new Task(date, project, description, time);
+                employee.addTask(task);
 
             }
 
@@ -199,4 +133,132 @@ public class FilesReader {
         return employee;
     }
 
+    private boolean locationMonthEqualsTaskMonth(Calendar calendar) {
+        if (calendar.get(Calendar.MONTH) + 1 != fileMonthFromLocation) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean locationYearEqualsTaskYear(Calendar calendar) {
+        if (calendar.get(Calendar.YEAR) != fileYearFromLocation) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean rowIsEmpty(Row row) {
+        if (row == null) {
+            return true;
+        }
+        return false;
+    }
+
+    private boolean isValidHoursCell(Cell hoursCell) {
+        if (hoursCell == null || hoursCell.getCellTypeEnum() == CellType.BLANK) {
+            return false;
+        }
+        if (hoursCell.getCellTypeEnum() != CellType.NUMERIC) {
+            return false;
+        }
+        final int maxNumberOfHours = 24;
+        if (hoursCell.getNumericCellValue() > maxNumberOfHours) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isValidDesctiptionCell(Cell descriptionCell) {
+        if (descriptionCell == null || descriptionCell.getCellTypeEnum() == CellType.BLANK) {
+            return false;
+        }
+        if (descriptionCell.getCellTypeEnum() != CellType.STRING) {
+            return false;
+        }
+        if (descriptionCell.getStringCellValue().trim().equals("")) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean isValidDateCell(Cell dateCell) {
+        if (dateCell == null || dateCell.getCellTypeEnum() == CellType.BLANK) {
+            return false;
+        }
+        if (!dateCell.getCellTypeEnum().equals(CellType.NUMERIC)) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean sheetHasProperolumnNames(Sheet sheet) {
+        if (sheet.getRow(0).getCell(0) == null || sheet.getRow(0).getCell(1) == null
+                || sheet.getRow(0).getCell(2) == null
+                || !sheet.getRow(0).getCell(0).getCellTypeEnum().equals(CellType.STRING)
+                || !sheet.getRow(0).getCell(1).getCellTypeEnum().equals(CellType.STRING)
+                || !sheet.getRow(0).getCell(2).getCellTypeEnum().equals(CellType.STRING)
+                || !sheet.getRow(0).getCell(0).getStringCellValue().equals("Data")
+                || !sheet.getRow(0).getCell(1).getStringCellValue().equals("Zadanie")
+                || !sheet.getRow(0).getCell(2).getStringCellValue().equals("Czas [h]")) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean filenameIsValid(File file) throws IOException {
+        String filename = file.getName().substring(0, file.getName().indexOf("."));
+        if (!filename.matches("[A-z]+_[A-z]+")) {
+            ScanErrorsHolder.addScanError(
+                    new ScanError(file.getCanonicalPath(), "", "", "zła nazwa pliku!"));
+            return false;
+        }
+        return true;
+    }
+
+    private boolean locationMonthIsValid(File file) throws IOException {
+        String monthString = fileLocation.substring(fileLocation.length() - 2);
+        if (monthString.length() < 1 || monthString.length() > 2) {
+            return false;
+        }
+        try {
+            fileMonthFromLocation = Integer.valueOf(monthString);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        final int numberOfMonths = 12;
+        if (fileMonthFromLocation < 1 || fileMonthFromLocation > numberOfMonths) {
+            return false;
+        }
+        return true;
+    }
+
+    private boolean locationYearIsValid() {
+        final int fileLocationYandMSize = 7;
+        final int fileExtensionSize = 3;
+        final int sizeOfYear = 4;
+        String fileYear = fileLocation.substring(fileLocation.length() - fileLocationYandMSize,
+                fileLocation.length() - fileExtensionSize);
+        if (fileYear.length() != sizeOfYear) {
+            return false;
+        }
+        try {
+            fileYearFromLocation = Integer.valueOf(fileYear);
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        Date date = new Date();
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        int currentYear = calendar.get(Calendar.YEAR);
+        final int yearsRange = 25;
+        if (fileYearFromLocation < currentYear - yearsRange
+                || fileYearFromLocation > currentYear + yearsRange) {
+            return false;
+        }
+        return true;
+    }
+
+    private void extractFileLocation(File file) {
+        this.fileLocation = file.getParent();
+    }
 }
