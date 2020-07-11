@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import model.ScanError;
 
-public class ScanErrorsHolder {
+public class ReadErrorsHolder {
 
     private static List<ScanError> scanErrors = new ArrayList<ScanError>();
 

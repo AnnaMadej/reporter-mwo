@@ -16,7 +16,7 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import services.ReadErrorsChecker;
-import services.ScanErrorsHolder;
+import services.ReadErrorsHolder;
 
 public class FilesReader {
 
@@ -124,52 +124,52 @@ public class FilesReader {
     }
 
     private void addMonthLocationError(File file, Sheet sheet, int j) throws IOException {
-        ScanErrorsHolder.addScanError(
+        ReadErrorsHolder.addScanError(
                 new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
                         "DATA", "miesiąc nie zgadza się z lokalizacją pliku!"));
     }
 
     private void addYearLocationError(File file, Sheet sheet, int j) throws IOException {
-        ScanErrorsHolder.addScanError(
+        ReadErrorsHolder.addScanError(
                 new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
                         "DATA", "rok nie zgadza się z lokalizacją pliku!"));
     }
 
     private void addHoursCellError(File file, Sheet sheet, int j) throws IOException {
-        ScanErrorsHolder.addScanError(
+        ReadErrorsHolder.addScanError(
                 new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
                         "CZAS", "błędnie wypełniona komórka!"));
     }
 
     private void addDescriptionCellError(File file, Sheet sheet, int j) throws IOException {
-        ScanErrorsHolder.addScanError(
+        ReadErrorsHolder.addScanError(
                 new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
                         "OPIS", "błędnie wypełniona komórka!"));
     }
 
     private void addDateCellError(File file, Sheet sheet, int j) throws IOException {
-        ScanErrorsHolder.addScanError(
+        ReadErrorsHolder.addScanError(
                 new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
                         "DATA", "błędnie wypełniona komórka!"));
     }
 
     private void addEmptyRowError(File file, Sheet sheet, int j) throws IOException {
-        ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
+        ReadErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
                 sheet.getSheetName(), j + 1, "pusty wiersz!"));
     }
 
     private void addColumnsError(File file, Sheet sheet) throws IOException {
-        ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
+        ReadErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
                 sheet.getSheetName(), "Arkusz nie zawiera odpowiednich kolumn"));
     }
 
     private void addLocationError(File file) throws IOException {
-        ScanErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
+        ReadErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
                 file.getCanonicalPath(), "Zła lokalizacja pliku!"));
     }
 
     private void addFilenameError(File file) throws IOException {
-        ScanErrorsHolder.addScanError(
+        ReadErrorsHolder.addScanError(
                 new ScanError(file.getCanonicalPath(), "", "", "zła nazwa pliku!"));
     }
 
