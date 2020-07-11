@@ -20,24 +20,9 @@ import services.ScanErrorsHolder;
 
 public class FilesReader {
 
-    private String fileLocation;
-
-    private String extractEmployeeName(String fileName) {
-        return fileName.substring(fileName.indexOf("_") + 1, fileName.indexOf("."));
-    }
-
-    private String extractEmployeeSurname(String fileName) {
-        return fileName.substring(0, fileName.indexOf("_"));
-    }
-
-    private void extractFileLocation(File file) {
-        this.fileLocation = file.getParent();
-    }
-
-
     public Employee readFile(File file) throws IOException, InvalidFormatException {
 
-        this.extractFileLocation(file);
+        String fileLocation = this.extractFileLocation(file);
 
         if (!ReadErrorsChecker.filenameIsValid(file)) {
             addFilenameError(file);
@@ -125,6 +110,18 @@ public class FilesReader {
         wb.close();
         return employee;
     }
+    
+    private String extractEmployeeName(String fileName) {
+        return fileName.substring(fileName.indexOf("_") + 1, fileName.indexOf("."));
+    }
+
+    private String extractEmployeeSurname(String fileName) {
+        return fileName.substring(0, fileName.indexOf("_"));
+    }
+
+    private String extractFileLocation(File file) {
+        return file.getParent();
+    }
 
     private void addMonthLocationError(File file, Sheet sheet, int j) throws IOException {
         ScanErrorsHolder.addScanError(
@@ -175,8 +172,5 @@ public class FilesReader {
         ScanErrorsHolder.addScanError(
                 new ScanError(file.getCanonicalPath(), "", "", "zła nazwa pliku!"));
     }
-
-
-
 
 }
