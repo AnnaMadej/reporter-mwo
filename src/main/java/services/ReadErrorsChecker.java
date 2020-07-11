@@ -80,8 +80,7 @@ public class ReadErrorsChecker {
         final char charBeforeYear;
         try {
             charBeforeYear = fileLocation.charAt(fileLocation.length() - sizeOfYandMWithSlashes);
-        }
-        catch (StringIndexOutOfBoundsException e) {
+        } catch (StringIndexOutOfBoundsException e) {
             return -1;
         }
  
