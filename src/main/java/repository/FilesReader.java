@@ -28,8 +28,8 @@ public class FilesReader {
             addFilenameError(file);
             return null;
         }
-        if (!ReadErrorsChecker.locationYearIsValid(fileLocation) 
-                || !ReadErrorsChecker.locationMonthIsValid(fileLocation)) {
+        if (!ReadErrorsChecker.locationMonthIsValid(fileLocation) 
+                || !ReadErrorsChecker.locationYearIsValid(fileLocation)) {
             addLocationError(file);
             return null;
         }
@@ -47,7 +47,7 @@ public class FilesReader {
 
         for (int i = 0; i < wb.getNumberOfSheets(); i++) {
             Sheet sheet = wb.getSheetAt(i);
-            if (!ReadErrorsChecker.sheetHasProperolumnNames(sheet)) {
+            if (!ReadErrorsChecker.sheetHasProperColumnNames(sheet)) {
                 addColumnsError(file, sheet);
                 continue;
             }
