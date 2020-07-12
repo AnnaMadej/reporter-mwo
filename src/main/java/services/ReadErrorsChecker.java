@@ -11,7 +11,7 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 public class ReadErrorsChecker {
-    
+
     public static boolean sheetHasProperColumnNames(Sheet sheet) {
         if (sheet == null) {
             return false;
@@ -36,7 +36,7 @@ public class ReadErrorsChecker {
         if (row == null) {
             return true;
         }
-        if (row.getCell(0) == null) {
+        if (row.getCell(0) == null && row.getCell(1) == null && row.getCell(2) == null) {
             return true;
         }
         return false;
@@ -76,14 +76,18 @@ public class ReadErrorsChecker {
     }
 
     private static Integer extractFileYear(String fileLocation) {
+        if (fileLocation.equals("")) {
+            return -1;
+        }
         final int sizeOfYandMWithSlashes = 8;
         final char charBeforeYear;
         try {
-            charBeforeYear = fileLocation.charAt(fileLocation.length() - sizeOfYandMWithSlashes);
+            charBeforeYear = fileLocation
+                    .charAt(fileLocation.length() - sizeOfYandMWithSlashes);
         } catch (StringIndexOutOfBoundsException e) {
             return -1;
         }
- 
+
         if (charBeforeYear != '/') {
             return -1;
         }
@@ -113,8 +117,10 @@ public class ReadErrorsChecker {
     }
 
     private static Integer extractFileMonth(String fileLocation) {
+        if (fileLocation.equals("")) {
+            return -1;
+        }
         final char charBeforeMonth = fileLocation.charAt(fileLocation.length() - 3);
-        System.out.println(charBeforeMonth);
         if (charBeforeMonth != '/') {
             return -1;
         }
@@ -136,6 +142,18 @@ public class ReadErrorsChecker {
         if (!dateCell.getCellType().equals(CellType.NUMERIC)) {
             return false;
         }
+
+        Calendar c = Calendar.getInstance();
+        c.setTime(new Date());
+        final int yearsDifference = 25;
+        c.add(Calendar.YEAR, -yearsDifference); 
+        Date minDate = c.getTime();
+        c.add(Calendar.YEAR, yearsDifference * 2);
+        Date maxDate = c.getTime();
+        Date date = dateCell.getDateCellValue();
+        if (date.before(minDate) || date.after(maxDate)) {
+            return false;
+        }
         return true;
     }
 
@@ -146,7 +164,7 @@ public class ReadErrorsChecker {
         if (hoursCell.getCellType() != CellType.NUMERIC) {
             return false;
         }
-        final int maxNumberOfHours = 24;
+        final int maxNumberOfHours = 16;
         if (hoursCell.getNumericCellValue() > maxNumberOfHours) {
             return false;
         }
@@ -154,14 +172,23 @@ public class ReadErrorsChecker {
     }
 
     public static boolean filenameIsValid(File file) throws IOException {
-        String filename = file.getName().substring(0, file.getName().indexOf("."));
-        if (!filename.matches("[A-z]+_[A-z]+")) {
+        if (file == null) {
+            return false;
+        }
+        String fileWithExtension = file.getName();
+        if (!fileWithExtension.matches("[A-Z]{1}[a-z]+_{1}[A-Z]{1}[a-z]+.[a-z]{3,4}")) {
             return false;
         }
         return true;
     }
-    
-    public static boolean locationYearEqualsTaskYear(Calendar calendar, String fileLocation) {
+
+    public static boolean locationYearEqualsDateYear(Calendar calendar, String fileLocation) {
+        if (calendar == null) {
+            return false;
+        }
+        if (fileLocation == null) {
+            return false;
+        }
         Integer fileYearFromLocation = extractFileYear(fileLocation);
         if (fileYearFromLocation == -1) {
             return false;
@@ -171,10 +198,16 @@ public class ReadErrorsChecker {
         }
         return true;
     }
-    
-    public static boolean locationMonthEqualsTaskMonth(Calendar calendar, String location) {
+
+    public static boolean locationMonthEqualsDateMonth(Calendar calendar, String location) {
+        if (calendar == null) {
+            return false;
+        }
+        if (location == null) {
+            return false;
+        }
         Integer fileMonthFromLocation = extractFileMonth(location);
-        if (calendar.get(Calendar.MONTH) + 1 != fileMonthFromLocation) {
+        if (calendar.get(calendar.MONTH) + 1  != fileMonthFromLocation) {
             return false;
         }
         return true;

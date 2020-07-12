@@ -12,7 +12,7 @@ import services.ReadErrorsHolder;
 
 public class UserInterface {
 
-    private Scanner sc = new Scanner(System.in);
+    private Scanner sc = new Scanner(System.in); 
     private Controller controller = new Controller();
     private List<String> reportOptions = Arrays
             .asList(new String[] { "1", "2", "3", "4", "5" });
@@ -156,22 +156,28 @@ public class UserInterface {
     public void showMenu() {
 
         if (this.controller.getNumberOfEmployees() != 0) {
-            String userOption;
-            do {
-                this.showHeaders();
-                userOption = this.takeUserInput(this.askForOption());
-                if (this.reportOptions.contains(userOption)) {
-                    this.showReport(userOption);
-                } else if (this.chartOptions.contains(userOption)) {
-                    this.showChart(userOption);
-                } else if ("8".equals(userOption)) {
-
-                    this.showErrorLogs();
-                }
-            } while (!userOption.equals("0"));
+            loopUserInput();
+        } else {
+            System.out.println("Podana ścieżka nie zawiera żadnych danych!");
         }
         this.exit();
 
+    }
+
+    private void loopUserInput() {
+        String userOption;
+        do {
+            this.showHeaders();
+            userOption = this.takeUserInput(this.askForOption());
+            if (this.reportOptions.contains(userOption)) {
+                this.showReport(userOption);
+            } else if (this.chartOptions.contains(userOption)) {
+                this.showChart(userOption);
+            } else if ("8".equals(userOption)) {
+
+                this.showErrorLogs();
+            }
+        } while (!userOption.equals("0"));
     }
 
     private void showReport(String userOption) {

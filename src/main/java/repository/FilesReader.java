@@ -28,7 +28,7 @@ public class FilesReader {
             addFilenameError(file);
             return null;
         }
-        if (!ReadErrorsChecker.locationMonthIsValid(fileLocation) 
+        if (!ReadErrorsChecker.locationMonthIsValid(fileLocation)
                 || !ReadErrorsChecker.locationYearIsValid(fileLocation)) {
             addLocationError(file);
             return null;
@@ -88,12 +88,12 @@ public class FilesReader {
                     addDateCellError(file, sheet, j);
                     continue;
                 }
-                if (!ReadErrorsChecker.locationYearEqualsTaskYear(calendar, fileLocation)) {
+                if (!ReadErrorsChecker.locationYearEqualsDateYear(calendar, fileLocation)) {
                     addYearLocationError(file, sheet, j);
                     continue;
                 }
 
-                if (!ReadErrorsChecker.locationMonthEqualsTaskMonth(calendar, fileLocation)) {
+                if (!ReadErrorsChecker.locationMonthEqualsDateMonth(calendar, fileLocation)) {
                     addMonthLocationError(file, sheet, j);
                     continue;
                 }
@@ -110,7 +110,7 @@ public class FilesReader {
         wb.close();
         return employee;
     }
-    
+
     private String extractEmployeeName(String fileName) {
         return fileName.substring(fileName.indexOf("_") + 1, fileName.indexOf("."));
     }
@@ -120,37 +120,36 @@ public class FilesReader {
     }
 
     private String extractFileLocation(File file) {
-        return file.getParent();
+        String fileLocation = file.getParent();
+        fileLocation = fileLocation.replace('\\', '/');
+        return fileLocation;
     }
 
     private void addMonthLocationError(File file, Sheet sheet, int j) throws IOException {
-        ReadErrorsHolder.addScanError(
-                new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
-                        "DATA", "miesiąc nie zgadza się z lokalizacją pliku!"));
+        ReadErrorsHolder
+                .addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(),
+                        j + 1, "DATA", "miesiąc nie zgadza się z lokalizacją pliku!"));
     }
 
     private void addYearLocationError(File file, Sheet sheet, int j) throws IOException {
-        ReadErrorsHolder.addScanError(
-                new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
-                        "DATA", "rok nie zgadza się z lokalizacją pliku!"));
+        ReadErrorsHolder
+                .addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(),
+                        j + 1, "DATA", "rok nie zgadza się z lokalizacją pliku!"));
     }
 
     private void addHoursCellError(File file, Sheet sheet, int j) throws IOException {
-        ReadErrorsHolder.addScanError(
-                new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
-                        "CZAS", "błędnie wypełniona komórka!"));
+        ReadErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
+                sheet.getSheetName(), j + 1, "CZAS", "błędnie wypełniona komórka!"));
     }
 
     private void addDescriptionCellError(File file, Sheet sheet, int j) throws IOException {
-        ReadErrorsHolder.addScanError(
-                new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
-                        "OPIS", "błędnie wypełniona komórka!"));
+        ReadErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
+                sheet.getSheetName(), j + 1, "OPIS", "błędnie wypełniona komórka!"));
     }
 
     private void addDateCellError(File file, Sheet sheet, int j) throws IOException {
-        ReadErrorsHolder.addScanError(
-                new ScanError(file.getCanonicalPath(), sheet.getSheetName(), j + 1,
-                        "DATA", "błędnie wypełniona komórka!"));
+        ReadErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
+                sheet.getSheetName(), j + 1, "DATA", "błędnie wypełniona komórka!"));
     }
 
     private void addEmptyRowError(File file, Sheet sheet, int j) throws IOException {
