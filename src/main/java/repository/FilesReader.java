@@ -92,12 +92,14 @@ public class FilesReader {
                     addDateCellError(file, sheet, j);
                     continue;
                 }
-                if (!ReadErrorsChecker.locationYearEqualsDateYear(calendar, fileLocation)) {
+                if (!ReadErrorsChecker.locationYearEqualsDateYear(
+                        calendar.get(Calendar.YEAR), fileLocation)) {
                     addYearLocationError(file, sheet, j);
                     continue;
                 }
 
-                if (!ReadErrorsChecker.locationMonthEqualsDateMonth(calendar, fileLocation)) {
+                if (!ReadErrorsChecker.locationMonthEqualsDateMonth(
+                        calendar.get(Calendar.MONTH) + 1, fileLocation)) {
                     addMonthLocationError(file, sheet, j);
                     continue;
                 }
@@ -117,7 +119,7 @@ public class FilesReader {
         }
 
         List<Date> invalidDates = ReadErrorsChecker.findDatesWithInvalidHours(hoursOfDate);
-        
+
         if (invalidDates.size() > 0) {
             for (Date date : invalidDates) {
                 addHoursError(file, date);
@@ -190,9 +192,8 @@ public class FilesReader {
     private void addHoursError(File file, Date date) throws IOException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String stringDate = format.format(date);
-        ReadErrorsHolder
-                .addScanError(new ScanError(file.getCanonicalPath(), "",
-                        "Niepoprawna suma godzin w dniu: " + stringDate));
+        ReadErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), "",
+                "Niepoprawna suma godzin w dniu: " + stringDate));
     }
 
     private void addFilenameError(File file) throws IOException {

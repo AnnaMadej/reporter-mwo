@@ -678,112 +678,82 @@ public class ReadErrorsCheckerTest {
         Assert.assertTrue(result);
     }
     
-    @Test
-    public final void locationYearEqualsDateYearNullCalendar() throws IOException {
-        String location = "c:/2012/01";
-        Boolean result = ReadErrorsChecker.locationYearEqualsDateYear(null, location);
-        Assert.assertFalse(result);
-    }
     
     @Test
     public final void locationYearEqualsDateYearNulllocation() throws IOException {
-        Date date = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        Boolean result = ReadErrorsChecker.locationYearEqualsDateYear(calendar, null);
+        int year = 2012;
+        Boolean result = ReadErrorsChecker.locationYearEqualsDateYear(year, null);
         Assert.assertFalse(result);
     }
     
     @Test
     public final void locationYearEqualsDateYearCorrect() throws IOException {
-        Calendar calendar = Calendar.getInstance();
+        int year = 2012;
         String location = "c:/2012/01";
-        calendar.set(2012,01,01);
-        Boolean result = ReadErrorsChecker.locationYearEqualsDateYear(calendar, location);
+        Boolean result = ReadErrorsChecker.locationYearEqualsDateYear(year, location);
         Assert.assertTrue(result);
     }
     
     @Test
     public final void locationYearEqualsDateYearDifferent() throws IOException {
-        Calendar calendar = Calendar.getInstance();
+        int year = 2012;
         String location = "c:/2013/01";
-        calendar.set(2012,01,01);
-        Boolean result = ReadErrorsChecker.locationYearEqualsDateYear(calendar, location);
+        Boolean result = ReadErrorsChecker.locationYearEqualsDateYear(year, location);
         Assert.assertFalse(result);
     }
     
     @Test
     public final void locationYearEqualsDateYearStrangeLocation() throws IOException {
-        Calendar calendar = Calendar.getInstance();
+        int year = 2012;
         String location = "qwdqwdqwdqwdqwd31";
-        calendar.set(2012,01,01);
-        Boolean result = ReadErrorsChecker.locationYearEqualsDateYear(calendar, location);
+        Boolean result = ReadErrorsChecker.locationYearEqualsDateYear(year, location);
         Assert.assertFalse(result);
     }
     
     @Test
     public final void locationYearEqualsDateYearEmptyLocation() throws IOException {
-        Calendar calendar = Calendar.getInstance();
+        int year = 2012;
         String location = "";
-        calendar.set(2012,01,01);
-        Boolean result = ReadErrorsChecker.locationYearEqualsDateYear(calendar, location);
-        Assert.assertFalse(result);
-    }
-    
-    
-    @Test
-    public final void locationMonthEqualsDateMonthNullCalendar() throws IOException {
-        String location = "c:/2012/01";
-        Boolean result = ReadErrorsChecker.locationMonthEqualsDateMonth(null, location);
+        Boolean result = ReadErrorsChecker.locationYearEqualsDateYear(year, location);
         Assert.assertFalse(result);
     }
     
     @Test
     public final void locationMonthEqualsDateMonthNulllocation() throws IOException {
-        Date date = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-        Boolean result = ReadErrorsChecker.locationMonthEqualsDateMonth(calendar, null);
+        int month = 3;
+        Boolean result = ReadErrorsChecker.locationMonthEqualsDateMonth(month, null);
         Assert.assertFalse(result);
     }
     
     @Test
     public final void locationMonthEqualsDateMonthCorrect() throws IOException {
-        Calendar calendar = Calendar.getInstance();
+        int month = 1;
         String location = "c:/2012/01";
-        calendar.set(2012,01,01);
-        calendar.add(Calendar.MONTH, -1);
-        Boolean result = ReadErrorsChecker.locationMonthEqualsDateMonth(calendar, location);
+        Boolean result = ReadErrorsChecker.locationMonthEqualsDateMonth(month, location);
         Assert.assertTrue(result);
     }
     
     @Test
     public final void locationMonthEqualsDateMonthDifferent() throws IOException {
-        
-        Calendar calendar = Calendar.getInstance();
-        String location = "c:/2012/02";
-        calendar.set(2012,01,01);
-        calendar.add(Calendar.MONTH, -1);
-        Boolean result = ReadErrorsChecker.locationMonthEqualsDateMonth(calendar, location);
+        int month = 2;
+        String location = "c:/2012/01";
+        Boolean result = ReadErrorsChecker.locationMonthEqualsDateMonth(month, location);
         Assert.assertFalse(result);
     }
     
     @Test
     public final void locationMonthEqualsDateMonthStrangeLocation() throws IOException {
-        Calendar calendar = Calendar.getInstance();
+        int month = 2;
         String location = "dwdwedwedwedwedwed";
-        calendar.set(2012,01,01);
-        Boolean result = ReadErrorsChecker.locationMonthEqualsDateMonth(calendar, location);
+        Boolean result = ReadErrorsChecker.locationMonthEqualsDateMonth(month, location);
         Assert.assertFalse(result);
     }
     
     @Test
     public final void locationMonthEqualsDateMonthEmptyLocation() throws IOException {
-        ReadErrorsChecker checker = new ReadErrorsChecker();
-        Calendar calendar = Calendar.getInstance();
+        int month = 2;
         String location = "";
-        calendar.set(2012,01,01);
-        Boolean result = checker.locationMonthEqualsDateMonth(calendar, location);
+        Boolean result = ReadErrorsChecker.locationMonthEqualsDateMonth(month, location);
         Assert.assertFalse(result);
     }
     

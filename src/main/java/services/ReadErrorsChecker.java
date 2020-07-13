@@ -185,10 +185,7 @@ public class ReadErrorsChecker {
         return true;
     }
 
-    public static boolean locationYearEqualsDateYear(Calendar calendar, String fileLocation) {
-        if (calendar == null) {
-            return false;
-        }
+    public static boolean locationYearEqualsDateYear(int year, String fileLocation) {
         if (fileLocation == null) {
             return false;
         }
@@ -196,21 +193,18 @@ public class ReadErrorsChecker {
         if (fileYearFromLocation == -1) {
             return false;
         }
-        if (calendar.get(Calendar.YEAR) != fileYearFromLocation) {
+        if (year != fileYearFromLocation) {
             return false;
         }
         return true;
     }
 
-    public static boolean locationMonthEqualsDateMonth(Calendar calendar, String location) {
-        if (calendar == null) {
-            return false;
-        }
+    public static boolean locationMonthEqualsDateMonth(int month, String location) {
         if (location == null) {
             return false;
         }
         Integer fileMonthFromLocation = extractFileMonth(location);
-        if (calendar.get(calendar.MONTH) + 1  != fileMonthFromLocation) {
+        if (month != fileMonthFromLocation) {
             return false;
         }
         return true;
