@@ -63,7 +63,7 @@ public class ReadErrorsChecker {
         if (fileLocation == null) {
             return false;
         }
-        Integer fileYearFromLocation = extractFileYear(fileLocation);
+        Integer fileYearFromLocation = extractYear(fileLocation);
         if (fileYearFromLocation == -1) {
             return false;
         }
@@ -79,7 +79,7 @@ public class ReadErrorsChecker {
         return true;
     }
 
-    private static Integer extractFileYear(String fileLocation) {
+    private static Integer extractYear(String fileLocation) {
         if (fileLocation.equals("")) {
             return -1;
         }
@@ -109,7 +109,7 @@ public class ReadErrorsChecker {
     }
 
     public static boolean locationMonthIsValid(String fileLocation) {
-        Integer fileMonthFromLocation = extractFileMonth(fileLocation);
+        Integer fileMonthFromLocation = extractMonth(fileLocation);
         if (fileMonthFromLocation == -1) {
             return false;
         }
@@ -120,7 +120,7 @@ public class ReadErrorsChecker {
         return true;
     }
 
-    private static Integer extractFileMonth(String fileLocation) {
+    private static Integer extractMonth(String fileLocation) {
         if (fileLocation.equals("")) {
             return -1;
         }
@@ -189,7 +189,7 @@ public class ReadErrorsChecker {
         if (fileLocation == null) {
             return false;
         }
-        Integer fileYearFromLocation = extractFileYear(fileLocation);
+        Integer fileYearFromLocation = extractYear(fileLocation);
         if (fileYearFromLocation == -1) {
             return false;
         }
@@ -203,7 +203,7 @@ public class ReadErrorsChecker {
         if (location == null) {
             return false;
         }
-        Integer fileMonthFromLocation = extractFileMonth(location);
+        Integer fileMonthFromLocation = extractMonth(location);
         if (month != fileMonthFromLocation) {
             return false;
         }
