@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -283,6 +286,24 @@ public class ReadErrorsCheckerTest {
     public final void testRowIsEmptyWithNotEmptyRow() {
         Row someNotEmptyRow = sheet.createRow(5);
         Cell cell = someNotEmptyRow.createCell(0);
+        cell.setCellValue("aaaa");
+        Boolean result = ReadErrorsChecker.rowIsEmpty(someNotEmptyRow);
+        Assert.assertFalse(result);
+    }
+    
+    @Test
+    public final void testRowIsEmptyWithNotEmptyRow2() {
+        Row someNotEmptyRow = sheet.createRow(5);
+        Cell cell = someNotEmptyRow.createCell(1);
+        cell.setCellValue("aaaa");
+        Boolean result = ReadErrorsChecker.rowIsEmpty(someNotEmptyRow);
+        Assert.assertFalse(result);
+    }
+    
+    @Test
+    public final void testRowIsEmptyWithNotEmptyRow3() {
+        Row someNotEmptyRow = sheet.createRow(5);
+        Cell cell = someNotEmptyRow.createCell(2);
         cell.setCellValue("aaaa");
         Boolean result = ReadErrorsChecker.rowIsEmpty(someNotEmptyRow);
         Assert.assertFalse(result);
@@ -587,7 +608,7 @@ public class ReadErrorsCheckerTest {
     @Test
     public final void testIsValidHoursCellTooManyHours() {
         Cell cell = dataRow.createCell(1);
-        cell.setCellValue(24);
+        cell.setCellValue(25);
         Boolean result = ReadErrorsChecker.isValidHoursCell(cell);
         Assert.assertFalse(result);
     }
@@ -764,5 +785,41 @@ public class ReadErrorsCheckerTest {
         calendar.set(2012,01,01);
         Boolean result = checker.locationMonthEqualsDateMonth(calendar, location);
         Assert.assertFalse(result);
+    }
+    
+    @Test
+    public final void testFindDatesWithInvalidHoursTooManyHours(){
+        Map<Date, Double> hoursOfDates = new HashMap<Date, Double>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2012, 01,01);
+        Date date = calendar.getTime();
+        hoursOfDates.put(date, 25.0);
+        
+        List<Date> result = ReadErrorsChecker.findDatesWithInvalidHours(hoursOfDates);
+        Assert.assertTrue(result.contains(date));   
+    }
+    
+    @Test
+    public final void testFindDatesWithInvalidHoursCorrectHours(){
+        Map<Date, Double> hoursOfDates = new HashMap<Date, Double>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2012, 01,01);
+        Date date = calendar.getTime();
+        hoursOfDates.put(date, 24.0);
+        
+        List<Date> result = ReadErrorsChecker.findDatesWithInvalidHours(hoursOfDates);
+        Assert.assertFalse(result.contains(date));   
+    }
+    
+    @Test
+    public final void testFindDatesWithInvalidHoursNegativeHours(){
+        Map<Date, Double> hoursOfDates = new HashMap<Date, Double>();
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2012, 01,01);
+        Date date = calendar.getTime();
+        hoursOfDates.put(date, -5.0);
+        
+        List<Date> result = ReadErrorsChecker.findDatesWithInvalidHours(hoursOfDates);
+        Assert.assertTrue(result.contains(date));   
     }
 }

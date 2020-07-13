@@ -2,10 +2,14 @@ package repository;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import model.Employee;
 import model.ScanError;
 import model.Task;
@@ -23,6 +27,7 @@ public class FilesReader {
     public Employee readFile(File file) throws IOException, InvalidFormatException {
 
         String fileLocation = this.extractFileLocation(file);
+        Map<Date, Double> hoursOfDate = new HashMap<Date, Double>();
 
         if (!ReadErrorsChecker.filenameIsValid(file)) {
             addFilenameError(file);
@@ -38,7 +43,7 @@ public class FilesReader {
         String employeeName = this.extractEmployeeName(fileName);
         String employeeSurname = this.extractEmployeeSurname(fileName);
         Employee employee = new Employee(employeeName, employeeSurname);
-        new ArrayList<Task>();
+        List<Task> tasksToAdd = new ArrayList<Task>();
         Workbook wb = WorkbookFactory.create(file);
 
         String project;
@@ -51,7 +56,6 @@ public class FilesReader {
                 addColumnsError(file, sheet);
                 continue;
             }
-
             project = sheet.getSheetName();
             for (int j = 1; j <= sheet.getLastRowNum(); j++) {
                 Row row = sheet.getRow(j);
@@ -97,15 +101,31 @@ public class FilesReader {
                     addMonthLocationError(file, sheet, j);
                     continue;
                 }
-
                 description = descriptionCell.getStringCellValue();
                 time = hoursCell.getNumericCellValue();
 
+                if (hoursOfDate.containsKey(date)) {
+                    hoursOfDate.put(date, hoursOfDate.get(date) + time);
+                } else {
+                    hoursOfDate.put(date, time);
+                }
                 Task task = new Task(date, project, description, time);
+                tasksToAdd.add(task);
                 employee.addTask(task);
 
             }
+        }
 
+        List<Date> invalidDates = ReadErrorsChecker.findDatesWithInvalidHours(hoursOfDate);
+        
+        if (invalidDates.size() > 0) {
+            for (Date date : invalidDates) {
+                addHoursError(file, date);
+            }
+        } else {
+            for (Task task : tasksToAdd) {
+                employee.addTask(task);
+            }
         }
         wb.close();
         return employee;
@@ -165,6 +185,14 @@ public class FilesReader {
     private void addLocationError(File file) throws IOException {
         ReadErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
                 file.getCanonicalPath(), "Zła lokalizacja pliku!"));
+    }
+
+    private void addHoursError(File file, Date date) throws IOException {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        String stringDate = format.format(date);
+        ReadErrorsHolder
+                .addScanError(new ScanError(file.getCanonicalPath(), "",
+                        "Niepoprawna suma godzin w dniu: " + stringDate));
     }
 
     private void addFilenameError(File file) throws IOException {

@@ -2,15 +2,19 @@ package services;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
+import java.util.Map;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 public class ReadErrorsChecker {
+    private static final double maxNumberOfHoursADay = 24;
 
     public static boolean sheetHasProperColumnNames(Sheet sheet) {
         if (sheet == null) {
@@ -164,8 +168,7 @@ public class ReadErrorsChecker {
         if (hoursCell.getCellType() != CellType.NUMERIC) {
             return false;
         }
-        final int maxNumberOfHours = 16;
-        if (hoursCell.getNumericCellValue() > maxNumberOfHours) {
+        if (hoursCell.getNumericCellValue() > maxNumberOfHoursADay) {
             return false;
         }
         return true;
@@ -211,5 +214,16 @@ public class ReadErrorsChecker {
             return false;
         }
         return true;
+    }
+
+    public static List<Date> findDatesWithInvalidHours(Map<Date, Double> hoursOfDate) {
+        List<Date> invalidDates = new ArrayList<Date>();
+        for (Date date : hoursOfDate.keySet()) {
+            Double hours = hoursOfDate.get(date);
+            if (hours > maxNumberOfHoursADay || hours < 0) {
+                invalidDates.add(date);
+            }
+        }
+        return invalidDates;
     }
 }
