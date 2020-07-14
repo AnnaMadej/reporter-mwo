@@ -26,6 +26,8 @@ import services.XlsReadErrorsChecker;
 
 public class XlsFilesReader extends FilesReader {
     
+    private WorkbookFactory wb;
+    
     public XlsFilesReader(ReadErrorsHolder readErrorsHolder) {
         this.readErrorsChecker = new XlsReadErrorsChecker();
         this.filesFinder = new FilesFinder("xls", "xlsx");
@@ -44,6 +46,7 @@ public class XlsFilesReader extends FilesReader {
         }
         
         fileLocation = this.extractFileLocation(file);
+        
         if (!readErrorsChecker.locationMonthIsValid(fileLocation)
                 || !readErrorsChecker.locationYearIsValid(fileLocation)) {
             addLocationError(file);
@@ -55,8 +58,8 @@ public class XlsFilesReader extends FilesReader {
         String employeeSurname = this.extractEmployeeSurname(fileName);
         Employee employee = new Employee(employeeName, employeeSurname);
         List<Task> tasksToAdd = new ArrayList<Task>();
-        Workbook wb = WorkbookFactory.create(file);
-
+        Workbook wb = createWorkBook(file);
+        
         String project;
         String description;
         double time;
@@ -142,6 +145,11 @@ public class XlsFilesReader extends FilesReader {
         }
         wb.close();
         return employee;
+    }
+
+    private Workbook createWorkBook(File file) throws IOException {
+        Workbook wb = WorkbookFactory.create(file);
+        return wb;
     }
 
 

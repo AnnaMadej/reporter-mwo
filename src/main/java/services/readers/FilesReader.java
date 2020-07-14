@@ -115,7 +115,7 @@ public abstract class FilesReader {
 
     protected void addLocationError(File file) throws IOException {
         readErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
-                file.getCanonicalPath(), "Zła lokalizacja pliku!"));
+                "", "Zła lokalizacja pliku!"));
     }
 
     protected void addHoursError(File file, Date date) throws IOException {
