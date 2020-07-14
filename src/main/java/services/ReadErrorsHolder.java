@@ -7,21 +7,21 @@ import model.ScanError;
 
 public class ReadErrorsHolder {
 
-    private static List<ScanError> scanErrors = new ArrayList<ScanError>();
+    private List<ScanError> scanErrors = new ArrayList<ScanError>();
 
-    public static void addScanError(ScanError scanError) {
+    public void addScanError(ScanError scanError) {
         scanErrors.add(scanError);
     }
 
-    public static void clearScanErrors() {
+    public void clearScanErrors() {
         scanErrors = new ArrayList<ScanError>();
     }
 
-    public static List<ScanError> getScanErrors() {
+    public List<ScanError> getScanErrors() {
         return scanErrors;
     }
 
-    public static String showScanErrors() {
+    public String showScanErrors() {
 
         if (scanErrors.size() == 0) {
             return ">> Brak błędów w odczytanych plikach z danymi.";
@@ -31,7 +31,7 @@ public class ReadErrorsHolder {
 
     }
 
-    private static String stringScanErrorsTable() {
+    private String stringScanErrorsTable() {
         StringBuilder sb = new StringBuilder();
         final int numberOfLinesInHeader = 25;
         sb.append(String

@@ -20,25 +20,30 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import repository.FilesFinder;
+import services.ReadErrorsHolder;
 import services.XlsReadErrorsChecker;
 
 
 public class XlsFilesReader extends FilesReader {
     
-    public XlsFilesReader() {
+    public XlsFilesReader(ReadErrorsHolder readErrorsHolder) {
         this.readErrorsChecker = new XlsReadErrorsChecker();
         this.filesFinder = new FilesFinder("xls", "xlsx");
+        this.readErrorsHolder = readErrorsHolder;
     }
-    
+
     protected Employee readFile(File file) throws IOException, InvalidFormatException {
 
-        String fileLocation = this.extractFileLocation(file);
-        Map<Date, Double> hoursOfDate = new HashMap<Date, Double>();
+        String fileLocation;
+        Map<Date, Double> hoursOfDate = new HashMap<Date, Double>(); 
+       
 
         if (!readErrorsChecker.filenameIsValid(file)) {
             addFilenameError(file);
             return null;
         }
+        
+        fileLocation = this.extractFileLocation(file);
         if (!readErrorsChecker.locationMonthIsValid(fileLocation)
                 || !readErrorsChecker.locationYearIsValid(fileLocation)) {
             addLocationError(file);

@@ -10,6 +10,7 @@ import model.Employee;
 import model.Report;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import repository.FilesFinder;
+import services.ReadErrorsHolder;
 import services.ReportStringer;
 import services.XlsReportExporter;
 import services.readers.FilesReader;
@@ -18,7 +19,8 @@ import services.reportbuilders.ReportBuilder;
 import services.reportbuilders.ReportBuilderFactory;
 
 public class Controller {
-    private FilesReader filesReader = new XlsFilesReader();
+    private ReadErrorsHolder readErrorsHolder = new ReadErrorsHolder();
+    private FilesReader filesReader = new XlsFilesReader(readErrorsHolder);
     private ReportBuilder reportBuilder;
     
     private List<Employee> employees = new ArrayList<Employee>();
@@ -79,6 +81,10 @@ public class Controller {
 
     public String stringReport() {
         return ReportStringer.stringReport(this.report);
+    }
+
+    public String showScanErrors() {
+        return readErrorsHolder.showScanErrors();
     }
 
 }

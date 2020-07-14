@@ -20,6 +20,21 @@ public abstract class FilesReader {
     
     protected ReadErrorsChecker readErrorsChecker;
     protected FilesFinder filesFinder;
+    protected ReadErrorsHolder readErrorsHolder;
+    
+    protected void setReadErrorsChecker(ReadErrorsChecker readErrorsChecker) {
+        this.readErrorsChecker = readErrorsChecker;
+    }
+
+    protected void setFilesFinder(FilesFinder filesFinder) {
+        this.filesFinder = filesFinder;
+    }
+    
+    protected void setReadErrorsHolder(ReadErrorsHolder readErrorsHolder) {
+        this.readErrorsHolder = readErrorsHolder;
+    }
+
+
     
     protected  abstract Employee readFile(File file) throws IOException, InvalidFormatException;
     
@@ -62,56 +77,56 @@ public abstract class FilesReader {
     }
 
     protected void addMonthLocationError(File file, Sheet sheet, int j) throws IOException {
-        ReadErrorsHolder
+        readErrorsHolder
                 .addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(),
                         j + 1, "DATA", "miesiąc nie zgadza się z lokalizacją pliku!"));
     }
 
     protected void addYearLocationError(File file, Sheet sheet, int j) throws IOException {
-        ReadErrorsHolder
+        readErrorsHolder
                 .addScanError(new ScanError(file.getCanonicalPath(), sheet.getSheetName(),
                         j + 1, "DATA", "rok nie zgadza się z lokalizacją pliku!"));
     }
 
     protected void addHoursCellError(File file, Sheet sheet, int j) throws IOException {
-        ReadErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
+        readErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
                 sheet.getSheetName(), j + 1, "CZAS", "błędnie wypełniona komórka!"));
     }
 
     protected void addDescriptionCellError(File file, Sheet sheet, int j) throws IOException {
-        ReadErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
+        readErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
                 sheet.getSheetName(), j + 1, "OPIS", "błędnie wypełniona komórka!"));
     }
 
     protected void addDateCellError(File file, Sheet sheet, int j) throws IOException {
-        ReadErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
+        readErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
                 sheet.getSheetName(), j + 1, "DATA", "błędnie wypełniona komórka!"));
     }
 
     protected void addEmptyRowError(File file, Sheet sheet, int j) throws IOException {
-        ReadErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
+        readErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
                 sheet.getSheetName(), j + 1, "pusty wiersz!"));
     }
 
     protected void addColumnsError(File file, Sheet sheet) throws IOException {
-        ReadErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
+        readErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
                 sheet.getSheetName(), "Arkusz nie zawiera odpowiednich kolumn"));
     }
 
     protected void addLocationError(File file) throws IOException {
-        ReadErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
+        readErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
                 file.getCanonicalPath(), "Zła lokalizacja pliku!"));
     }
 
     protected void addHoursError(File file, Date date) throws IOException {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
         String stringDate = format.format(date);
-        ReadErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), "",
+        readErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(), "",
                 "Niepoprawna suma godzin w dniu: " + stringDate));
     }
 
     protected void addFilenameError(File file) throws IOException {
-        ReadErrorsHolder.addScanError(
+        readErrorsHolder.addScanError(
                 new ScanError(file.getCanonicalPath(), "", "", "zła nazwa pliku!"));
     }
 

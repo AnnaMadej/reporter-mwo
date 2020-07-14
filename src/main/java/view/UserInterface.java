@@ -132,7 +132,7 @@ public class UserInterface {
     }
 
     private void showErrorLogs() {
-        System.out.println(ReadErrorsHolder.showScanErrors());
+        System.out.println(controller.showScanErrors());
     }
 
     private void showHeaders() {
