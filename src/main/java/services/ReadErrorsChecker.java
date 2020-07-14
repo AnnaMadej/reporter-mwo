@@ -14,11 +14,11 @@ public abstract class ReadErrorsChecker {
     protected static final double maxNumberOfHoursADay = 24;
     
     
-    public abstract boolean hasProperColumnNames(Object object);
+    public abstract boolean hasProperColumnNames(Object projectSheet);
     
     public abstract boolean rowIsEmpty(Object dataRow);
     
-    public abstract boolean isValidDesctiptionField(Object descriptionField);
+    public abstract boolean isValidDescriptionField(Object descriptionField);
     
     public abstract boolean isValidDateField(Object dateField);
     

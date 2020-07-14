@@ -312,7 +312,7 @@ public class XlsReadErrorsCheckerTest {
 
     @Test
     public final void testIsValidDesctiptionCellNullCell() {
-        Boolean result = readErrorsChecker.isValidDesctiptionField(null);
+        Boolean result = readErrorsChecker.isValidDescriptionField(null);
 
         Assert.assertFalse(result);
     }
@@ -320,7 +320,7 @@ public class XlsReadErrorsCheckerTest {
     @Test
     public final void testIsValidDesctiptionCellEmptyCell() {
         Cell cell = dataRow.createCell(1);
-        Boolean result = readErrorsChecker.isValidDesctiptionField(cell);
+        Boolean result = readErrorsChecker.isValidDescriptionField(cell);
 
         Assert.assertFalse(result);
     }
@@ -329,7 +329,7 @@ public class XlsReadErrorsCheckerTest {
     public final void testIsValidDesctiptionCellValidCell() {
         Cell cell = dataRow.createCell(1);
         cell.setCellValue("abc");
-        Boolean result = readErrorsChecker.isValidDesctiptionField(cell);
+        Boolean result = readErrorsChecker.isValidDescriptionField(cell);
 
         Assert.assertTrue(result);
     }
@@ -338,7 +338,7 @@ public class XlsReadErrorsCheckerTest {
     public final void testIsValidDesctiptionCellEmptyStringCell() {
         Cell cell = dataRow.createCell(1);
         cell.setCellValue("");
-        Boolean result = readErrorsChecker.isValidDesctiptionField(cell);
+        Boolean result = readErrorsChecker.isValidDescriptionField(cell);
 
         Assert.assertFalse(result);
     }
@@ -347,7 +347,7 @@ public class XlsReadErrorsCheckerTest {
     public final void testIsValidDesctiptionCellNumberStringCell() {
         Cell cell = dataRow.createCell(1);
         cell.setCellValue(7);
-        Boolean result = readErrorsChecker.isValidDesctiptionField(cell);
+        Boolean result = readErrorsChecker.isValidDescriptionField(cell);
 
         Assert.assertFalse(result);
     }
@@ -808,7 +808,7 @@ public class XlsReadErrorsCheckerTest {
     
     @Test
     public final void testIsValidDesctiptionFieldBadInstance() {
-        boolean result = readErrorsChecker.isValidDesctiptionField(new Object());
+        boolean result = readErrorsChecker.isValidDescriptionField(new Object());
         Assert.assertFalse(result);
     }
     

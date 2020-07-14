@@ -54,7 +54,7 @@ public class XlsReadErrorsChecker extends ReadErrorsChecker {
         return false;
     }
 
-    public boolean isValidDesctiptionField(Object descriptionField) {
+    public boolean isValidDescriptionField(Object descriptionField) {
         if (descriptionField == null) {
             return false;
         }

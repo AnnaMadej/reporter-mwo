@@ -23,11 +23,15 @@ import repository.FilesFinder;
 import services.ReadErrorsHolder;
 import services.XlsReadErrorsChecker;
 
-
 public class XlsFilesReader extends FilesReader {
-    
+
     private WorkbookFactory wb;
-    
+    private Map<Date, Double> hoursOfDate = new HashMap<Date, Double>();
+
+    public Map<Date, Double> getHoursOfDate() {
+        return hoursOfDate;
+    }
+
     public XlsFilesReader(ReadErrorsHolder readErrorsHolder) {
         this.readErrorsChecker = new XlsReadErrorsChecker();
         this.filesFinder = new FilesFinder("xls", "xlsx");
@@ -37,16 +41,16 @@ public class XlsFilesReader extends FilesReader {
     protected Employee readFile(File file) throws IOException, InvalidFormatException {
 
         String fileLocation;
-        Map<Date, Double> hoursOfDate = new HashMap<Date, Double>(); 
-       
+
+        hoursOfDate = new HashMap<Date, Double>();
 
         if (!readErrorsChecker.filenameIsValid(file)) {
             addFilenameError(file);
             return null;
         }
-        
+
         fileLocation = this.extractFileLocation(file);
-        
+
         if (!readErrorsChecker.locationMonthIsValid(fileLocation)
                 || !readErrorsChecker.locationYearIsValid(fileLocation)) {
             addLocationError(file);
@@ -59,7 +63,7 @@ public class XlsFilesReader extends FilesReader {
         Employee employee = new Employee(employeeName, employeeSurname);
         List<Task> tasksToAdd = new ArrayList<Task>();
         Workbook wb = createWorkBook(file);
-        
+
         String project;
         String description;
         double time;
@@ -86,7 +90,7 @@ public class XlsFilesReader extends FilesReader {
                 }
 
                 Cell descriptionCell = row.getCell(1);
-                if (!readErrorsChecker.isValidDesctiptionField(descriptionCell)) {
+                if (!readErrorsChecker.isValidDescriptionField(descriptionCell)) {
                     addDescriptionCellError(file, sheet, j);
                     continue;
                 }
@@ -98,16 +102,13 @@ public class XlsFilesReader extends FilesReader {
                 }
 
                 Date date;
-                Calendar calendar = new GregorianCalendar(); 
-                try {
-                    date = dateCell.getDateCellValue();
-                    calendar.setTime(date);
-                } catch (NullPointerException e) {
-                    addDateCellError(file, sheet, j);
-                    continue;
-                }
-                if (!readErrorsChecker.locationYearEqualsDateYear(
-                        calendar.get(Calendar.YEAR), fileLocation)) {
+                Calendar calendar = new GregorianCalendar();
+
+                date = dateCell.getDateCellValue();
+                calendar.setTime(date);
+
+                if (!readErrorsChecker.locationYearEqualsDateYear(calendar.get(Calendar.YEAR),
+                        fileLocation)) {
                     addYearLocationError(file, sheet, j);
                     continue;
                 }
@@ -120,15 +121,10 @@ public class XlsFilesReader extends FilesReader {
                 description = descriptionCell.getStringCellValue();
                 time = hoursCell.getNumericCellValue();
 
-                if (hoursOfDate.containsKey(date)) {
-                    hoursOfDate.put(date, hoursOfDate.get(date) + time);
-                } else {
-                    hoursOfDate.put(date, time);
-                }
+                sumHoursOfDate(time, date);
+
                 Task task = new Task(date, project, description, time);
                 tasksToAdd.add(task);
-                employee.addTask(task);
-
             }
         }
 
@@ -138,20 +134,34 @@ public class XlsFilesReader extends FilesReader {
             for (Date date : invalidDates) {
                 addHoursError(file, date);
             }
+            return null;
         } else {
             for (Task task : tasksToAdd) {
                 employee.addTask(task);
             }
         }
         wb.close();
+        if (employee.getTaskList().size() == 0) {
+            return null;
+        }
         return employee;
     }
 
-    private Workbook createWorkBook(File file) throws IOException {
+    private void sumHoursOfDate(double time, Date date) {
+        if (hoursOfDate.containsKey(date)) {
+            hoursOfDate.put(date, hoursOfDate.get(date) + time);
+        } else {
+            hoursOfDate.put(date, time);
+        }
+    }
+
+    protected Workbook createWorkBook(File file) throws IOException {
         Workbook wb = WorkbookFactory.create(file);
         return wb;
     }
 
-
+    protected void setHoursOfDate(Map<Date, Double> hoursOfDate) {
+        this.hoursOfDate = hoursOfDate;
+    }
 
 }
