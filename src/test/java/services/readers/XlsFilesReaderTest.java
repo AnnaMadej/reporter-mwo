@@ -29,6 +29,7 @@ import org.mockito.Spy;
 
 import model.Employee;
 import model.ScanError;
+import model.Task;
 import repository.FilesFinder;
 import services.ReadErrorsChecker;
 import services.ReadErrorsHolder;
@@ -317,5 +318,70 @@ public class XlsFilesReaderTest {
         Mockito.reset(filesReader);
         Workbook wb = filesReader.createWorkBook(new File("src/test/testing-data/blankFile.xls"));
         Assert.assertTrue(wb != null);
+    }
+    
+    @Test
+    public final void testReadFileWithNoErrors()
+            throws IOException, InvalidFormatException {
+        Mockito.when(readErrorsChecker.filenameIsValid(file1)).thenReturn(true);
+        Mockito.when(readErrorsChecker.locationMonthIsValid(location)).thenReturn(true);
+        Mockito.when(readErrorsChecker.locationYearIsValid(location)).thenReturn(true);
+        Mockito.when(readErrorsChecker.hasProperColumnNames(sheet)).thenReturn(true);
+        Mockito.when(readErrorsChecker.rowIsEmpty(row)).thenReturn(false);
+        Mockito.when(readErrorsChecker.isValidDateField(cell1)).thenReturn(true);
+        Mockito.when(readErrorsChecker.isValidDescriptionField(cell2)).thenReturn(true);
+        Mockito.when(readErrorsChecker.isValidHoursField(cell3)).thenReturn(true);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(cell1.getDateCellValue());
+        Mockito.when(readErrorsChecker.locationYearEqualsDateYear(calendar.get(Calendar.YEAR),
+                location)).thenReturn(true);
+        Mockito.when(readErrorsChecker
+                .locationMonthEqualsDateMonth(calendar.get(Calendar.MONTH) + 1, location))
+                .thenReturn(true);
+
+        Mockito.when(readErrorsChecker.findDatesWithInvalidHours(Mockito.any(Map.class)))
+                .thenReturn(new ArrayList<Date>());
+
+        employees = filesReader.readFiles(path);
+        Assert.assertEquals(1, employees.size());
+        Task task = new Task(cell1.getDateCellValue(), sheet.getSheetName(), cell2.getStringCellValue(), cell3.getNumericCellValue());
+        Employee employee = employees.get(0);
+        Assert.assertEquals("Jan", employee.getName());
+        Assert.assertEquals("Nowak", employee.getSurname());
+        Assert.assertTrue(employee.getTaskList().contains(task));
+        
+    }
+    
+    @Test
+    public void testSumHoursOfDate() {
+        Date date = new Date();
+        filesReader.sumHoursOfDate(2, date);
+        filesReader.sumHoursOfDate(3, date);
+        
+        Map<Date, Double> hoursOfDate = filesReader.getHoursOfDate();
+        Assert.assertTrue(hoursOfDate.containsKey(date));
+        Assert.assertTrue(hoursOfDate.get(date) == 5.0);
+    }
+    
+    @Test
+    public void testMergeEmployee() {
+        List<Employee> employees = new ArrayList<Employee>();
+        Employee employee = new Employee("Karolina", "Kwiatkowska");
+        Task task = new Task(new Date(), "projekt1", "opis1", 3);
+        employee.addTask(task);
+        Employee employee2 = new Employee("Karolina", "Kwiatkowska");
+        Task task2 = new Task(new Date(), "projekt2", "opis2", 1);
+        employee2.addTask(task2);
+        
+        filesReader.mergeEmployee(employees, employee);
+        filesReader.mergeEmployee(employees, employee2);
+        
+        Assert.assertEquals(1, employees.size());
+        Employee mergedEmployee = employees.get(0);
+        List<Task> mergedEmployeeTasks = mergedEmployee.getTaskList();
+        Assert.assertEquals(2, mergedEmployeeTasks.size());
+        
+        Assert.assertTrue(mergedEmployeeTasks.contains(task));
+        Assert.assertTrue(mergedEmployeeTasks.contains(task2));
     }
 }

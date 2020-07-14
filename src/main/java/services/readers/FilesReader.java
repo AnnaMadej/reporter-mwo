@@ -47,19 +47,22 @@ public abstract class FilesReader {
             Employee employee = new Employee();
             employee = this.readFile(file);
 
-            if (employee != null) {
-                if (employees.contains(employee)) {
-                    employees.get(employees.indexOf(employee))
-                            .addTasks(employee.getTaskList());
-                } else {
-                    employees.add(employee);
-                }
-
-            }
+            mergeEmployee(employees, employee);
 
         }
         employees.sort(Comparator.comparing(Employee::getSurname));
         return employees;
+    }
+
+    protected void mergeEmployee(List<Employee> employees, Employee employee) {
+        if (employee != null) {
+            if (employees.contains(employee)) {
+                employees.get(employees.indexOf(employee))
+                        .addTasks(employee.getTaskList());
+            } else {
+                employees.add(employee);
+            }
+        }
     }
     
     protected String extractEmployeeName(String fileName) {

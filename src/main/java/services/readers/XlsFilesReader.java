@@ -147,7 +147,7 @@ public class XlsFilesReader extends FilesReader {
         return employee;
     }
 
-    private void sumHoursOfDate(double time, Date date) {
+    protected void sumHoursOfDate(double time, Date date) {
         if (hoursOfDate.containsKey(date)) {
             hoursOfDate.put(date, hoursOfDate.get(date) + time);
         } else {
@@ -159,9 +159,5 @@ public class XlsFilesReader extends FilesReader {
         Workbook wb = WorkbookFactory.create(file);
         return wb;
     }
-
-    protected void setHoursOfDate(Map<Date, Double> hoursOfDate) {
-        this.hoursOfDate = hoursOfDate;
-    }
-
+    
 }

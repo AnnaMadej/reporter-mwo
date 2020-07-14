@@ -9,7 +9,7 @@ public class Task {
     private String taskName;
     private Double hours;
 
-    public Task(Date taskDate, java.lang.String projectName, java.lang.String taskName,
+    public Task(Date taskDate, String projectName, String taskName,
             double hours) {
         this.taskDate = taskDate;
         this.projectName = projectName;
