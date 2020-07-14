@@ -13,7 +13,7 @@ import org.junit.Test;
 import model.Employee;
 import model.Report;
 import model.Task;
-import services.ReportPrinter;
+import services.ReportStringer;
 import services.reportbuilders.Report5Builder;
 import services.reportbuilders.ReportBuilder;
 
@@ -74,7 +74,7 @@ public class Report5BuilderTest {
 
 		this.reportBuilder.setEmployees(employees);
 		Report report = this.reportBuilder.buildReport();
-		System.out.println(ReportPrinter.stringReport(report));
+		System.out.println(ReportStringer.stringReport(report));
 		Assert.assertEquals(4, report.getRows().size());
 		Assert.assertTrue(report.getRows().stream().anyMatch(
 				r -> (r.get(1).equals("Adam Nowak") && r.get(2).equals("projekt1") && r.get(3).equals("2.0"))));

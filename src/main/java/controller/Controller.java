@@ -10,14 +10,19 @@ import model.Employee;
 import model.Report;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import repository.FilesFinder;
-import services.ReportPrinter;
-import services.ReportXlsExporter;
+import services.ReportStringer;
+import services.XlsReportExporter;
+import services.readers.FilesReader;
+import services.readers.XlsFilesReader;
 import services.reportbuilders.ReportBuilder;
 import services.reportbuilders.ReportBuilderFactory;
 
 public class Controller {
-    private List<Employee> employees = new ArrayList<Employee>();
+    private FilesReader filesReader = new XlsFilesReader();
     private ReportBuilder reportBuilder;
+    
+    private List<Employee> employees = new ArrayList<Employee>();
+
     private Report report;
     private String reportFilePath;
 
@@ -30,7 +35,7 @@ public class Controller {
     }
 
     public String exportReport() throws IOException {
-        File file = ReportXlsExporter.exportToXls(this.report);
+        File file = XlsReportExporter.exportToXls(this.report);
         this.reportFilePath = file.getCanonicalPath();
         return this.reportFilePath;
     }
@@ -60,8 +65,7 @@ public class Controller {
     }
 
     public void readEmployeesData(String path) throws InvalidFormatException, IOException {
-        FilesFinder fileScanner = new FilesFinder();
-        this.employees = fileScanner.scanFiles(path);
+        this.employees = filesReader.readFiles(path);
     }
 
     public void setReportType(String userOption) {
@@ -74,7 +78,7 @@ public class Controller {
     }
 
     public String stringReport() {
-        return ReportPrinter.stringReport(this.report);
+        return ReportStringer.stringReport(this.report);
     }
 
 }

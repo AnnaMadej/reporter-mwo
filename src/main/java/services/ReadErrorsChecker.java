@@ -8,58 +8,23 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
 
-public class ReadErrorsChecker {
-    private static final double maxNumberOfHoursADay = 24;
-
-    public static boolean sheetHasProperColumnNames(Sheet sheet) {
-        if (sheet == null) {
-            return false;
-        }
-        if (sheet.getRow(0) == null) {
-            return false;
-        }
-        if (sheet.getRow(0).getCell(0) == null || sheet.getRow(0).getCell(1) == null
-                || sheet.getRow(0).getCell(2) == null
-                || !sheet.getRow(0).getCell(0).getCellType().equals(CellType.STRING)
-                || !sheet.getRow(0).getCell(1).getCellType().equals(CellType.STRING)
-                || !sheet.getRow(0).getCell(2).getCellType().equals(CellType.STRING)
-                || !sheet.getRow(0).getCell(0).getStringCellValue().equals("Data")
-                || !sheet.getRow(0).getCell(1).getStringCellValue().equals("Zadanie")
-                || !sheet.getRow(0).getCell(2).getStringCellValue().equals("Czas [h]")) {
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean rowIsEmpty(Row row) {
-        if (row == null) {
-            return true;
-        }
-        if (row.getCell(0) == null && row.getCell(1) == null && row.getCell(2) == null) {
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean isValidDesctiptionCell(Cell descriptionCell) {
-        if (descriptionCell == null || descriptionCell.getCellType() == CellType.BLANK) {
-            return false;
-        }
-        if (descriptionCell.getCellType() != CellType.STRING) {
-            return false;
-        }
-        if (descriptionCell.getStringCellValue().trim().equals("")) {
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean locationYearIsValid(String fileLocation) {
+public abstract class ReadErrorsChecker {
+    
+    protected static final double maxNumberOfHoursADay = 24;
+    
+    
+    public abstract boolean hasProperColumnNames(Object object);
+    
+    public abstract boolean rowIsEmpty(Object dataRow);
+    
+    public abstract boolean isValidDesctiptionField(Object descriptionField);
+    
+    public abstract boolean isValidDateField(Object dateField);
+    
+    public abstract boolean isValidHoursField(Object hoursField);
+    
+    public boolean locationYearIsValid(String fileLocation) {
         if (fileLocation == null) {
             return false;
         }
@@ -79,7 +44,7 @@ public class ReadErrorsChecker {
         return true;
     }
 
-    private static Integer extractYear(String fileLocation) {
+    protected Integer extractYear(String fileLocation) {
         if (fileLocation.equals("")) {
             return -1;
         }
@@ -108,7 +73,7 @@ public class ReadErrorsChecker {
         return fileYearFromLocation;
     }
 
-    public static boolean locationMonthIsValid(String fileLocation) {
+    public boolean locationMonthIsValid(String fileLocation) {
         Integer fileMonthFromLocation = extractMonth(fileLocation);
         if (fileMonthFromLocation == -1) {
             return false;
@@ -120,7 +85,7 @@ public class ReadErrorsChecker {
         return true;
     }
 
-    private static Integer extractMonth(String fileLocation) {
+    protected Integer extractMonth(String fileLocation) {
         if (fileLocation.equals("")) {
             return -1;
         }
@@ -138,58 +103,12 @@ public class ReadErrorsChecker {
         }
         return fileMonthFromLocation;
     }
-
-    public static boolean isValidDateCell(Cell dateCell) {
-        if (dateCell == null || dateCell.getCellType() == CellType.BLANK) {
-            return false;
-        }
-        if (!dateCell.getCellType().equals(CellType.NUMERIC)) {
-            return false;
-        }
-
-        Calendar c = Calendar.getInstance();
-        c.setTime(new Date());
-        final int yearsDifference = 25;
-        c.add(Calendar.YEAR, -yearsDifference); 
-        Date minDate = c.getTime();
-        c.add(Calendar.YEAR, yearsDifference * 2);
-        Date maxDate = c.getTime();
-        Date date = dateCell.getDateCellValue();
-        if (date.before(minDate) || date.after(maxDate)) {
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean isValidHoursCell(Cell hoursCell) {
-        if (hoursCell == null || hoursCell.getCellType() == CellType.BLANK) {
-            return false;
-        }
-        if (hoursCell.getCellType() != CellType.NUMERIC) {
-            return false;
-        }
-        if (hoursCell.getNumericCellValue() > maxNumberOfHoursADay) {
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean filenameIsValid(File file) throws IOException {
-        if (file == null) {
-            return false;
-        }
-        String fileWithExtension = file.getName();
-        if (!fileWithExtension.matches("[A-Z]{1}[a-z]+_{1}[A-Z]{1}[a-z]+.[a-z]{3,4}")) {
-            return false;
-        }
-        return true;
-    }
-
-    public static boolean locationYearEqualsDateYear(int year, String fileLocation) {
+    
+    public boolean locationYearEqualsDateYear(int year, String fileLocation) {
         if (fileLocation == null) {
             return false;
         }
-        Integer fileYearFromLocation = extractYear(fileLocation);
+        Integer fileYearFromLocation = this.extractYear(fileLocation);
         if (fileYearFromLocation == -1) {
             return false;
         }
@@ -199,18 +118,18 @@ public class ReadErrorsChecker {
         return true;
     }
 
-    public static boolean locationMonthEqualsDateMonth(int month, String location) {
+    public boolean locationMonthEqualsDateMonth(int month, String location) {
         if (location == null) {
             return false;
         }
-        Integer fileMonthFromLocation = extractMonth(location);
+        Integer fileMonthFromLocation = this.extractMonth(location);
         if (month != fileMonthFromLocation) {
             return false;
         }
         return true;
     }
-
-    public static List<Date> findDatesWithInvalidHours(Map<Date, Double> hoursOfDate) {
+    
+    public List<Date> findDatesWithInvalidHours(Map<Date, Double> hoursOfDate) {
         List<Date> invalidDates = new ArrayList<Date>();
         for (Date date : hoursOfDate.keySet()) {
             Double hours = hoursOfDate.get(date);
@@ -219,5 +138,16 @@ public class ReadErrorsChecker {
             }
         }
         return invalidDates;
+    }
+    
+    public boolean filenameIsValid(File file) throws IOException {
+        if (file == null) {
+            return false;
+        }
+        String fileWithExtension = file.getName();
+        if (!fileWithExtension.matches("[A-Z]{1}[a-z]+_{1}[A-Z]{1}[a-z]+.[a-z]{3,4}")) {
+            return false;
+        }
+        return true;
     }
 }

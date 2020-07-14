@@ -20,12 +20,13 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class ReadErrorsCheckerTest {
+public class XlsReadErrorsCheckerTest {
 
     private static Workbook wb;
     private static Sheet sheet;
     private static Row columnNamesRow;
     private static Row dataRow;
+    private static ReadErrorsChecker readErrorsChecker= new XlsReadErrorsChecker();
 
     @Before
     public void init() {
@@ -38,7 +39,7 @@ public class ReadErrorsCheckerTest {
     @Test
     public final void testSheetHasProperColumnNamesWithNullSheet() {
         Sheet sheet = null;
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
@@ -52,7 +53,7 @@ public class ReadErrorsCheckerTest {
         cell1.setCellValue("Zadanie");
         cell2.setCellValue("Czas [h]");
 
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertTrue(result);
     }
 
@@ -66,7 +67,7 @@ public class ReadErrorsCheckerTest {
         cell1.setCellValue("aa");
         cell2.setCellValue("bb");
 
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
@@ -80,7 +81,7 @@ public class ReadErrorsCheckerTest {
         cell1.setCellValue("Zadanie");
         cell2.setCellValue("bb");
 
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
@@ -94,7 +95,7 @@ public class ReadErrorsCheckerTest {
         cell1.setCellValue("bb");
         cell2.setCellValue("Czas [h]");
 
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
@@ -108,14 +109,14 @@ public class ReadErrorsCheckerTest {
         cell1.setCellValue("Zadanie");
         cell2.setCellValue("cc");
 
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testSheetHasProperColumnNamesWithNullCells() {
 
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
@@ -129,7 +130,7 @@ public class ReadErrorsCheckerTest {
         cell1.setCellValue(2);
         cell2.setCellValue(3);
 
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
@@ -143,7 +144,7 @@ public class ReadErrorsCheckerTest {
         cell1.setCellValue(2);
         cell2.setCellValue(3);
 
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
@@ -157,7 +158,7 @@ public class ReadErrorsCheckerTest {
         cell1.setCellValue("aaa");
         cell2.setCellValue(3);
 
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
@@ -171,7 +172,7 @@ public class ReadErrorsCheckerTest {
         cell1.setCellValue(2);
         cell2.setCellValue("aaa");
 
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
@@ -185,7 +186,7 @@ public class ReadErrorsCheckerTest {
         cell1.setCellValue("bbb");
         cell2.setCellValue(3);
 
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
@@ -198,7 +199,7 @@ public class ReadErrorsCheckerTest {
         cell1.setCellValue("Zadanie");
         cell2.setCellValue("Czas [h]");
 
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
@@ -211,7 +212,7 @@ public class ReadErrorsCheckerTest {
         cell0.setCellValue("Data");
         cell2.setCellValue("Czas [h]");
 
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
@@ -224,7 +225,7 @@ public class ReadErrorsCheckerTest {
         cell0.setCellValue("Data");
         cell1.setCellValue("Zadanie");
 
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
@@ -238,7 +239,7 @@ public class ReadErrorsCheckerTest {
         cell1.setCellValue(new String());
         cell2.setCellValue(new String());
 
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
@@ -252,33 +253,33 @@ public class ReadErrorsCheckerTest {
         cell1.setCellValue("bb");
         cell2.setCellValue("cc");
 
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testSheetHasProperColumnNamesWithNoColumns() {
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testSheetHasProperColumnNamesWithNoRows() {
         Sheet sheet = wb.createSheet();
-        Boolean result = ReadErrorsChecker.sheetHasProperColumnNames(sheet);
+        Boolean result = readErrorsChecker.hasProperColumnNames(sheet);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testRowIsEmptyWithEmptyRow() {
         Row someEmptyRow = sheet.createRow(5);
-        Boolean result = ReadErrorsChecker.rowIsEmpty(someEmptyRow);
+        Boolean result = readErrorsChecker.rowIsEmpty(someEmptyRow);
         Assert.assertTrue(result);
     }
 
     @Test
     public final void testRowIsEmptyWithNullRow() {
-        Boolean result = ReadErrorsChecker.rowIsEmpty(null);
+        Boolean result = readErrorsChecker.rowIsEmpty(null);
         Assert.assertTrue(result);
     }
 
@@ -287,7 +288,7 @@ public class ReadErrorsCheckerTest {
         Row someNotEmptyRow = sheet.createRow(5);
         Cell cell = someNotEmptyRow.createCell(0);
         cell.setCellValue("aaaa");
-        Boolean result = ReadErrorsChecker.rowIsEmpty(someNotEmptyRow);
+        Boolean result = readErrorsChecker.rowIsEmpty(someNotEmptyRow);
         Assert.assertFalse(result);
     }
     
@@ -296,7 +297,7 @@ public class ReadErrorsCheckerTest {
         Row someNotEmptyRow = sheet.createRow(5);
         Cell cell = someNotEmptyRow.createCell(1);
         cell.setCellValue("aaaa");
-        Boolean result = ReadErrorsChecker.rowIsEmpty(someNotEmptyRow);
+        Boolean result = readErrorsChecker.rowIsEmpty(someNotEmptyRow);
         Assert.assertFalse(result);
     }
     
@@ -305,13 +306,13 @@ public class ReadErrorsCheckerTest {
         Row someNotEmptyRow = sheet.createRow(5);
         Cell cell = someNotEmptyRow.createCell(2);
         cell.setCellValue("aaaa");
-        Boolean result = ReadErrorsChecker.rowIsEmpty(someNotEmptyRow);
+        Boolean result = readErrorsChecker.rowIsEmpty(someNotEmptyRow);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testIsValidDesctiptionCellNullCell() {
-        Boolean result = ReadErrorsChecker.isValidDesctiptionCell(null);
+        Boolean result = readErrorsChecker.isValidDesctiptionField(null);
 
         Assert.assertFalse(result);
     }
@@ -319,7 +320,7 @@ public class ReadErrorsCheckerTest {
     @Test
     public final void testIsValidDesctiptionCellEmptyCell() {
         Cell cell = dataRow.createCell(1);
-        Boolean result = ReadErrorsChecker.isValidDesctiptionCell(cell);
+        Boolean result = readErrorsChecker.isValidDesctiptionField(cell);
 
         Assert.assertFalse(result);
     }
@@ -328,7 +329,7 @@ public class ReadErrorsCheckerTest {
     public final void testIsValidDesctiptionCellValidCell() {
         Cell cell = dataRow.createCell(1);
         cell.setCellValue("abc");
-        Boolean result = ReadErrorsChecker.isValidDesctiptionCell(cell);
+        Boolean result = readErrorsChecker.isValidDesctiptionField(cell);
 
         Assert.assertTrue(result);
     }
@@ -337,7 +338,7 @@ public class ReadErrorsCheckerTest {
     public final void testIsValidDesctiptionCellEmptyStringCell() {
         Cell cell = dataRow.createCell(1);
         cell.setCellValue("");
-        Boolean result = ReadErrorsChecker.isValidDesctiptionCell(cell);
+        Boolean result = readErrorsChecker.isValidDesctiptionField(cell);
 
         Assert.assertFalse(result);
     }
@@ -346,56 +347,56 @@ public class ReadErrorsCheckerTest {
     public final void testIsValidDesctiptionCellNumberStringCell() {
         Cell cell = dataRow.createCell(1);
         cell.setCellValue(7);
-        Boolean result = ReadErrorsChecker.isValidDesctiptionCell(cell);
+        Boolean result = readErrorsChecker.isValidDesctiptionField(cell);
 
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testLocationYearIsValidWithNullLocation() {
-        Boolean result = ReadErrorsChecker.locationYearIsValid(null);
+        Boolean result = readErrorsChecker.locationYearIsValid(null);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testLocationYearIsValidWithBadLocation() {
         String location = "aldijweiofweoifwf";
-        Boolean result = ReadErrorsChecker.locationYearIsValid(location);
+        Boolean result = readErrorsChecker.locationYearIsValid(location);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testLocationYearIsValidWithWrongSizeOfYear() {
         String location = "c:/201/12";
-        Boolean result = ReadErrorsChecker.locationYearIsValid(location);
+        Boolean result = readErrorsChecker.locationYearIsValid(location);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testLocationYearIsValidWithGoodLocation() {
         String location = "c:/2012/01";
-        Boolean result = ReadErrorsChecker.locationYearIsValid(location);
+        Boolean result = readErrorsChecker.locationYearIsValid(location);
         Assert.assertTrue(result);
     }
 
     @Test
     public final void testLocationYearIsValidWithWrongSlashes() {
         String location = "c:/A2012A01";
-        Boolean result = ReadErrorsChecker.locationYearIsValid(location);
+        Boolean result = readErrorsChecker.locationYearIsValid(location);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testLocationYearIsValidWithOneDigitMonthLocation() {
         String location = "c:/2012/1";
-        Boolean result = ReadErrorsChecker.locationYearIsValid(location);
+        Boolean result = readErrorsChecker.locationYearIsValid(location);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testLocationYearIsValidWithNoMonth() {
         String location = "c:/2012";
-        Boolean result = ReadErrorsChecker.locationYearIsValid(location);
+        Boolean result = readErrorsChecker.locationYearIsValid(location);
         Assert.assertFalse(result);
     }
 
@@ -407,7 +408,7 @@ public class ReadErrorsCheckerTest {
         int year = calendar.get(Calendar.YEAR) - 26;
 
         String location = "c:/" + year + "/04";
-        Boolean result = ReadErrorsChecker.locationYearIsValid(location);
+        Boolean result = readErrorsChecker.locationYearIsValid(location);
         Assert.assertFalse(result);
     }
 
@@ -419,63 +420,63 @@ public class ReadErrorsCheckerTest {
         int year = calendar.get(Calendar.YEAR) + 26;
 
         String location = "c:/" + year + "/04";
-        Boolean result = ReadErrorsChecker.locationYearIsValid(location);
+        Boolean result = readErrorsChecker.locationYearIsValid(location);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testLocationYearIsValidWithStringYear() {
         String location = "c:/abcd/04";
-        Boolean result = ReadErrorsChecker.locationYearIsValid(location);
+        Boolean result = readErrorsChecker.locationYearIsValid(location);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testLocationMonthIsValidNoMonth() {
         String location = "c:/2012";
-        Boolean result = ReadErrorsChecker.locationMonthIsValid(location);
+        Boolean result = readErrorsChecker.locationMonthIsValid(location);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testLocationMonthIsValidStringMonth() {
         String location = "c:/2012/ab";
-        Boolean result = ReadErrorsChecker.locationMonthIsValid(location);
+        Boolean result = readErrorsChecker.locationMonthIsValid(location);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testLocationMonthIsValidStrangeLocation() {
         String location = "adasdasdasdasd";
-        Boolean result = ReadErrorsChecker.locationMonthIsValid(location);
+        Boolean result = readErrorsChecker.locationMonthIsValid(location);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testLocationMonthIsValidSingleDigitMonth() {
         String location = "c:/2012/1";
-        Boolean result = ReadErrorsChecker.locationMonthIsValid(location);
+        Boolean result = readErrorsChecker.locationMonthIsValid(location);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testLocationMonthIsValidGoodLocation() {
         String location = "c:/2012/08";
-        Boolean result = ReadErrorsChecker.locationMonthIsValid(location);
+        Boolean result = readErrorsChecker.locationMonthIsValid(location);
         Assert.assertTrue(result);
     }
 
     @Test
     public final void testLocationMonthIsValidZeroMonth() {
         String location = "c:/2012/00";
-        Boolean result = ReadErrorsChecker.locationMonthIsValid(location);
+        Boolean result = readErrorsChecker.locationMonthIsValid(location);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testLocationMonthIsValid13Month() {
         String location = "c:/2012/13";
-        Boolean result = ReadErrorsChecker.locationMonthIsValid(location);
+        Boolean result = readErrorsChecker.locationMonthIsValid(location);
         Assert.assertFalse(result);
     }
 
@@ -483,7 +484,7 @@ public class ReadErrorsCheckerTest {
     public final void testIsValidDateCellStringCell() {
         Cell cell = dataRow.createCell(1);
         cell.setCellValue("abc");
-        Boolean result = ReadErrorsChecker.isValidDateCell(cell);
+        Boolean result = readErrorsChecker.isValidDateField(cell);
 
         Assert.assertFalse(result);
     }
@@ -492,7 +493,7 @@ public class ReadErrorsCheckerTest {
     public final void testIsValidDateCellNumberCell() {
         Cell cell = dataRow.createCell(1);
         cell.setCellValue(7);
-        Boolean result = ReadErrorsChecker.isValidDateCell(cell);
+        Boolean result = readErrorsChecker.isValidDateField(cell);
         Assert.assertFalse(result);
     }
 
@@ -500,13 +501,13 @@ public class ReadErrorsCheckerTest {
     public final void testIsValidDateCellValidCell() {
         Cell cell = dataRow.createCell(1);
         cell.setCellValue(new Date());
-        Boolean result = ReadErrorsChecker.isValidDateCell(cell);
+        Boolean result = readErrorsChecker.isValidDateField(cell);
         Assert.assertTrue(result);
     }
 
     @Test
     public final void testIsValidDateCellNullCell() {
-        Boolean result = ReadErrorsChecker.isValidDateCell(null);
+        Boolean result = readErrorsChecker.isValidDateField(null);
         Assert.assertFalse(result);
     }
 
@@ -514,7 +515,7 @@ public class ReadErrorsCheckerTest {
     public final void testIsValidDateCellEmptyCell() {
         Cell cell = dataRow.createCell(1);
         cell.setCellValue("");
-        Boolean result = ReadErrorsChecker.isValidDateCell(cell);
+        Boolean result = readErrorsChecker.isValidDateField(cell);
         Assert.assertFalse(result);
     }
 
@@ -522,14 +523,14 @@ public class ReadErrorsCheckerTest {
     public final void testIsValidDateCellSpaceCell() {
         Cell cell = dataRow.createCell(1);
         cell.setCellValue(" ");
-        Boolean result = ReadErrorsChecker.isValidDateCell(cell);
+        Boolean result = readErrorsChecker.isValidDateField(cell);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testIsValidDateCellBlankCell() {
         Cell cell = dataRow.createCell(1);
-        Boolean result = ReadErrorsChecker.isValidDateCell(cell);
+        Boolean result = readErrorsChecker.isValidDateField(cell);
         Assert.assertFalse(result);
     }
 
@@ -542,7 +543,7 @@ public class ReadErrorsCheckerTest {
         c.add(Calendar.YEAR, -yearsDifference);
         Date date = c.getTime();
         cell.setCellValue(date);
-        Boolean result = ReadErrorsChecker.isValidDateCell(cell);
+        Boolean result = readErrorsChecker.isValidDateField(cell);
         Assert.assertFalse(result);
     }
 
@@ -555,7 +556,7 @@ public class ReadErrorsCheckerTest {
         c.add(Calendar.YEAR, yearsDifference);
         Date date = c.getTime();
         cell.setCellValue(date);
-        Boolean result = ReadErrorsChecker.isValidDateCell(cell);
+        Boolean result = readErrorsChecker.isValidDateField(cell);
         Assert.assertFalse(result);
     }
 
@@ -563,7 +564,7 @@ public class ReadErrorsCheckerTest {
     public final void testIsValidHoursCellStringCell() {
         Cell cell = dataRow.createCell(1);
         cell.setCellValue("abc");
-        Boolean result = ReadErrorsChecker.isValidHoursCell(cell);
+        Boolean result = readErrorsChecker.isValidHoursField(cell);
 
         Assert.assertFalse(result);
     }
@@ -572,13 +573,13 @@ public class ReadErrorsCheckerTest {
     public final void testIsValidHoursCellValidCell() {
         Cell cell = dataRow.createCell(1);
         cell.setCellValue(4.5);
-        Boolean result = ReadErrorsChecker.isValidHoursCell(cell);
+        Boolean result = readErrorsChecker.isValidHoursField(cell);
         Assert.assertTrue(result);
     }
 
     @Test
     public final void testIsValidHoursCellNullCell() {
-        Boolean result = ReadErrorsChecker.isValidHoursCell(null);
+        Boolean result = readErrorsChecker.isValidHoursField(null);
         Assert.assertFalse(result);
     }
 
@@ -586,7 +587,7 @@ public class ReadErrorsCheckerTest {
     public final void testIsValidHoursCellEmptyCell() {
         Cell cell = dataRow.createCell(1);
         cell.setCellValue("");
-        Boolean result = ReadErrorsChecker.isValidHoursCell(cell);
+        Boolean result = readErrorsChecker.isValidHoursField(cell);
         Assert.assertFalse(result);
     }
 
@@ -594,14 +595,14 @@ public class ReadErrorsCheckerTest {
     public final void testIsValidHoursCellSpaceCell() {
         Cell cell = dataRow.createCell(1);
         cell.setCellValue(" ");
-        Boolean result = ReadErrorsChecker.isValidHoursCell(cell);
+        Boolean result = readErrorsChecker.isValidHoursField(cell);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testIsValidHoursCellBlankCell() {
         Cell cell = dataRow.createCell(1);
-        Boolean result = ReadErrorsChecker.isValidHoursCell(cell);
+        Boolean result = readErrorsChecker.isValidHoursField(cell);
         Assert.assertFalse(result);
     }
 
@@ -609,72 +610,72 @@ public class ReadErrorsCheckerTest {
     public final void testIsValidHoursCellTooManyHours() {
         Cell cell = dataRow.createCell(1);
         cell.setCellValue(25);
-        Boolean result = ReadErrorsChecker.isValidHoursCell(cell);
+        Boolean result = readErrorsChecker.isValidHoursField(cell);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testfilenmeIsValidNullFile() throws IOException {
-        Boolean result = ReadErrorsChecker.filenameIsValid(null);
+        Boolean result = readErrorsChecker.filenameIsValid(null);
         Assert.assertFalse(result);
     }
 
     @Test
     public final void testfilenmeIsValidStrangeNameFile() throws IOException {
         File file = new File("someStrangeNameFile");
-        Boolean result = ReadErrorsChecker.filenameIsValid(file);
+        Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertFalse(result);
     }
     
     @Test
     public final void testfilenmeIsValidEmptyNameFile() throws IOException {
         File file = new File("");
-        Boolean result = ReadErrorsChecker.filenameIsValid(file);
+        Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertFalse(result);
     }
     @Test
     public final void testfilenmeIsValidGoodNameFile() throws IOException {
         File file = new File("C:/2012/01/Adam_Nowak.xls");
-        Boolean result = ReadErrorsChecker.filenameIsValid(file);
+        Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertTrue(result);
     }
     
     @Test
     public final void testfilenmeIsValidNameWithSpace() throws IOException {
         File file = new File("C:/2012/01/Adam Nowak.xls");
-        Boolean result = ReadErrorsChecker.filenameIsValid(file);
+        Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertFalse(result);
     }
     @Test
     public final void testfilenmeIsValidNameWithLetter() throws IOException {
         File file = new File("C:/2012/01/AdamBNowak.xls");
-        Boolean result = ReadErrorsChecker.filenameIsValid(file);
+        Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertFalse(result);
     }
     @Test
     public final void testfilenmeIsValidDoubleName() throws IOException {
         File file = new File("C:/2012/01/Adam_Ignacy_Nowak.xls");
-        Boolean result = ReadErrorsChecker.filenameIsValid(file);
+        Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertFalse(result);
     }
     @Test
     public final void testfilenmeIsValidLowerCase() throws IOException {
         File file = new File("C:/2012/01/adam_nowak.xls");
-        Boolean result = ReadErrorsChecker.filenameIsValid(file);
+        Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertFalse(result);
     }
     
     @Test
     public final void testfilenmeIsValidUpperCase() throws IOException {
         File file = new File("C:/2012/01/ADAM_NOWAK.xls");
-        Boolean result = ReadErrorsChecker.filenameIsValid(file);
+        Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertFalse(result);
     }
     
     @Test
     public final void testfilenmeIsValidXlsx() throws IOException {
         File file = new File("C:/2012/01/Adam_Nowak.xlsx");
-        Boolean result = ReadErrorsChecker.filenameIsValid(file);
+        Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertTrue(result);
     }
     
@@ -682,7 +683,7 @@ public class ReadErrorsCheckerTest {
     @Test
     public final void locationYearEqualsDateYearNulllocation() throws IOException {
         int year = 2012;
-        Boolean result = ReadErrorsChecker.locationYearEqualsDateYear(year, null);
+        Boolean result = readErrorsChecker.locationYearEqualsDateYear(year, null);
         Assert.assertFalse(result);
     }
     
@@ -690,7 +691,7 @@ public class ReadErrorsCheckerTest {
     public final void locationYearEqualsDateYearCorrect() throws IOException {
         int year = 2012;
         String location = "c:/2012/01";
-        Boolean result = ReadErrorsChecker.locationYearEqualsDateYear(year, location);
+        Boolean result = readErrorsChecker.locationYearEqualsDateYear(year, location);
         Assert.assertTrue(result);
     }
     
@@ -698,7 +699,7 @@ public class ReadErrorsCheckerTest {
     public final void locationYearEqualsDateYearDifferent() throws IOException {
         int year = 2012;
         String location = "c:/2013/01";
-        Boolean result = ReadErrorsChecker.locationYearEqualsDateYear(year, location);
+        Boolean result = readErrorsChecker.locationYearEqualsDateYear(year, location);
         Assert.assertFalse(result);
     }
     
@@ -706,7 +707,7 @@ public class ReadErrorsCheckerTest {
     public final void locationYearEqualsDateYearStrangeLocation() throws IOException {
         int year = 2012;
         String location = "qwdqwdqwdqwdqwd31";
-        Boolean result = ReadErrorsChecker.locationYearEqualsDateYear(year, location);
+        Boolean result = readErrorsChecker.locationYearEqualsDateYear(year, location);
         Assert.assertFalse(result);
     }
     
@@ -714,14 +715,14 @@ public class ReadErrorsCheckerTest {
     public final void locationYearEqualsDateYearEmptyLocation() throws IOException {
         int year = 2012;
         String location = "";
-        Boolean result = ReadErrorsChecker.locationYearEqualsDateYear(year, location);
+        Boolean result = readErrorsChecker.locationYearEqualsDateYear(year, location);
         Assert.assertFalse(result);
     }
     
     @Test
     public final void locationMonthEqualsDateMonthNulllocation() throws IOException {
         int month = 3;
-        Boolean result = ReadErrorsChecker.locationMonthEqualsDateMonth(month, null);
+        Boolean result = readErrorsChecker.locationMonthEqualsDateMonth(month, null);
         Assert.assertFalse(result);
     }
     
@@ -729,7 +730,7 @@ public class ReadErrorsCheckerTest {
     public final void locationMonthEqualsDateMonthCorrect() throws IOException {
         int month = 1;
         String location = "c:/2012/01";
-        Boolean result = ReadErrorsChecker.locationMonthEqualsDateMonth(month, location);
+        Boolean result = readErrorsChecker.locationMonthEqualsDateMonth(month, location);
         Assert.assertTrue(result);
     }
     
@@ -737,7 +738,7 @@ public class ReadErrorsCheckerTest {
     public final void locationMonthEqualsDateMonthDifferent() throws IOException {
         int month = 2;
         String location = "c:/2012/01";
-        Boolean result = ReadErrorsChecker.locationMonthEqualsDateMonth(month, location);
+        Boolean result = readErrorsChecker.locationMonthEqualsDateMonth(month, location);
         Assert.assertFalse(result);
     }
     
@@ -745,7 +746,7 @@ public class ReadErrorsCheckerTest {
     public final void locationMonthEqualsDateMonthStrangeLocation() throws IOException {
         int month = 2;
         String location = "dwdwedwedwedwedwed";
-        Boolean result = ReadErrorsChecker.locationMonthEqualsDateMonth(month, location);
+        Boolean result = readErrorsChecker.locationMonthEqualsDateMonth(month, location);
         Assert.assertFalse(result);
     }
     
@@ -753,7 +754,7 @@ public class ReadErrorsCheckerTest {
     public final void locationMonthEqualsDateMonthEmptyLocation() throws IOException {
         int month = 2;
         String location = "";
-        Boolean result = ReadErrorsChecker.locationMonthEqualsDateMonth(month, location);
+        Boolean result = readErrorsChecker.locationMonthEqualsDateMonth(month, location);
         Assert.assertFalse(result);
     }
     
@@ -765,7 +766,7 @@ public class ReadErrorsCheckerTest {
         Date date = calendar.getTime();
         hoursOfDates.put(date, 25.0);
         
-        List<Date> result = ReadErrorsChecker.findDatesWithInvalidHours(hoursOfDates);
+        List<Date> result = readErrorsChecker.findDatesWithInvalidHours(hoursOfDates);
         Assert.assertTrue(result.contains(date));   
     }
     
@@ -777,7 +778,7 @@ public class ReadErrorsCheckerTest {
         Date date = calendar.getTime();
         hoursOfDates.put(date, 24.0);
         
-        List<Date> result = ReadErrorsChecker.findDatesWithInvalidHours(hoursOfDates);
+        List<Date> result = readErrorsChecker.findDatesWithInvalidHours(hoursOfDates);
         Assert.assertFalse(result.contains(date));   
     }
     
@@ -789,7 +790,37 @@ public class ReadErrorsCheckerTest {
         Date date = calendar.getTime();
         hoursOfDates.put(date, -5.0);
         
-        List<Date> result = ReadErrorsChecker.findDatesWithInvalidHours(hoursOfDates);
+        List<Date> result = readErrorsChecker.findDatesWithInvalidHours(hoursOfDates);
         Assert.assertTrue(result.contains(date));   
+    }
+    
+    @Test
+    public final void testHasProperColumnNamesWithBadInstance() {
+        boolean result = readErrorsChecker.hasProperColumnNames(new Object());
+        Assert.assertFalse(result);
+    }
+    
+    @Test
+    public final void testRowIsEmptyWithBadInstance() {
+        boolean result = readErrorsChecker.rowIsEmpty(new Object());
+        Assert.assertTrue(result);
+    }
+    
+    @Test
+    public final void testIsValidDesctiptionFieldBadInstance() {
+        boolean result = readErrorsChecker.isValidDesctiptionField(new Object());
+        Assert.assertFalse(result);
+    }
+    
+    @Test
+    public final void testIsValidDateFieldBadInstance() {
+        boolean result = readErrorsChecker.isValidDateField(new Object());
+        Assert.assertFalse(result);
+    }
+    
+    @Test
+    public final void testIsValidHoursFieldBadInstance() {
+        boolean result = readErrorsChecker.isValidHoursField(new Object());
+        Assert.assertFalse(result);
     }
 }

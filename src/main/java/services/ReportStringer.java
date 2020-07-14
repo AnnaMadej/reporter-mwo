@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import model.Report;
 
-public class ReportPrinter {
+public class ReportStringer {
 
     static List<String> columnNames;
     static List<List<String>> rows;

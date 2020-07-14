@@ -14,7 +14,7 @@ import org.junit.Test;
 import model.Employee;
 import model.Report;
 import model.Task;
-import services.ReportPrinter;
+import services.ReportStringer;
 import services.reportbuilders.Report4Builder;
 import services.reportbuilders.ReportBuilder;
 
@@ -128,7 +128,7 @@ public class Report4BuilderTest {
 
 		rBuilder.setEmployees(employees);
 		Report report = rBuilder.buildReport();
-		System.out.println(ReportPrinter.stringReport(report));
+		System.out.println(ReportStringer.stringReport(report));
 
 		for (List<String> row : report.getRows()) {
 			String proj1Percents = row.get(2);

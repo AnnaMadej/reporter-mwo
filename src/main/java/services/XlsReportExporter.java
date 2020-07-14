@@ -20,7 +20,7 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 
 
-public class ReportXlsExporter {
+public class XlsReportExporter {
 
     static Workbook wb;
 
