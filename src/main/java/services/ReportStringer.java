@@ -1,14 +1,15 @@
 package services;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import model.Report;
 
 public class ReportStringer {
 
-    static List<String> columnNames;
-    static List<List<String>> rows;
-    static String title;
+    static List<String> columnNames = new ArrayList<String>();
+    static List<List<String>> rows = new ArrayList<List<String>>();
+    static String title = "";
     static int lineLength;
 
     static StringBuilder sb = new StringBuilder();
@@ -43,6 +44,9 @@ public class ReportStringer {
     }
 
     public static String stringReport(Report report) {
+        if (report == null) {
+            return "Brak raportu!";
+        }
 
         title = report.getTitle();
         columnNames = report.getColumnNames();
@@ -53,15 +57,20 @@ public class ReportStringer {
 
         addTitle();
 
-        if (rows.size() == 0) {
-            addEmptyInfo();
+        if (columnNames.size() == 0) {
+            sb.append("Raport nie zawiera nazw kolumn!");
         } else {
-            addLine();
-            addColumnNames();
-            addLine();
-            addRows();
-            addLine();
+            if (rows.size() == 0) {
+                addEmptyInfo();
+            } else {
+                addLine();
+                addColumnNames();
+                addLine();
+                addRows();
+                addLine();
+            }
         }
+
         String toReturn = sb.toString();
         sb = new StringBuilder();
         return toReturn;

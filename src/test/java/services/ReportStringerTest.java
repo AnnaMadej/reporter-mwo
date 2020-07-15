@@ -17,7 +17,7 @@ import model.Report;
 public class ReportStringerTest {
 
     @Test
-    public final void test() {
+    public final void testPrintReportFullReport() {
         String reportTitle = "Tytul raportu";
         List<String> columnNames = new ArrayList<String>();
         List<List<String>> rows = new ArrayList<List<String>>();
@@ -75,6 +75,64 @@ public class ReportStringerTest {
         Assert.assertNotEquals(reportLines.get(2), reportLines.get(3));
         Assert.assertEquals(4, reportLines.size());
 
+    }
+
+    @Test
+    public final void testPrintReportEmptyReport() {
+        String reportTitle = "Tytul raportu";
+        List<String> columnNames = new ArrayList<String>();
+
+        columnNames.add("kolumna1");
+        columnNames.add("kolumna2");
+        columnNames.add("kolumna3");
+
+        Report report = new Report();
+        report.setTitle(reportTitle);
+        report.setColumnNames(columnNames);
+
+        String reportString = ReportStringer.stringReport(report);
+        MatcherAssert.assertThat(reportString, CoreMatchers.startsWith("Tytul raportu"));
+        MatcherAssert.assertThat(reportString,
+                CoreMatchers.containsString("RAPORT JEST PUSTY"));
+
+        Scanner sc = new Scanner(reportString);
+        int linesSum = 0;
+        while (sc.hasNextLine()) {
+            sc.nextLine();
+            linesSum++;
+        }
+        Assert.assertEquals(2, linesSum);
+    }
+
+    @Test
+    public final void testPrintReportNullReport() {
+        String reportString = ReportStringer.stringReport(null);
+        MatcherAssert.assertThat(reportString, CoreMatchers.equalTo("Brak raportu!"));
+        Scanner sc = new Scanner(reportString);
+        int linesSum = 0;
+        while (sc.hasNextLine()) {
+            sc.nextLine();
+            linesSum++;
+        }
+        Assert.assertEquals(1, linesSum);
+    }
+    
+    @Test
+    public final void testPrintReportNoColumns() {
+        ReportStringer reportStringer = new ReportStringer();
+        Report report = new Report();
+        report.setTitle("Tytul raportu");
+        String reportString = reportStringer.stringReport(report);
+        MatcherAssert.assertThat(reportString, CoreMatchers.startsWith("Tytul raportu"));
+        MatcherAssert.assertThat(reportString,
+                CoreMatchers.containsString("Raport nie zawiera nazw kolumn!"));
+        Scanner sc = new Scanner(reportString);
+        int linesSum = 0;
+        while (sc.hasNextLine()) {
+            sc.nextLine();
+            linesSum++;
+        }
+        Assert.assertEquals(2, linesSum);
     }
 
 }
