@@ -111,13 +111,10 @@ public class Report4BuilderTest {
 		Calendar myCalendar = new GregorianCalendar(2012, 2, 11);
 		Date date = myCalendar.getTime();
 		Task task = new Task(date, "jakisProjekt", "jakies zadanie", rand.nextDouble() + rand.nextInt(12));
-		System.out.println(task);
 		employee1.addTask(task);
 		Employee employee2 = new Employee("Paweł", "Kwiatkowski");
 		Task task2 = new Task(date, "jakisProjekt", "jakies zadanie2", rand.nextDouble() + rand.nextInt(12));
 		Task task3 = new Task(date, "jakisProjekt3", "jakies zadanie2", rand.nextDouble() + rand.nextInt(12));
-		System.out.println(task2);
-		System.out.println(task3);
 		employee2.addTask(task2);
 		employee2.addTask(task3);
 
@@ -128,7 +125,6 @@ public class Report4BuilderTest {
 
 		rBuilder.setEmployees(employees);
 		Report report = rBuilder.buildReport();
-		System.out.println(ReportStringer.stringReport(report));
 
 		for (List<String> row : report.getRows()) {
 			String proj1Percents = row.get(2);

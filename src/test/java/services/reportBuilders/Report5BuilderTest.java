@@ -74,7 +74,6 @@ public class Report5BuilderTest {
 
 		this.reportBuilder.setEmployees(employees);
 		Report report = this.reportBuilder.buildReport();
-		System.out.println(ReportStringer.stringReport(report));
 		Assert.assertEquals(4, report.getRows().size());
 		Assert.assertTrue(report.getRows().stream().anyMatch(
 				r -> (r.get(1).equals("Adam Nowak") && r.get(2).equals("projekt1") && r.get(3).equals("2.0"))));
