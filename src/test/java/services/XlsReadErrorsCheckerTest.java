@@ -20,6 +20,9 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import services.errors.ReadErrorsChecker;
+import services.errors.XlsReadErrorsChecker;
+
 public class XlsReadErrorsCheckerTest {
 
     private static Workbook wb;

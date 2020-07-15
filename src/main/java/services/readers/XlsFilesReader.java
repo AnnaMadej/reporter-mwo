@@ -20,8 +20,8 @@ import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import repository.FilesFinder;
-import services.ReadErrorsHolder;
-import services.XlsReadErrorsChecker;
+import services.errors.ReadErrorsHolder;
+import services.errors.XlsReadErrorsChecker;
 
 public class XlsFilesReader extends FilesReader {
 

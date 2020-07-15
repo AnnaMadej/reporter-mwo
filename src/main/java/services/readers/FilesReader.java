@@ -12,8 +12,8 @@ import model.ScanError;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
 import repository.FilesFinder;
-import services.ReadErrorsChecker;
-import services.ReadErrorsHolder;
+import services.errors.ReadErrorsChecker;
+import services.errors.ReadErrorsHolder;
 
 
 public abstract class FilesReader {

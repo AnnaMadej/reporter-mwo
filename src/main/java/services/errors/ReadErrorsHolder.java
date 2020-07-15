@@ -1,4 +1,4 @@
-package services;
+package services.errors;
 
 import java.util.ArrayList;
 import java.util.Collections;

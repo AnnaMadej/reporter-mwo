@@ -8,7 +8,8 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import services.ReadErrorsHolder;
+import services.errors.ReadErrorsHolder;
+
 
 public class UserInterface {
 

@@ -31,9 +31,9 @@ import model.Employee;
 import model.ScanError;
 import model.Task;
 import repository.FilesFinder;
-import services.ReadErrorsChecker;
-import services.ReadErrorsHolder;
-import services.XlsReadErrorsChecker;
+import services.errors.ReadErrorsChecker;
+import services.errors.ReadErrorsHolder;
+import services.errors.XlsReadErrorsChecker;
 
 public class XlsFilesReaderTest {
 
