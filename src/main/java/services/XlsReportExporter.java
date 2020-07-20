@@ -1,10 +1,7 @@
 package services;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -18,18 +15,18 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+import repository.FilesWriter;
+import repository.XlsFilesWriter;
 
 
 public class XlsReportExporter {
 
-    static Workbook wb;
-
-    static Sheet sheet1;
-
-    static List<String> columnNames = new ArrayList<String>();
-
-    static List<List<String>> rows = new ArrayList<List<String>>();
-    static String title = "";
+    private static FilesWriter filesWriter = new XlsFilesWriter();
+    private static Workbook wb;
+    private static Sheet sheet1; 
+    private static List<String> columnNames = new ArrayList<String>();
+    private static List<List<String>> rows = new ArrayList<List<String>>();
+    private static String title = "";
 
     private static void createHeaders(int columnNamesRow) {
         Row row = sheet1.createRow(columnNamesRow);
@@ -88,16 +85,9 @@ public class XlsReportExporter {
         titleCell.setCellStyle(titleCellStyle);
     }
 
-    public static File exportToXls(Report report) throws IOException {
+    public static Workbook createXlsWorkbook(Report report) throws IOException {
         wb = new HSSFWorkbook();
         sheet1 = wb.createSheet("Raport");
-
-        String generatedReportsPath = "generated-reports";
-
-        File file = new File(generatedReportsPath);
-        if (!file.exists()) {
-            new File(generatedReportsPath).mkdir();
-        }
 
         columnNames = report.getColumnNames();
         rows = report.getRows();
@@ -115,20 +105,11 @@ public class XlsReportExporter {
             sheet1.setColumnWidth(i, reportWidth / columnNames.size());
         }
 
-        String filePath;
-        int filesOfSameNameCounter = 0;
-        do {
-            filesOfSameNameCounter++;
-            String reportName = "report"
-                    + new SimpleDateFormat("yyyyMMddHHmmss").format(new Date()) + "("
-                    + filesOfSameNameCounter + ")";
-            filePath = generatedReportsPath + "/" + reportName + ".xls";
-            file = new File(filePath);
-        } while (file.exists());
-
-        try (OutputStream fileOut = new FileOutputStream(filePath)) {
-            wb.write(fileOut);
-        }
-        return file;
+        return wb;
+    }
+    
+    public static File exportToXls(Report report) throws IOException {
+        Workbook wb = createXlsWorkbook(report);
+        return filesWriter.writeToFile(wb);
     }
 }
