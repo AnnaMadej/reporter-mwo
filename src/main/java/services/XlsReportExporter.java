@@ -53,7 +53,7 @@ public class XlsReportExporter {
         Row row;
         final int numberOfStartingRow = 6;
         int rowsCounter = numberOfStartingRow;
-        int cellsCounter = 0;
+        int cellsCounter = 0; 
         for (List<String> reportRow : rows) {
             row = sheet1.createRow(rowsCounter);
             rowsCounter++;
@@ -65,7 +65,7 @@ public class XlsReportExporter {
             cellsCounter = 0;
         }
         new Date();
-    }
+    } 
 
     private static void createTittle(int titleRow) {
         Row row = sheet1.createRow(titleRow);
@@ -112,4 +112,10 @@ public class XlsReportExporter {
         Workbook wb = createXlsWorkbook(report);
         return filesWriter.writeToFile(wb);
     }
+
+    public static void setFilesWriter(FilesWriter filesWriter) {
+        XlsReportExporter.filesWriter = filesWriter;
+    }
+    
+    
 }
