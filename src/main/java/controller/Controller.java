@@ -83,8 +83,8 @@ public class Controller {
         return ReportStringer.stringReport(this.report);
     }
 
-    public String showScanErrors() {
-        return readErrorsHolder.showScanErrors();
+    public void createScanErrorsReport() {
+        report = readErrorsHolder.getErrorsReport();
     }
 
 }

@@ -23,17 +23,9 @@ public class ReadErrorsHolder {
         return scanErrors;
     }
 
-    public String showScanErrors() {
 
-        if (scanErrors.size() == 0) {
-            return ">> Brak błędów w odczytanych plikach z danymi.";
-        } else {
-            return stringScanErrorsTable();
-        }
 
-    }
-
-    private String stringScanErrorsTable() {
+    public Report getErrorsReport() {
         Report report = new Report();
         report.setTitle("Błędy odczytu plików (" + scanErrors.size() + ")");
         
@@ -60,7 +52,7 @@ public class ReadErrorsHolder {
        
         report.setRows(rows);
         
-        return ReportStringer.stringReport(report);
+        return report;
     }
 
 }

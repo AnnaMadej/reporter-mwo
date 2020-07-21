@@ -133,7 +133,12 @@ public class UserInterface {
     }
 
     private void showErrorLogs() {
-        System.out.println(controller.showScanErrors());
+        controller.createScanErrorsReport();
+        System.out.println(this.controller.stringReport());
+        String answer = this.takeUserInput(this.askForXlsCreation());
+        if (answer.toLowerCase().equals("t")) {
+            this.exportToXls();
+        }
     }
 
     private void showHeaders() {
