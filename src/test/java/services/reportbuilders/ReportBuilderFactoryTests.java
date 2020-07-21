@@ -1,4 +1,4 @@
-package services.reportBuilders;
+package services.reportbuilders;
 
 import org.hamcrest.CoreMatchers;
 import org.junit.Assert;

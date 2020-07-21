@@ -3,6 +3,7 @@ package services.reportbuilders;
 import java.util.ArrayList;
 import java.util.List;
 import model.Employee;
+import services.chartmakers.Report2BarChartMaker;
 import services.chartmakers.Report4PieChartMaker;
 import services.employeefilters.EmployeesFilterFactory;
 
@@ -11,7 +12,7 @@ public class Report4Builder extends ReportBuilder {
     public Report4Builder() {
         super();
         this.addEmployeesFilter(EmployeesFilterFactory.getEmployeesFilter("year"));
-        this.reportChartMaker = new Report4PieChartMaker();
+        setReportChartMaker(new Report4PieChartMaker());
     }
 
     @Override

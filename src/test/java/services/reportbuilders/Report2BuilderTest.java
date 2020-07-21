@@ -1,4 +1,4 @@
-package services.reportBuilders;
+package services.reportbuilders;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -13,10 +13,10 @@ import org.junit.Test;
 import model.Employee;
 import model.Report;
 import model.Task;
-import services.reportbuilders.Report1Builder;
+import services.reportbuilders.Report2Builder;
 import services.reportbuilders.ReportBuilder;
 
-public class Report1BuilderTest {
+public class Report2BuilderTest {
 
 	private ReportBuilder reportBuilder;
 	private List<Employee> employees = new ArrayList<Employee>();
@@ -25,7 +25,7 @@ public class Report1BuilderTest {
 
 	@Before
 	public void init() {
-		this.reportBuilder = new Report1Builder();
+		this.reportBuilder = new Report2Builder();
 		this.employee1 = new Employee("Adam", "Nowak");
 		this.employee2 = new Employee("Zofia", "Dzięgiel");
 		Date date1 = new GregorianCalendar(2012, Calendar.JUNE, 25).getTime();
@@ -37,23 +37,13 @@ public class Report1BuilderTest {
 	}
 
 	@Test
-	public final void testAsManyRowsAsEmployees() {
-		this.employees.add(this.employee1);
-		this.employees.add(this.employee2);
-		this.reportBuilder.setEmployees(this.employees);
-		Report report = this.reportBuilder.buildReport();
-		Assert.assertEquals(report.getRows().size(), 2);
-
-	}
-
-	@Test
 	public final void testCorrectReportTitle() {
 		this.employees.add(this.employee1);
 		this.employees.add(this.employee2);
 		this.reportBuilder.setEmployees(this.employees);
 		this.reportBuilder.setInputParam(0, "2012");
 		Report report = this.reportBuilder.buildReport();
-		Assert.assertEquals("Raport godzin pracowników w roku: 2012", report.getTitle());
+		Assert.assertEquals("Raport godzin projektów w roku: 2012", report.getTitle());
 	}
 
 	@Test
@@ -71,31 +61,31 @@ public class Report1BuilderTest {
 		this.reportBuilder.setEmployees(this.employees);
 		Report report = this.reportBuilder.buildReport();
 		Assert.assertTrue(
-				report.getRows().stream().anyMatch(r -> (r.get(1).equals("Adam Nowak") && r.get(2).equals("3.0"))));
-		Assert.assertTrue(report.getRows().stream()
-				.anyMatch(r -> (r.get(1).equals("Zofia Dzięgiel") && r.get(2).equals("18.0"))));
+				report.getRows().stream().anyMatch(r -> (r.get(1).equals("projekt1") && r.get(2).equals("8.0"))));
+		Assert.assertTrue(
+				report.getRows().stream().anyMatch(r -> (r.get(1).equals("projekt3") && r.get(2).equals("13.0"))));
 	}
 
 	@Test
 	public final void testEmptyReportIfEmployeeWithNoTasks() {
-		ReportBuilder builder = new Report1Builder();
+		ReportBuilder builder = new Report2Builder();
 		Employee employee5 = new Employee("Adam", "Nowak");
 		List<Employee> employees3 = new ArrayList<Employee>();
 		employees3.add(employee5);
-		this.reportBuilder.setEmployees(employees3);
+		builder.setEmployees(employees3);
 		Report report = builder.buildReport();
 		Assert.assertEquals(0, report.getRows().size());
 	}
 
 	@Test
 	public final void testEmptyReportIfNoEmployeesAdded() {
-		ReportBuilder builder = new Report1Builder();
+		ReportBuilder builder = new Report2Builder();
 		Report report = builder.buildReport();
 		Assert.assertEquals(0, report.getRows().size());
 	}
 
 	@Test
-	public final void testNoRowsIfFilterParamNotExists() {
+	public final void testNoRowsIfFilterParamNotExistsInData() {
 		this.employees.add(this.employee1);
 		this.employees.add(this.employee2);
 		this.reportBuilder.setEmployees(this.employees);
@@ -113,7 +103,6 @@ public class Report1BuilderTest {
 		Task task5 = new Task(date5, "projekt1", "task1", 0);
 		employee3.addTask(task5);
 		employees2.add(employee3);
-
 		this.reportBuilder.setEmployees(employees2);
 		this.reportBuilder.setInputParam(0, "2012");
 		Report report = this.reportBuilder.buildReport();
@@ -126,7 +115,7 @@ public class Report1BuilderTest {
 		this.employees.add(this.employee2);
 		this.reportBuilder.setEmployees(this.employees);
 		Report report = this.reportBuilder.buildReport();
-		Assert.assertEquals("Raport godzin pracowników ", report.getTitle());
+		Assert.assertEquals("Raport godzin projektów ", report.getTitle());
 	}
 
 	@Test
@@ -137,8 +126,9 @@ public class Report1BuilderTest {
 
 		List<String> properColumnNames = new ArrayList<String>();
 		properColumnNames.add("L.p");
-		properColumnNames.add("Imię i nazwisko");
-		properColumnNames.add("Liczba godzin");
+		properColumnNames.add("Projekt");
+		properColumnNames.add("Ilość godzin");
 		Assert.assertEquals(properColumnNames, report.getColumnNames());
 	}
+
 }

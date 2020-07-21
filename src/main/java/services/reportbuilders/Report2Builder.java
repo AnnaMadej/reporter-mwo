@@ -14,7 +14,7 @@ public class Report2Builder extends ReportBuilder {
     public Report2Builder() {
         super();
         this.addEmployeesFilter(EmployeesFilterFactory.getEmployeesFilter("year"));
-
+        setReportChartMaker(new Report2BarChartMaker());
     }
 
     @Override
@@ -26,8 +26,6 @@ public class Report2Builder extends ReportBuilder {
         columnNames.add("Projekt");
         columnNames.add("Ilość godzin");
         this.report.setColumnNames(columnNames);
-        this.reportChartMaker = new Report2BarChartMaker();
-
     }
 
     @Override

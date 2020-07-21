@@ -40,7 +40,8 @@ public abstract class ReportBuilder {
     }
 
     public String getFilterParamName(int filterIndex) {
-        return this.filters.get(filterIndex).getFilterParameterName();
+        EmployeesFilter filter = this.filters.get(filterIndex);
+        return filter.getFilterParameterName();
     }
 
     protected List<EmployeesFilter> getFilters() {
@@ -52,7 +53,8 @@ public abstract class ReportBuilder {
     }
 
     public Set<String> getPossibleFilterData(int filterIndex) {
-        return this.filters.get(filterIndex).getPossibleData(this.employees);
+        EmployeesFilter filter = this.filters.get(filterIndex);
+        return filter.getPossibleData(this.employees);
     }
 
     public void makeChart() {
@@ -66,7 +68,8 @@ public abstract class ReportBuilder {
     }
 
     public void setFilterParameter(String filterParameter, int filterIndex) {
-        this.filters.get(filterIndex).setFilterParameter(filterParameter);
+        EmployeesFilter filter = this.filters.get(filterIndex);
+        filter.setFilterParameter(filterParameter);
     }
 
     public void setInputParam(int filterIndex, String filterParameter) {
@@ -82,6 +85,22 @@ public abstract class ReportBuilder {
     protected abstract void setReportTitle();
 
     private void usefilter(int filterIndex) {
-        this.employees = this.filters.get(filterIndex).filterEmployees(this.employees);
+        EmployeesFilter filter = this.filters.get(filterIndex);
+        this.employees = filter.filterEmployees(this.employees);
     }
+    
+    protected void removeFilters() {
+        this.filters = new ArrayList<EmployeesFilter>();
+    }
+
+    protected void setReportChartMaker(ReportChartMaker reportChartMaker) {
+        this.reportChartMaker = reportChartMaker;
+    }
+
+    public void setReport(Report report) {
+        this.report = report;
+    }
+    
+    
+    
 }
