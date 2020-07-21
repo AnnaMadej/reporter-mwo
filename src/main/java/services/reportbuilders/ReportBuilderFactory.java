@@ -2,6 +2,10 @@ package services.reportbuilders;
 
 public class ReportBuilderFactory {
     public static ReportBuilder getReportBuilder(String number) {
+        
+        if (number == null) {
+            return null;
+        }
         switch (number) {
             case "1":
                 return new Report1Builder();
