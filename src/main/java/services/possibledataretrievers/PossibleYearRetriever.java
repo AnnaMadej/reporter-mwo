@@ -15,14 +15,17 @@ public class PossibleYearRetriever implements PossibleDataRetriever {
     public Set<String> getPossibleData(List<Employee> employees) {
         Set<String> possibleData = new TreeSet<String>();
 
-        Calendar calendar = new GregorianCalendar();
-        for (Employee employee : employees) {
-            for (Task task : employee.getTaskList()) {
-                Date date = task.getTaskDate();
-                calendar.setTime(date);
-                possibleData.add(String.valueOf(calendar.get(Calendar.YEAR)));
+        if (employees != null) {
+            Calendar calendar = new GregorianCalendar();
+            for (Employee employee : employees) {
+                for (Task task : employee.getTaskList()) {
+                    Date date = task.getTaskDate();
+                    calendar.setTime(date);
+                    possibleData.add(String.valueOf(calendar.get(Calendar.YEAR)));
+                }
             }
         }
+
         return possibleData;
     }
 

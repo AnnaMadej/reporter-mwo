@@ -11,8 +11,10 @@ public class PossiblePersonRetriever implements PossibleDataRetriever {
     public Set<String> getPossibleData(List<Employee> employees) {
         Set<String> possibleData = new TreeSet<String>();
 
-        for (Employee employee : employees) {
-            possibleData.add(employee.getNameAndSurname());
+        if (employees != null) {
+            for (Employee employee : employees) {
+                possibleData.add(employee.getNameAndSurname());
+            }
         }
         return possibleData;
     }
