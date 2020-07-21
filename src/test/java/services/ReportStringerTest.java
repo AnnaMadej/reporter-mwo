@@ -32,9 +32,9 @@ public class ReportStringerTest {
         row1.add("1.3");
 
         List<String> row2 = new ArrayList<String>();
-        row2.add("2.1");
-        row2.add("2.2");
-        row2.add("2.3");
+        row2.add("kolumna2.wiersz1");
+        row2.add("kolumna2.wiersz2");
+        row2.add("kolumna2.wiersz3");
 
         rows.add(row1);
         rows.add(row2);
@@ -54,7 +54,7 @@ public class ReportStringerTest {
 
         while (sc.hasNextLine()) {
             String line = sc.nextLine();
-            line = line.replace(" ", "").replace("|", " ").replace("---", "");
+            line = line.replace(" ", "").replace("|", " ").replace("-", "");
             if (!line.contains("Tytul Raportu") && !line.equals("")) {
                 reportLines.add(line);
             }
@@ -69,7 +69,7 @@ public class ReportStringerTest {
             String line = reportLines.get(lineIndex);
             MatcherAssert.assertThat(line,
                     CoreMatchers.anyOf(CoreMatchers.containsString("1.1 1.2 1.3"),
-                            CoreMatchers.containsString("2.1 2.2 2.3")));
+                            CoreMatchers.containsString("kolumna2.wiersz1 kolumna2.wiersz2 kolumna2.wiersz3")));
         }
 
         Assert.assertNotEquals(reportLines.get(2), reportLines.get(3));
