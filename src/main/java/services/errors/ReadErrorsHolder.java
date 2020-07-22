@@ -45,8 +45,8 @@ public class ReadErrorsHolder {
             row.add(scanError.getFilename());
             row.add(scanError.getProject());
             row.add(scanError.getRow() == null ? "" : scanError.getRow().toString());
-            row.add(scanError.getCell() == null ? "" : scanError.getCell().toString());
-            row.add(scanError.getDescription() == null ? "" : scanError.getDescription());
+            row.add(scanError.getCell());
+            row.add(scanError.getDescription());
             rows.add(row);
         }
        
