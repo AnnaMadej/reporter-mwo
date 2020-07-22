@@ -100,6 +100,11 @@ public abstract class ReportBuilder {
     public void setReport(Report report) {
         this.report = report;
     }
+
+    public Report getReport() {
+        return report;
+    }
+    
     
     
     

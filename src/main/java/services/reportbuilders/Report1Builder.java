@@ -3,6 +3,7 @@ package services.reportbuilders;
 import java.util.ArrayList;
 import java.util.List;
 import model.Employee;
+import services.employeefilters.EmployeesFilter;
 import services.employeefilters.EmployeesFilterFactory;
 
 public class Report1Builder extends ReportBuilder {
@@ -43,9 +44,14 @@ public class Report1Builder extends ReportBuilder {
     @Override
     protected void setReportTitle() {
         String title = "Raport godzin pracowników ";
-        if (this.filters.get(0).getFilterParameter() != null) {
-            title += "w roku: " + this.filters.get(0).getFilterParameter();
+        
+        if (this.filters.size() > 0) {
+            EmployeesFilter filter = this.filters.get(0);
+            if (filter.getFilterParameter() != null) {
+                title += "w roku: " + filter.getFilterParameter();
+            }
         }
+       
         this.report.setTitle(title);
     }
 
