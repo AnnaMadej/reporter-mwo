@@ -11,14 +11,14 @@ import services.possibledataretrievers.PossibleYearRetriever;
 public class EmployeesFilterByYear extends EmployeesFilter {
 
     public EmployeesFilterByYear() {
-        this.filterParameterName = "rok";
-        this.possibleDataRetriever = new PossibleYearRetriever();
+        this.setFilterParameterName("rok");
+        this.setPossibleDataRetriever(new PossibleYearRetriever());
     }
 
     @Override
     public List<Employee> filterEmployees(List<Employee> employees) {
         List<model.Employee> filteredEmployees = new ArrayList<Employee>();
-        if (this.filterParameter != null) {
+        if (this.getFilterParameter() != null) {
             for (model.Employee employee : employees) {
 
                 List<Task> filteredTasks = new ArrayList<Task>();
@@ -27,7 +27,7 @@ public class EmployeesFilterByYear extends EmployeesFilter {
                     Calendar calendar = Calendar.getInstance();
                     calendar.setTime(date);
                     if (calendar.get(Calendar.YEAR) == Integer
-                            .parseInt(this.filterParameter)) {
+                            .parseInt(this.getFilterParameter())) {
                         filteredTasks.add(task);
                     }
                 }

@@ -8,18 +8,18 @@ import services.possibledataretrievers.PossiblePersonRetriever;
 public class EmployeesFilterByPerson extends EmployeesFilter {
 
     public EmployeesFilterByPerson() {
-        this.filterParameterName = "imię i nazwisko";
-        this.possibleDataRetriever = new PossiblePersonRetriever();
+        this.setFilterParameterName("imię i nazwisko");
+        this.setPossibleDataRetriever(new PossiblePersonRetriever());
     }
 
     @Override
     public List<Employee> filterEmployees(List<Employee> employees) {
-        if (this.filterParameter != null) {
+        if (this.getFilterParameter() != null) {
             List<Employee> filteredEmployees = new ArrayList<Employee>();
 
             for (Employee employee : employees) {
                 if (employee.getNameAndSurname().toLowerCase()
-                        .equals(this.filterParameter.toLowerCase())) {
+                        .equals(this.getFilterParameter().toLowerCase())) {
                     filteredEmployees.add(employee);
                 }
             }

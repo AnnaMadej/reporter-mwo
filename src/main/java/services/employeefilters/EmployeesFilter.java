@@ -6,9 +6,9 @@ import model.Employee;
 import services.possibledataretrievers.PossibleDataRetriever;
 
 public abstract class EmployeesFilter {
-    protected PossibleDataRetriever possibleDataRetriever;
-    protected String filterParameterName;
-    protected String filterParameter;
+    private PossibleDataRetriever possibleDataRetriever;
+    private String filterParameterName;
+    private String filterParameter;
 
     public abstract List<Employee> filterEmployees(List<Employee> employees);
 
@@ -28,4 +28,17 @@ public abstract class EmployeesFilter {
         this.filterParameter = filterParameter;
     }
 
+    public PossibleDataRetriever getPossibleDataRetriever() {
+        return possibleDataRetriever;
+    }
+
+    public void setPossibleDataRetriever(PossibleDataRetriever possibleDataRetriever) {
+        this.possibleDataRetriever = possibleDataRetriever;
+    }
+
+    public void setFilterParameterName(String filterParameterName) {
+        this.filterParameterName = filterParameterName;
+    }
+
+    
 }
