@@ -35,8 +35,8 @@ public class Report3BuilderTest {
 		employees.add(employee1);
 		employees.add(employee2);
 		this.reportBuilder.setEmployees(employees);
-		this.reportBuilder.setInputParam(0, "2012");
-		this.reportBuilder.setInputParam(1, "Adam Nowak");
+		this.reportBuilder.setFilterParameter("2012",0);
+		this.reportBuilder.setFilterParameter("Adam Nowak", 1);
 		Report report = this.reportBuilder.buildReport();
 
 		Assert.assertEquals("Raport godzin przepracowanych miesięcznie przez: Adam Nowak, w roku: 2012",
@@ -72,8 +72,8 @@ public class Report3BuilderTest {
 		employees.add(employee2);
 
 		this.reportBuilder.setEmployees(employees);
-		this.reportBuilder.setInputParam(0, "2012");
-		this.reportBuilder.setInputParam(1, "Adam Nowak");
+		this.reportBuilder.setFilterParameter("2012", 0);
+		this.reportBuilder.setFilterParameter("Adam Nowak", 1);
 		Report report = this.reportBuilder.buildReport();
 
 		Assert.assertEquals(3, report.getRows().size());
@@ -120,8 +120,8 @@ public class Report3BuilderTest {
 		employees.add(employee1);
 		employees.add(employee2);
 		this.reportBuilder.setEmployees(employees);
-		this.reportBuilder.setInputParam(0, "2011");
-		this.reportBuilder.setInputParam(1, "Adam Nowak");
+		this.reportBuilder.setFilterParameter("2011", 0);
+		this.reportBuilder.setFilterParameter("Adam Nowak", 1);
 		Report report = this.reportBuilder.buildReport();
 		Assert.assertEquals(0, report.getRows().size());
 	}
@@ -136,8 +136,8 @@ public class Report3BuilderTest {
 		employee3.addTask(task5);
 		employees2.add(employee3);
 		this.reportBuilder.setEmployees(employees2);
-		this.reportBuilder.setInputParam(0, "2020");
-		this.reportBuilder.setInputParam(1, "Zdzislaw Zur");
+		this.reportBuilder.setFilterParameter("2020", 0);
+		this.reportBuilder.setFilterParameter("Zdzislaw Zur", 1);
 		Report report = this.reportBuilder.buildReport();
 		Assert.assertEquals(0, report.getRows().size());
 	}
@@ -181,7 +181,7 @@ public class Report3BuilderTest {
 		employees.add(employee1);
 		employees.add(employee2);
 		this.reportBuilder.setEmployees(employees);
-		this.reportBuilder.setInputParam(1, "Adam Nowak");
+		this.reportBuilder.setFilterParameter("Adam Nowak", 1);
 		Report report = this.reportBuilder.buildReport();
 		Assert.assertEquals("Raport godzin przepracowanych miesięcznie przez: Adam Nowak", report.getTitle());
 	}
@@ -203,7 +203,7 @@ public class Report3BuilderTest {
 		employees.add(employee1);
 		employees.add(employee2);
 		this.reportBuilder.setEmployees(employees);
-		this.reportBuilder.setInputParam(0, "2012");
+		this.reportBuilder.setFilterParameter("2012", 0);
 		Report report = this.reportBuilder.buildReport();
 		Assert.assertEquals("Raport godzin przepracowanych miesięcznie, w roku: 2012", report.getTitle());
 	}
@@ -228,7 +228,7 @@ public class Report3BuilderTest {
 		employees.add(employee1);
 		employees.add(employee2);
 		this.reportBuilder.setEmployees(employees);
-		this.reportBuilder.setInputParam(0, "2012");
+		this.reportBuilder.setFilterParameter("2012", 0);
 
 		Report report = this.reportBuilder.buildReport();
 
@@ -240,7 +240,7 @@ public class Report3BuilderTest {
 		List<Employee> employees = new ArrayList<Employee>();
 
 		this.reportBuilder.setEmployees(employees);
-		this.reportBuilder.setInputParam(0, "2012");
+		this.reportBuilder.setFilterParameter("2012", 0);
 		Report report = this.reportBuilder.buildReport();
 
 		List<String> properColumnNames = new ArrayList<String>();

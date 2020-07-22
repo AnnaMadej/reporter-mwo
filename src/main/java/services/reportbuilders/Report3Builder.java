@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 import model.Task;
+import services.employeefilters.EmployeesFilter;
 import services.employeefilters.EmployeesFilterFactory;
 
 public class Report3Builder extends ReportBuilder {
@@ -81,12 +82,20 @@ public class Report3Builder extends ReportBuilder {
     @Override
     protected void setReportTitle() {
         String title = "Raport godzin przepracowanych miesięcznie";
-        if (this.filters.get(1).getFilterParameter() != null) {
-            title += " przez: " + this.filters.get(1).getFilterParameter();
+        
+        if (this.filters.size() > 0) {
+            if (this.filters.size() > 1) {
+                EmployeesFilter filter2 = this.filters.get(1);
+                if (filter2.getFilterParameter() != null) {
+                    title += " przez: " + this.filters.get(1).getFilterParameter();
+                }
+            }
+            EmployeesFilter filter1 = this.filters.get(0);
+            if (filter1.getFilterParameter() != null) {
+                title += ", w roku: " + this.filters.get(0).getFilterParameter();
+            }
         }
-        if (this.filters.get(0).getFilterParameter() != null) {
-            title += ", w roku: " + this.filters.get(0).getFilterParameter();
-        }
+       
         this.report.setTitle(title);
     }
 

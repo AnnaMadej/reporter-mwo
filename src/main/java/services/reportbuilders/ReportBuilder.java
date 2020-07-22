@@ -70,12 +70,7 @@ public abstract class ReportBuilder {
     public void setFilterParameter(String filterParameter, int filterIndex) {
         EmployeesFilter filter = this.filters.get(filterIndex);
         filter.setFilterParameter(filterParameter);
-    }
-
-    public void setInputParam(int filterIndex, String filterParameter) {
-        this.filters.get(filterIndex).setFilterParameter(filterParameter);
         this.usefilter(filterIndex);
-
     }
 
     protected abstract void setReportCollumnNames();
@@ -83,11 +78,6 @@ public abstract class ReportBuilder {
     protected abstract void setReportRows();
 
     protected abstract void setReportTitle();
-
-    private void usefilter(int filterIndex) {
-        EmployeesFilter filter = this.filters.get(filterIndex);
-        this.employees = filter.filterEmployees(this.employees);
-    }
     
     protected void removeFilters() {
         this.filters = new ArrayList<EmployeesFilter>();
@@ -103,6 +93,11 @@ public abstract class ReportBuilder {
 
     public Report getReport() {
         return report;
+    }
+    
+    private void usefilter(int filterIndex) {
+        EmployeesFilter filter = this.filters.get(filterIndex);
+        this.employees = filter.filterEmployees(this.employees);
     }
     
     

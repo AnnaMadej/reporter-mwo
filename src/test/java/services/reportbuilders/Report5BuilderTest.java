@@ -39,7 +39,7 @@ public class Report5BuilderTest {
 
 	@Test
 	public final void testCorrectReportTitle() {
-		this.reportBuilder.setInputParam(0, "projekt1");
+		this.reportBuilder.setFilterParameter("projekt1", 0);
 		Report report = this.reportBuilder.buildReport();
 		Assert.assertEquals("Raport ilości przepracowanych godzin pracowników w projekcie: projekt1",
 				report.getTitle());
@@ -111,7 +111,7 @@ public class Report5BuilderTest {
 		employees.add(this.employee1);
 		employees.add(this.employee2);
 		this.reportBuilder.setEmployees(employees);
-		this.reportBuilder.setInputParam(0, "2028");
+		this.reportBuilder.setFilterParameter("2028", 0);
 		Report report = this.reportBuilder.buildReport();
 		Assert.assertEquals(0, report.getRows().size());
 	}

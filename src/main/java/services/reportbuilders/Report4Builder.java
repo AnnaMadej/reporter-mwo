@@ -21,7 +21,6 @@ public class Report4Builder extends ReportBuilder {
         columnNames.add("L.p");
         columnNames.add("Imię i nazwisko");
         this.report.setColumnNames(columnNames);
-        this.report.setColumnNames(columnNames);
 
         for (Employee employee : this.employees) {
             for (String project : employee.getProjects()) {
@@ -34,6 +33,9 @@ public class Report4Builder extends ReportBuilder {
 
     @Override
     protected void setReportRows() {
+        if (report.getColumnNames().size() == 0) {
+            return;
+        }
         List<List<String>> rows = new ArrayList<List<String>>();
         Integer rowsCounter = 1;
 
@@ -50,7 +52,7 @@ public class Report4Builder extends ReportBuilder {
 
                     boolean rowExists = false;
                     for (List<String> row : rows) {
-                        if (row.get(1).contains(employeeName)) {
+                        if (row.get(1).equals(employeeName)) {
                             rowToAdd = row;
                             rowExists = true;
                         }
@@ -85,9 +87,12 @@ public class Report4Builder extends ReportBuilder {
     @Override
     protected void setReportTitle() {
         String title = "Procentowy udział projektów w pracy osób ";
-        if (this.filters.get(0).getFilterParameter() != null) {
-            title += "w roku: " + this.filters.get(0).getFilterParameter();
+        if (this.filters.size() > 0) {
+            if (this.filters.get(0).getFilterParameter() != null) {
+                title += "w roku: " + this.filters.get(0).getFilterParameter();
+            }
         }
+
         this.report.setTitle(title);
     }
 

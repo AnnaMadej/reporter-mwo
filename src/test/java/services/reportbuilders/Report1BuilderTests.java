@@ -51,7 +51,7 @@ public class Report1BuilderTests {
                 this.employees.add(this.employee1);
                 this.employees.add(this.employee2);
                 this.reportBuilder.setEmployees(this.employees);
-                this.reportBuilder.setInputParam(0, "2012");
+                this.reportBuilder.setFilterParameter("2012", 0);
                 Report report = this.reportBuilder.buildReport();
                 Assert.assertEquals("Raport godzin pracowników w roku: 2012", report.getTitle());
         }
@@ -99,7 +99,7 @@ public class Report1BuilderTests {
                 this.employees.add(this.employee1);
                 this.employees.add(this.employee2);
                 this.reportBuilder.setEmployees(this.employees);
-                this.reportBuilder.setInputParam(0, "2011");
+                this.reportBuilder.setFilterParameter("2011", 0);
                 Report report = this.reportBuilder.buildReport();
                 Assert.assertEquals(0, report.getRows().size());
         }
@@ -115,7 +115,7 @@ public class Report1BuilderTests {
                 employees2.add(employee3);
 
                 this.reportBuilder.setEmployees(employees2);
-                this.reportBuilder.setInputParam(0, "2012");
+                this.reportBuilder.setFilterParameter("2012", 0);
                 Report report = this.reportBuilder.buildReport();
                 Assert.assertEquals(0, report.getRows().size());
         }
@@ -132,7 +132,7 @@ public class Report1BuilderTests {
         @Test
         public final void testProperColumnNames() {
                 this.reportBuilder.setEmployees(this.employees);
-                this.reportBuilder.setInputParam(0, "2012");
+                this.reportBuilder.setFilterParameter("2012", 0);
                 Report report = this.reportBuilder.buildReport();
 
                 List<String> properColumnNames = new ArrayList<String>();

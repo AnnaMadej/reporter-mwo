@@ -29,7 +29,7 @@ public class Controller {
     private String reportFilePath;
 
     public void addFilterParam(int filterIndex, String filterParameter) {
-        this.reportBuilder.setInputParam(filterIndex, filterParameter);
+        this.reportBuilder.setFilterParameter(filterParameter, filterIndex);
     }
 
     public void buildReport() {

@@ -40,7 +40,7 @@ public class Report4BuilderTest {
 
 	@Test
 	public final void testCorrectReportTitle() {
-		this.reportBuilder.setInputParam(0, "2020");
+		this.reportBuilder.setFilterParameter("2020", 0);
 		Report report = this.reportBuilder.buildReport();
 		Assert.assertEquals("Procentowy udział projektów w pracy osób w roku: 2020", report.getTitle());
 	}
@@ -83,7 +83,7 @@ public class Report4BuilderTest {
 		employee3.addTask(task6);
 		employees2.add(employee3);
 		this.reportBuilder.setEmployees(employees2);
-		this.reportBuilder.setInputParam(0, "2012");
+		this.reportBuilder.setFilterParameter("2012", 0);
 		Report report = this.reportBuilder.buildReport();
 
 		Assert.assertEquals(0, report.getRows().size());
@@ -95,7 +95,7 @@ public class Report4BuilderTest {
 		employees.add(this.employee1);
 		employees.add(this.employee2);
 		this.reportBuilder.setEmployees(employees);
-		this.reportBuilder.setInputParam(0, "2028");
+		this.reportBuilder.setFilterParameter("2028", 0);
 		Report report = this.reportBuilder.buildReport();
 		Assert.assertEquals(0, report.getRows().size());
 	}
@@ -145,7 +145,7 @@ public class Report4BuilderTest {
 		employees.add(this.employee1);
 		employees.add(this.employee2);
 		this.reportBuilder.setEmployees(employees);
-		this.reportBuilder.setInputParam(0, "2012");
+		this.reportBuilder.setFilterParameter("2012", 0);
 		Report report = this.reportBuilder.buildReport();
 
 		List<String> properColumnNames = new ArrayList<String>();

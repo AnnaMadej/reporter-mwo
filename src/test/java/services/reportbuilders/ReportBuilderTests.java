@@ -104,8 +104,22 @@ public class ReportBuilderTests {
     
     @Test 
     public final void testDoesntAskChartMakerToMakeChartIfNoChartMaker() {
-        builder.makeChart();     
+        List<List<String>> rows = new ArrayList<List<String>>();
+        List<String> row = new ArrayList<String>();
+        rows.add(row);
+        
+        Report report = Mockito.mock(Report.class);
+        Mockito.when(report.getRows()).thenReturn(rows);
+        builder.setReport(report); 
         builder.setReportChartMaker(null);
+        builder.makeChart();    
+        Mockito.verify(chartMaker, Mockito.times(0)).makeChart(Mockito.any(Report.class));
+    }
+    
+    @Test 
+    public final void testDoesntAskChartMakerToMakeChartIfNoChartMakerAndZeroRows() {   
+        builder.setReportChartMaker(null);
+        builder.makeChart();  
         Mockito.verify(chartMaker, Mockito.times(0)).makeChart(Mockito.any(Report.class));
     }
     
@@ -131,5 +145,20 @@ public class ReportBuilderTests {
         Mockito.verify(filter1, Mockito.times(1)).setFilterParameter("param1");
         Mockito.verify(filter2, Mockito.times(1)).setFilterParameter("param2");
     }
+    
+    @Test
+    public final void callsMethodsToBuildReport() {
+        ReportBuilder reportBuilder = Mockito.spy(Report1Builder.class);
+        Mockito.doNothing().when(reportBuilder).setReportTitle();
+        Mockito.doNothing().when(reportBuilder).setReportCollumnNames();
+        Mockito.doNothing().when(reportBuilder).setReportRows();
+        
+        reportBuilder.buildReport();
+        Mockito.verify(reportBuilder, Mockito.times(1)).setReportTitle();
+        Mockito.verify(reportBuilder, Mockito.times(1)).setReportCollumnNames();
+        Mockito.verify(reportBuilder, Mockito.times(1)).setReportRows();
+    }
+    
+  
 
 }

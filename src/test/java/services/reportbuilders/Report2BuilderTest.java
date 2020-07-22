@@ -41,7 +41,7 @@ public class Report2BuilderTest {
 		this.employees.add(this.employee1);
 		this.employees.add(this.employee2);
 		this.reportBuilder.setEmployees(this.employees);
-		this.reportBuilder.setInputParam(0, "2012");
+		this.reportBuilder.setFilterParameter("2012", 0);
 		Report report = this.reportBuilder.buildReport();
 		Assert.assertEquals("Raport godzin projektów w roku: 2012", report.getTitle());
 	}
@@ -89,8 +89,9 @@ public class Report2BuilderTest {
 		this.employees.add(this.employee1);
 		this.employees.add(this.employee2);
 		this.reportBuilder.setEmployees(this.employees);
-		this.reportBuilder.setInputParam(0, "2011");
+		this.reportBuilder.setFilterParameter("2028", 0);
 		Report report = this.reportBuilder.buildReport();
+		System.out.println(report.getRows());
 		Assert.assertEquals(0, report.getRows().size());
 	}
 
@@ -104,7 +105,7 @@ public class Report2BuilderTest {
 		employee3.addTask(task5);
 		employees2.add(employee3);
 		this.reportBuilder.setEmployees(employees2);
-		this.reportBuilder.setInputParam(0, "2012");
+		this.reportBuilder.setFilterParameter("2012", 0);
 		Report report = this.reportBuilder.buildReport();
 		Assert.assertEquals(0, report.getRows().size());
 	}
@@ -121,7 +122,7 @@ public class Report2BuilderTest {
 	@Test
 	public final void testProperColumnNames() {
 		this.reportBuilder.setEmployees(this.employees);
-		this.reportBuilder.setInputParam(0, "2012");
+		this.reportBuilder.setFilterParameter("2012", 0);
 		Report report = this.reportBuilder.buildReport();
 
 		List<String> properColumnNames = new ArrayList<String>();
