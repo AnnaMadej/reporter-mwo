@@ -21,14 +21,14 @@ import repository.XlsFilesWriter;
 
 public class XlsReportExporter {
 
-    private static FilesWriter filesWriter = new XlsFilesWriter();
-    private static Workbook wb;
-    private static Sheet sheet1; 
-    private static List<String> columnNames = new ArrayList<String>();
-    private static List<List<String>> rows = new ArrayList<List<String>>();
-    private static String title = "";
+    private FilesWriter filesWriter = new XlsFilesWriter();
+    private Workbook wb;
+    private Sheet sheet1; 
+    private List<String> columnNames = new ArrayList<String>();
+    private List<List<String>> rows = new ArrayList<List<String>>();
+    private String title = "";
 
-    private static void createHeaders(int columnNamesRow) {
+    private void createHeaders(int columnNamesRow) {
         Row row = sheet1.createRow(columnNamesRow);
         int cellsCounter = 0;
 
@@ -49,7 +49,7 @@ public class XlsReportExporter {
         cellsCounter = 0;
     }
 
-    private static void createRows() {
+    private void createRows() {
         Row row;
         final int numberOfStartingRow = 6;
         int rowsCounter = numberOfStartingRow;
@@ -67,7 +67,7 @@ public class XlsReportExporter {
         new Date();
     } 
 
-    private static void createTittle(int titleRow) {
+    private void createTittle(int titleRow) {
         Row row = sheet1.createRow(titleRow);
         Cell titleCell = row.createCell(0);
 
@@ -85,7 +85,7 @@ public class XlsReportExporter {
         titleCell.setCellStyle(titleCellStyle);
     }
 
-    public static Workbook createXlsWorkbook(Report report) throws IOException {
+    public Workbook createXlsWorkbook(Report report) throws IOException {
         wb = new HSSFWorkbook();
         sheet1 = wb.createSheet("Raport");
 
@@ -108,13 +108,13 @@ public class XlsReportExporter {
         return wb;
     }
     
-    public static File exportToXls(Report report) throws IOException {
+    public File exportToXls(Report report) throws IOException {
         Workbook wb = createXlsWorkbook(report);
         return filesWriter.writeToFile(wb);
     }
 
-    public static void setFilesWriter(FilesWriter filesWriter) {
-        XlsReportExporter.filesWriter = filesWriter;
+    public void setFilesWriter(FilesWriter filesWriter) {
+        this.filesWriter = filesWriter;
     }
     
     

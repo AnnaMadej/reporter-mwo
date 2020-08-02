@@ -19,14 +19,18 @@ import services.reportbuilders.ReportBuilder;
 import services.reportbuilders.ReportBuilderFactory;
 
 public class Controller {
+    private ReportBuilderFactory rbFactory = new ReportBuilderFactory();
+    private XlsReportExporter reportExporter = new XlsReportExporter();
     private ReadErrorsHolder readErrorsHolder = new ReadErrorsHolder();
     private FilesReader filesReader = new XlsFilesReader(readErrorsHolder);
     private ReportBuilder reportBuilder;
-    
+    private Desktop desktop = Desktop.getDesktop();
+    private ReportStringer reportStringer = new ReportStringer();
+
     private List<Employee> employees = new ArrayList<Employee>();
 
     private Report report;
-    private String reportFilePath;
+    private File reportFile;
 
     public void addFilterParam(int filterIndex, String filterParameter) {
         this.reportBuilder.setFilterParameter(filterParameter, filterIndex);
@@ -37,17 +41,13 @@ public class Controller {
     }
 
     public String exportReport() throws IOException {
-        File file = XlsReportExporter.exportToXls(this.report);
-        this.reportFilePath = file.getCanonicalPath();
-        return this.reportFilePath;
+        File file = reportExporter.exportToXls(this.report);
+        this.reportFile = file;
+        return file.getCanonicalPath();
     }
 
     public String getInputParamName(int filterIndex) {
         return this.reportBuilder.getFilterParamName(filterIndex);
-    }
-
-    public int getNumberOfEmployees() {
-        return this.employees.size();
     }
 
     public int getNumberOfFilters() {
@@ -59,10 +59,8 @@ public class Controller {
     }
 
     public void openReport() throws IOException {
-        File file = new File(this.reportFilePath);
-        Desktop desktop = Desktop.getDesktop();
-        if (file.exists()) {
-            desktop.open(file);
+        if (reportFile.exists()) {
+            desktop.open(reportFile);
         }
     }
 
@@ -71,7 +69,7 @@ public class Controller {
     }
 
     public void setReportType(String userOption) {
-        this.reportBuilder = ReportBuilderFactory.getReportBuilder(userOption);
+        this.setReportBuilder(rbFactory.getReportBuilder(userOption));
         this.reportBuilder.setEmployees(this.employees);
     }
 
@@ -80,11 +78,60 @@ public class Controller {
     }
 
     public String stringReport() {
-        return ReportStringer.stringReport(this.report);
+        return reportStringer.stringReport(this.report);
     }
 
     public void createScanErrorsReport() {
         report = readErrorsHolder.getErrorsReport();
     }
 
+    public void setReportBuilder(ReportBuilder reportBuilder) {
+        this.reportBuilder = reportBuilder;
+    }
+
+    public void setReportExporter(XlsReportExporter reportExporter) {
+        this.reportExporter = reportExporter;
+    }
+
+    public void setReport(Report report) {
+        this.report = report;
+    }
+
+    public void setDesktop(Desktop desktop) {
+        this.desktop = desktop;
+    }
+
+    public void setReportFile(File reportFile) {
+        this.reportFile = reportFile;
+    }
+
+    public void setFilesReader(FilesReader filesReader) {
+        this.filesReader = filesReader;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setRbFactory(ReportBuilderFactory rbFactory) {
+        this.rbFactory = rbFactory;
+    }
+
+    public ReportBuilder getReportBuilder() {
+        return reportBuilder;
+    }
+
+    public void setReportStringer(ReportStringer reportStringer) {
+        this.reportStringer = reportStringer;
+    }
+
+    public void setReadErrorsHolder(ReadErrorsHolder readErrorsHolder) {
+        this.readErrorsHolder = readErrorsHolder;
+    }
+
+    public Report getReport() {
+        return report;
+    }
+
+    
 }

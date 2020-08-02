@@ -15,6 +15,8 @@ import org.mockito.Matchers;
 import model.Report;
 
 public class ReportStringerTest {
+    
+    private ReportStringer reportStringer = new ReportStringer();
 
     @Test
     public final void testPrintReportFullReport() {
@@ -44,7 +46,7 @@ public class ReportStringerTest {
         report.setColumnNames(columnNames);
         report.setRows(rows);
 
-        String reportString = ReportStringer.stringReport(report);
+        String reportString = reportStringer.stringReport(report);
 
         MatcherAssert.assertThat(reportString, CoreMatchers.startsWith("Tytul raportu"));
 
@@ -90,7 +92,7 @@ public class ReportStringerTest {
         report.setTitle(reportTitle);
         report.setColumnNames(columnNames);
 
-        String reportString = ReportStringer.stringReport(report);
+        String reportString = reportStringer.stringReport(report);
         MatcherAssert.assertThat(reportString, CoreMatchers.startsWith("Tytul raportu"));
         MatcherAssert.assertThat(reportString,
                 CoreMatchers.containsString("RAPORT JEST PUSTY"));
@@ -106,7 +108,7 @@ public class ReportStringerTest {
 
     @Test
     public final void testPrintReportNullReport() {
-        String reportString = ReportStringer.stringReport(null);
+        String reportString = reportStringer.stringReport(null);
         MatcherAssert.assertThat(reportString, CoreMatchers.equalTo("Brak raportu!"));
         Scanner sc = new Scanner(reportString);
         int linesSum = 0;

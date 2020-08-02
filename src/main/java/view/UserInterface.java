@@ -1,6 +1,7 @@
 package view;
 
 import controller.Controller;
+import java.awt.Desktop;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -8,12 +9,10 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.TreeSet;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import services.errors.ReadErrorsHolder;
-
 
 public class UserInterface {
 
-    private Scanner sc = new Scanner(System.in); 
+    private Scanner sc = new Scanner(System.in);
     private Controller controller = new Controller();
     private List<String> reportOptions = Arrays
             .asList(new String[] { "1", "2", "3", "4", "5" });
@@ -85,14 +84,18 @@ public class UserInterface {
             System.out.println("Nie udało się wyeksportowac pliku xls!");
         }
         System.out.println("Plik poprawnie wyeksportowany: " + filePath);
-        answer = this.takeUserInput(this.askForXlsOpening());
-        if (answer.toLowerCase().equals("t")) {
-            try {
-                this.controller.openReport();
-            } catch (IOException e) {
-                System.out.println("Nie udało się otworzyc pliku xls!");
+
+        if (Desktop.isDesktopSupported()) {
+            answer = this.takeUserInput(this.askForXlsOpening());
+            if (answer.toLowerCase().equals("t")) {
+                try {
+                    this.controller.openReport();
+                } catch (IOException e) {
+                    System.out.println("Nie udało się otworzyc pliku xls!");
+                }
             }
         }
+
     }
 
     private boolean filterData() {
@@ -161,7 +164,7 @@ public class UserInterface {
 
     public void showMenu() {
 
-        if (this.controller.getNumberOfEmployees() != 0) {
+        if (this.controller.getEmployees().size() != 0) {
             loopUserInput();
         } else {
             System.out.println("Podana ścieżka nie zawiera żadnych danych!");

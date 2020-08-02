@@ -20,6 +20,7 @@ import repository.XlsFilesWriter;
 
 public class XlsReportExporterTest extends XlsReportExporter {
     private Report report = new Report();
+    private XlsReportExporter xlsReportExporter = new XlsReportExporter();
 
     @Before
     public void init() {
@@ -52,7 +53,7 @@ public class XlsReportExporterTest extends XlsReportExporter {
 
     @Test
     public final void shouldCreateCorrectWorkbookTest() throws IOException {
-        Workbook wb = XlsReportExporter.createXlsWorkbook(report);
+        Workbook wb = xlsReportExporter.createXlsWorkbook(report);
         Sheet sheet = wb.getSheet("Raport");
 
         Row titleRow = sheet.getRow(3);
@@ -105,9 +106,9 @@ public class XlsReportExporterTest extends XlsReportExporter {
     @Test
     public final void shouldUseXlsFilesWriter() throws IOException {
         XlsFilesWriter filesWriter = Mockito.mock(XlsFilesWriter.class);
-        XlsReportExporter.setFilesWriter(filesWriter);
+        xlsReportExporter.setFilesWriter(filesWriter);
         
-        XlsReportExporter.exportToXls(report);
+        xlsReportExporter.exportToXls(report);
         
         Mockito.verify(filesWriter, Mockito.times(1)).writeToFile(Mockito.any(Workbook.class));
     }

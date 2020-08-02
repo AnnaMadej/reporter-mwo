@@ -14,46 +14,47 @@ import services.reportbuilders.ReportBuilderFactory;
 
 public class ReportBuilderFactoryTests {
 
+    private ReportBuilderFactory rbFactory = new ReportBuilderFactory();
     @Test
     public void returnsReport1Builder() {
-        ReportBuilder builder = ReportBuilderFactory.getReportBuilder("1");
+        ReportBuilder builder = rbFactory.getReportBuilder("1");
         Assert.assertTrue(builder instanceof Report1Builder);
     }
     
     @Test
     public void returnsReport2Builder() {
-        ReportBuilder builder = ReportBuilderFactory.getReportBuilder("2");
+        ReportBuilder builder = rbFactory.getReportBuilder("2");
         Assert.assertTrue(builder instanceof Report2Builder);
     }
     
     @Test
     public void returnsReport3Builder() {
-        ReportBuilder builder = ReportBuilderFactory.getReportBuilder("3");
+        ReportBuilder builder = rbFactory.getReportBuilder("3");
         Assert.assertTrue(builder instanceof Report3Builder);
     }
     
     @Test
     public void returnsReport4Builder() {
-        ReportBuilder builder = ReportBuilderFactory.getReportBuilder("4");
+        ReportBuilder builder = rbFactory.getReportBuilder("4");
         Assert.assertTrue(builder instanceof Report4Builder);
     }
     
     @Test
     public void returnsReport5Builder() {
-        ReportBuilder builder = ReportBuilderFactory.getReportBuilder("5");
+        ReportBuilder builder = rbFactory.getReportBuilder("5");
         Assert.assertTrue(builder instanceof Report5Builder);
     }
     
     @Test
     public void returnsNullIfNullString() {
-        ReportBuilder builder = ReportBuilderFactory.getReportBuilder(null);
+        ReportBuilder builder = rbFactory.getReportBuilder(null);
         Assert.assertEquals(builder, null);
     }
     
     @Test
     public void returnsNullIfNotKnownString() {
         ReportBuilderFactory rbf = new ReportBuilderFactory();
-        ReportBuilder builder = ReportBuilderFactory.getReportBuilder("123");
+        ReportBuilder builder = rbFactory.getReportBuilder("123");
         Assert.assertEquals(builder, null);
     }
 }
