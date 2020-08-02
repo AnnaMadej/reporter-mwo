@@ -2,6 +2,7 @@ package view;
 
 import controller.Controller;
 import java.awt.Desktop;
+import java.io.Console;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -71,7 +72,7 @@ public class UserInterface {
     }
 
     private void exit() {
-        System.out.println("Copyright © 2020 RunTime Terror, All Rights Reserved. ");
+        System.out.println("Copyright 2020 by: RunTime Terror, All Rights Reserved. ");
         this.sc.close();
     }
 
@@ -145,6 +146,7 @@ public class UserInterface {
     }
 
     private void showHeaders() {
+        System.out.println();
         System.out.println("______                _____  _             "
                 + "       _____                                \n"
                 + "| ___ \\              |_   _|(_)       "
@@ -163,7 +165,7 @@ public class UserInterface {
     }
 
     public void showMenu() {
-
+        clearScreen();
         if (this.controller.getEmployees().size() != 0) {
             loopUserInput();
         } else {
@@ -186,6 +188,13 @@ public class UserInterface {
 
                 this.showErrorLogs();
             }
+
+            if (!userOption.equals("0")) {
+                System.out.println("Naciśnij Enter aby kontynuować...");
+                sc.nextLine();
+                clearScreen();
+            }
+
         } while (!userOption.equals("0"));
     }
 
@@ -205,5 +214,24 @@ public class UserInterface {
     private String takeUserInput(String question) {
         System.out.println(question);
         return this.sc.nextLine();
+    }
+
+    public void clearScreen() {
+        System.out.println();
+        Console cons = System.console();
+        if (cons != null && System.getenv().get("TERM") != null) {
+            System.out.print("\033[H\033[2J");
+            System.out.flush();
+        }
+        
+        String os = System.getProperty("os.name");
+        try {
+            if (os.contains("Windows")) {
+                new ProcessBuilder("cmd", "/c", "cls").inheritIO().start().waitFor();
+            }
+        } catch (IOException | InterruptedException e) {
+            ;
+        }
+
     }
 }
