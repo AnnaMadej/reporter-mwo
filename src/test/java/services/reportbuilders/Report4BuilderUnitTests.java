@@ -2,7 +2,6 @@ package services.reportbuilders;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -71,7 +70,7 @@ public class Report4BuilderUnitTests {
 
     @Test
     public final void setsProperRows() {
-        
+
         List<String> columnNames = new ArrayList<String>();
         columnNames.add("L.p");
         columnNames.add("Imię i nazwisko");
@@ -80,7 +79,7 @@ public class Report4BuilderUnitTests {
         columnNames.add("projekt3");
         report.setColumnNames(columnNames);
         reportBuilder.setReport(report);
-        
+
         reportBuilder.setReportRows();
         List<List<String>> rows = new ArrayList<List<String>>();
 
@@ -90,7 +89,6 @@ public class Report4BuilderUnitTests {
         row1.add("100.0%");
         row1.add("0.0%");
         row1.add("0.0%");
-        
 
         List<String> row2 = new ArrayList<String>();
         row2.add("2");
@@ -117,7 +115,7 @@ public class Report4BuilderUnitTests {
         Task task5 = new Task(calendar.getTime(), "projekt2", "opis", 0);
         employee3.addTask(task5);
         employees.add(employee3);
-        
+
         List<String> columnNames = new ArrayList<String>();
         columnNames.add("L.p");
         columnNames.add("Imię i nazwisko");
@@ -126,7 +124,7 @@ public class Report4BuilderUnitTests {
         columnNames.add("projekt3");
         report.setColumnNames(columnNames);
         reportBuilder.setReport(report);
-        
+
         reportBuilder.setReportRows();
         List<List<String>> rows = new ArrayList<List<String>>();
 
@@ -136,7 +134,6 @@ public class Report4BuilderUnitTests {
         row1.add("100.0%");
         row1.add("0.0%");
         row1.add("0.0%");
-        
 
         List<String> row2 = new ArrayList<String>();
         row2.add("2");
@@ -157,7 +154,8 @@ public class Report4BuilderUnitTests {
     public void setsProperReportTitleWithoutFilter() {
         reportBuilder.removeFilters();
         reportBuilder.setReportTitle();
-        Assert.assertEquals("Procentowy udział projektów w pracy osób ", report.getTitle());
+        Assert.assertEquals("Procentowy udział projektów w pracy osób ",
+                        report.getTitle());
     }
 
     @Test
@@ -168,7 +166,7 @@ public class Report4BuilderUnitTests {
         Mockito.when(filter.getFilterParameter()).thenReturn("2012");
         reportBuilder.setReportTitle();
         Assert.assertEquals("Procentowy udział projektów w pracy osób w roku: 2012",
-                report.getTitle());
+                        report.getTitle());
     }
 
     @Test
@@ -179,9 +177,10 @@ public class Report4BuilderUnitTests {
         Mockito.when(filter.getFilterParameter()).thenReturn(null);
         reportBuilder.addEmployeesFilter(filter);
         reportBuilder.setReportTitle();
-        Assert.assertEquals("Procentowy udział projektów w pracy osób ", report.getTitle());
+        Assert.assertEquals("Procentowy udział projektów w pracy osób ",
+                        report.getTitle());
     }
-    
+
     @Test
     public void testDoesntSetReportRowsIfEmptyColumnNames() {
         report.setColumnNames(new ArrayList<String>());

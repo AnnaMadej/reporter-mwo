@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
 import model.Employee;
 import model.Task;
 import services.chartmakers.Report2BarChartMaker;
@@ -67,14 +68,14 @@ public class Report2Builder extends ReportBuilder {
     @Override
     protected void setReportTitle() {
         String title = "Raport godzin projektów ";
-        
+
         if (this.filters.size() > 0) {
             EmployeesFilter filter = this.filters.get(0);
             if (filter.getFilterParameter() != null) {
                 title += "w roku: " + filter.getFilterParameter();
             }
         }
-       
+
         this.report.setTitle(title);
     }
 

@@ -2,6 +2,7 @@ package services.reportbuilders;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import model.Employee;
 import model.Task;
 import services.employeefilters.EmployeesFilter;
@@ -71,14 +72,14 @@ public class Report5Builder extends ReportBuilder {
     @Override
     protected void setReportTitle() {
         String title = "Raport ilości przepracowanych godzin pracowników ";
-        
+
         if (this.filters.size() > 0) {
             EmployeesFilter filter = this.filters.get(0);
             if (filter.getFilterParameter() != null) {
                 title += "w projekcie: " + filter.getFilterParameter();
             }
         }
-        
+
         this.report.setTitle(title);
     }
 

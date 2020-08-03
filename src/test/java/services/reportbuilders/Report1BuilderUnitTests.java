@@ -1,7 +1,5 @@
 package services.reportbuilders;
 
-import static org.junit.Assert.*;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -75,8 +73,6 @@ public class Report1BuilderUnitTests {
         row2.add("2");
         row2.add("Paweł Kowalski");
         row2.add("2.0");
-        
-     
 
         rows.add(row1);
         rows.add(row2);
@@ -85,17 +81,16 @@ public class Report1BuilderUnitTests {
 
         Assert.assertEquals(rows, reportRows);
     }
-    
+
     @Test
     public final void setsProperRowsWith0Hours() {
-        
+
         // this employee should not be added to report rows:
         Employee employee3 = new Employee("Halina", "Kwiatkowska");
         Task task3 = new Task(new Date(), "projekt1", "opis", 0);
         employee3.addTask(task3);
         employees.add(employee3);
-        
-        
+
         reportBuilder.setReportRows();
         List<List<String>> rows = new ArrayList<List<String>>();
 
@@ -108,7 +103,7 @@ public class Report1BuilderUnitTests {
         row2.add("2");
         row2.add("Paweł Kowalski");
         row2.add("2.0");
-        
+
         rows.add(row1);
         rows.add(row2);
 
@@ -116,15 +111,14 @@ public class Report1BuilderUnitTests {
 
         Assert.assertEquals(rows, reportRows);
     }
-    
-    
+
     @Test
     public void setsProperReportTitleWithoutFilter() {
         reportBuilder.removeFilters();
         reportBuilder.setReportTitle();
         Assert.assertEquals("Raport godzin pracowników ", report.getTitle());
     }
-    
+
     @Test
     public void setsProperReportTitleWithFilterParameter() {
         reportBuilder.removeFilters();
@@ -134,7 +128,7 @@ public class Report1BuilderUnitTests {
         reportBuilder.setReportTitle();
         Assert.assertEquals("Raport godzin pracowników w roku: 2012", report.getTitle());
     }
-    
+
     @Test
     public void setsProperReportTitleWithoutFilterParameter() {
         reportBuilder.removeFilters();

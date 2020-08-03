@@ -2,8 +2,8 @@ package services.reportbuilders;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import model.Employee;
-import services.chartmakers.Report2BarChartMaker;
 import services.chartmakers.Report4PieChartMaker;
 import services.employeefilters.EmployeesFilterFactory;
 

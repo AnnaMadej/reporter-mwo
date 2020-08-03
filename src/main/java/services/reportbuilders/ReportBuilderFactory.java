@@ -2,7 +2,7 @@ package services.reportbuilders;
 
 public class ReportBuilderFactory {
     public ReportBuilder getReportBuilder(String number) {
-        
+
         if (number == null) {
             return null;
         }

@@ -1,14 +1,11 @@
 package services.readers;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -18,14 +15,13 @@ import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.junit.Assert;
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.Spy;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import model.Employee;
 import model.ScanError;
@@ -35,6 +31,7 @@ import services.errors.ReadErrorsChecker;
 import services.errors.ReadErrorsHolder;
 import services.errors.XlsReadErrorsChecker;
 
+@RunWith(MockitoJUnitRunner.Silent.class)
 public class XlsFilesReaderTest {
 
     private static ReadErrorsHolder readErrorsHolder;
@@ -54,9 +51,16 @@ public class XlsFilesReaderTest {
     private static Cell cell2;
     private static Cell cell3;
 
+    @Test
+    public final void createsWorkBook() throws IOException {
+        Mockito.reset(filesReader);
+        final Workbook wb = filesReader
+                        .createWorkBook(new File("src/test/testing-data/blankFile.xls"));
+        Assert.assertTrue(wb != null);
+    }
+
     @Before
     public final void init() throws IOException {
-        MockitoAnnotations.initMocks(this);
         readErrorsChecker = Mockito.mock(XlsReadErrorsChecker.class);
         filesFinder = Mockito.mock(FilesFinder.class);
         readErrorsHolder = Mockito.mock(ReadErrorsHolder.class);
@@ -72,11 +76,11 @@ public class XlsFilesReaderTest {
 
         Mockito.when(filesFinder.findFiles(path)).thenReturn(filesList);
 
-        Workbook wb = new HSSFWorkbook();
+        final Workbook wb = new HSSFWorkbook();
         Mockito.doReturn(wb).when(filesReader).createWorkBook(file1);
         sheet = wb.createSheet();
         row = sheet.createRow(1);
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         calendar.set(2012, 01, 23);
         cell1 = row.createCell(0);
         cell1.setCellValue(calendar.getTime());
@@ -87,55 +91,78 @@ public class XlsFilesReaderTest {
     }
 
     @Test
-    public final void testReadFilesWithInvalidFilename()
-            throws IOException, InvalidFormatException {
-        Mockito.when(readErrorsChecker.filenameIsValid(Mockito.any(File.class))).thenReturn(false);
-
-        employees = filesReader.readFiles(path);
-
-        Mockito.verify(readErrorsHolder, Mockito.times(1)).addScanError(
-                new ScanError(file1.getCanonicalPath(), "", "", "zła nazwa pliku!"));
-
-        Assert.assertEquals(0, employees.size());
-    }
-
-    @Test
     public final void testExtractFileLocation() {
         Assert.assertEquals(location, filesReader.extractFileLocation(file1));
     }
 
     @Test
+    public void testMergeEmployee() {
+        final List<Employee> employees = new ArrayList<Employee>();
+        final Employee employee = new Employee("Karolina", "Kwiatkowska");
+        final Task task = new Task(new Date(), "projekt1", "opis1", 3);
+        employee.addTask(task);
+        final Employee employee2 = new Employee("Karolina", "Kwiatkowska");
+        final Task task2 = new Task(new Date(), "projekt2", "opis2", 1);
+        employee2.addTask(task2);
+
+        filesReader.mergeEmployee(employees, employee);
+        filesReader.mergeEmployee(employees, employee2);
+
+        Assert.assertEquals(1, employees.size());
+        final Employee mergedEmployee = employees.get(0);
+        final List<Task> mergedEmployeeTasks = mergedEmployee.getTaskList();
+        Assert.assertEquals(2, mergedEmployeeTasks.size());
+
+        Assert.assertTrue(mergedEmployeeTasks.contains(task));
+        Assert.assertTrue(mergedEmployeeTasks.contains(task2));
+    }
+
+    @Test
+    public final void testReadFilesWithInvalidFilename()
+                    throws IOException, InvalidFormatException {
+        Mockito.when(readErrorsChecker.filenameIsValid(Mockito.any(File.class)))
+                        .thenReturn(false);
+
+        employees = filesReader.readFiles(path);
+
+        Mockito.verify(readErrorsHolder, Mockito.times(1)).addScanError(new ScanError(
+                        file1.getCanonicalPath(), "", "", "zła nazwa pliku!"));
+
+        Assert.assertEquals(0, employees.size());
+    }
+
+    @Test
     public final void testReadFilesWithInvalidMonthInLocation()
-            throws IOException, InvalidFormatException {
+                    throws IOException, InvalidFormatException {
         Mockito.when(readErrorsChecker.filenameIsValid(file1)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationMonthIsValid(location)).thenReturn(false);
 
         employees = filesReader.readFiles(path);
 
-        Mockito.verify(readErrorsHolder, Mockito.times(1)).addScanError(
-                new ScanError(file1.getCanonicalPath(), "", "Zła lokalizacja pliku!"));
+        Mockito.verify(readErrorsHolder, Mockito.times(1)).addScanError(new ScanError(
+                        file1.getCanonicalPath(), "", "Zła lokalizacja pliku!"));
 
         Assert.assertEquals(0, employees.size());
     }
 
     @Test
     public final void testReadFilesWithInvalidYearInLocation()
-            throws IOException, InvalidFormatException {
+                    throws IOException, InvalidFormatException {
         Mockito.when(readErrorsChecker.filenameIsValid(file1)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationMonthIsValid(location)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationYearIsValid(location)).thenReturn(false);
 
         employees = filesReader.readFiles(path);
 
-        Mockito.verify(readErrorsHolder, Mockito.times(1)).addScanError(
-                new ScanError(file1.getCanonicalPath(), "", "Zła lokalizacja pliku!"));
+        Mockito.verify(readErrorsHolder, Mockito.times(1)).addScanError(new ScanError(
+                        file1.getCanonicalPath(), "", "Zła lokalizacja pliku!"));
 
         Assert.assertEquals(0, employees.size());
     }
 
     @Test
     public final void testReadFileWithBadColumnNames()
-            throws IOException, InvalidFormatException {
+                    throws IOException, InvalidFormatException {
         Mockito.when(readErrorsChecker.filenameIsValid(file1)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationMonthIsValid(location)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationYearIsValid(location)).thenReturn(true);
@@ -143,12 +170,14 @@ public class XlsFilesReaderTest {
         employees = filesReader.readFiles(path);
         Assert.assertEquals(0, employees.size());
         Mockito.verify(readErrorsHolder, Mockito.times(1))
-                .addScanError(new ScanError(file1.getCanonicalPath(), sheet.getSheetName(),
-                        "Arkusz nie zawiera odpowiednich kolumn"));
+                        .addScanError(new ScanError(file1.getCanonicalPath(),
+                                        sheet.getSheetName(),
+                                        "Arkusz nie zawiera odpowiednich kolumn"));
     }
 
     @Test
-    public final void testReadFileWithEmptyRow() throws IOException, InvalidFormatException {
+    public final void testReadFileWithEmptyRow()
+                    throws IOException, InvalidFormatException {
         Mockito.when(readErrorsChecker.filenameIsValid(file1)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationMonthIsValid(location)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationYearIsValid(location)).thenReturn(true);
@@ -157,13 +186,14 @@ public class XlsFilesReaderTest {
         employees = filesReader.readFiles(path);
         Assert.assertEquals(0, employees.size());
         Mockito.verify(readErrorsHolder, Mockito.times(1))
-                .addScanError(new ScanError(file1.getCanonicalPath(), sheet.getSheetName(),
-                        row.getRowNum() + 1, "pusty wiersz!"));
+                        .addScanError(new ScanError(file1.getCanonicalPath(),
+                                        sheet.getSheetName(), row.getRowNum() + 1,
+                                        "pusty wiersz!"));
     }
 
     @Test
     public final void testReadFileWithInvalidDateField()
-            throws IOException, InvalidFormatException {
+                    throws IOException, InvalidFormatException {
         Mockito.when(readErrorsChecker.filenameIsValid(file1)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationMonthIsValid(location)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationYearIsValid(location)).thenReturn(true);
@@ -173,13 +203,14 @@ public class XlsFilesReaderTest {
         employees = filesReader.readFiles(path);
         Assert.assertEquals(0, employees.size());
         Mockito.verify(readErrorsHolder, Mockito.times(1))
-                .addScanError(new ScanError(file1.getCanonicalPath(), sheet.getSheetName(),
-                        row.getRowNum() + 1, "DATA", "błędnie wypełniona komórka!"));
+                        .addScanError(new ScanError(file1.getCanonicalPath(),
+                                        sheet.getSheetName(), row.getRowNum() + 1, "DATA",
+                                        "błędnie wypełniona komórka!"));
     }
 
     @Test
     public final void testReadFileWithInvalidDescriptionField()
-            throws IOException, InvalidFormatException {
+                    throws IOException, InvalidFormatException {
         Mockito.when(readErrorsChecker.filenameIsValid(file1)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationMonthIsValid(location)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationYearIsValid(location)).thenReturn(true);
@@ -190,13 +221,14 @@ public class XlsFilesReaderTest {
         employees = filesReader.readFiles(path);
         Assert.assertEquals(0, employees.size());
         Mockito.verify(readErrorsHolder, Mockito.times(1))
-                .addScanError(new ScanError(file1.getCanonicalPath(), sheet.getSheetName(),
-                        row.getRowNum() + 1, "OPIS", "błędnie wypełniona komórka!"));
+                        .addScanError(new ScanError(file1.getCanonicalPath(),
+                                        sheet.getSheetName(), row.getRowNum() + 1, "OPIS",
+                                        "błędnie wypełniona komórka!"));
     }
 
     @Test
     public final void testReadFileWithInvalidHoursField()
-            throws IOException, InvalidFormatException {
+                    throws IOException, InvalidFormatException {
         Mockito.when(readErrorsChecker.filenameIsValid(file1)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationMonthIsValid(location)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationYearIsValid(location)).thenReturn(true);
@@ -208,36 +240,14 @@ public class XlsFilesReaderTest {
         employees = filesReader.readFiles(path);
         Assert.assertEquals(0, employees.size());
         Mockito.verify(readErrorsHolder, Mockito.times(1))
-                .addScanError(new ScanError(file1.getCanonicalPath(), sheet.getSheetName(),
-                        row.getRowNum() + 1, "CZAS", "błędnie wypełniona komórka!"));
-    }
-
-    @Test
-    public final void testReadFileWithYearNotEqualToLocation()
-            throws IOException, InvalidFormatException {
-        Mockito.when(readErrorsChecker.filenameIsValid(file1)).thenReturn(true);
-        Mockito.when(readErrorsChecker.locationMonthIsValid(location)).thenReturn(true);
-        Mockito.when(readErrorsChecker.locationYearIsValid(location)).thenReturn(true);
-        Mockito.when(readErrorsChecker.hasProperColumnNames(sheet)).thenReturn(true);
-        Mockito.when(readErrorsChecker.rowIsEmpty(row)).thenReturn(false);
-        Mockito.when(readErrorsChecker.isValidDateField(cell1)).thenReturn(true);
-        Mockito.when(readErrorsChecker.isValidDescriptionField(cell2)).thenReturn(true);
-        Mockito.when(readErrorsChecker.isValidHoursField(cell3)).thenReturn(true);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(cell1.getDateCellValue());
-        Mockito.when(readErrorsChecker.locationYearEqualsDateYear(calendar.get(Calendar.YEAR),
-                location)).thenReturn(false);
-        employees = filesReader.readFiles(path);
-        Assert.assertEquals(0, employees.size());
-        Mockito.verify(readErrorsHolder, Mockito.times(1))
-                .addScanError(new ScanError(file1.getCanonicalPath(), sheet.getSheetName(),
-                        row.getRowNum() + 1, "DATA",
-                        "rok nie zgadza się z lokalizacją pliku!"));
+                        .addScanError(new ScanError(file1.getCanonicalPath(),
+                                        sheet.getSheetName(), row.getRowNum() + 1, "CZAS",
+                                        "błędnie wypełniona komórka!"));
     }
 
     @Test
     public final void testReadFileWithMonthNotEqualToLocation()
-            throws IOException, InvalidFormatException {
+                    throws IOException, InvalidFormatException {
         Mockito.when(readErrorsChecker.filenameIsValid(file1)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationMonthIsValid(location)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationYearIsValid(location)).thenReturn(true);
@@ -246,25 +256,56 @@ public class XlsFilesReaderTest {
         Mockito.when(readErrorsChecker.isValidDateField(cell1)).thenReturn(true);
         Mockito.when(readErrorsChecker.isValidDescriptionField(cell2)).thenReturn(true);
         Mockito.when(readErrorsChecker.isValidHoursField(cell3)).thenReturn(true);
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         calendar.setTime(cell1.getDateCellValue());
-        Mockito.when(readErrorsChecker.locationYearEqualsDateYear(calendar.get(Calendar.YEAR),
-                location)).thenReturn(true);
-        Mockito.when(readErrorsChecker
-                .locationMonthEqualsDateMonth(calendar.get(Calendar.MONTH) + 1, location))
-                .thenReturn(false);
+        Mockito.when(readErrorsChecker.locationYearEqualsDateYear(
+                        calendar.get(Calendar.YEAR), location)).thenReturn(true);
+        Mockito.when(readErrorsChecker.locationMonthEqualsDateMonth(
+                        calendar.get(Calendar.MONTH) + 1, location)).thenReturn(false);
         employees = filesReader.readFiles(path);
         Assert.assertEquals(0, employees.size());
         Mockito.verify(readErrorsHolder, Mockito.times(1))
-                .addScanError(new ScanError(file1.getCanonicalPath(), sheet.getSheetName(),
-                        row.getRowNum() + 1, "DATA",
-                        "miesiąc nie zgadza się z lokalizacją pliku!"));
+                        .addScanError(new ScanError(file1.getCanonicalPath(),
+                                        sheet.getSheetName(), row.getRowNum() + 1, "DATA",
+                                        "miesiąc nie zgadza się z lokalizacją pliku!"));
+    }
+
+    @Test
+    public final void testReadFileWithNoErrors()
+                    throws IOException, InvalidFormatException {
+        Mockito.when(readErrorsChecker.filenameIsValid(file1)).thenReturn(true);
+        Mockito.when(readErrorsChecker.locationMonthIsValid(location)).thenReturn(true);
+        Mockito.when(readErrorsChecker.locationYearIsValid(location)).thenReturn(true);
+        Mockito.when(readErrorsChecker.hasProperColumnNames(sheet)).thenReturn(true);
+        Mockito.when(readErrorsChecker.rowIsEmpty(row)).thenReturn(false);
+        Mockito.when(readErrorsChecker.isValidDateField(cell1)).thenReturn(true);
+        Mockito.when(readErrorsChecker.isValidDescriptionField(cell2)).thenReturn(true);
+        Mockito.when(readErrorsChecker.isValidHoursField(cell3)).thenReturn(true);
+        final Calendar calendar = Calendar.getInstance();
+        calendar.setTime(cell1.getDateCellValue());
+        Mockito.when(readErrorsChecker.locationYearEqualsDateYear(
+                        calendar.get(Calendar.YEAR), location)).thenReturn(true);
+        Mockito.when(readErrorsChecker.locationMonthEqualsDateMonth(
+                        calendar.get(Calendar.MONTH) + 1, location)).thenReturn(true);
+
+        Mockito.when(readErrorsChecker.findDatesWithInvalidHours(Mockito.any(Map.class)))
+                        .thenReturn(new ArrayList<Date>());
+
+        employees = filesReader.readFiles(path);
+        Assert.assertEquals(1, employees.size());
+        final Task task = new Task(cell1.getDateCellValue(), sheet.getSheetName(),
+                        cell2.getStringCellValue(), cell3.getNumericCellValue());
+        final Employee employee = employees.get(0);
+        Assert.assertEquals("Jan", employee.getName());
+        Assert.assertEquals("Nowak", employee.getSurname());
+        Assert.assertTrue(employee.getTaskList().contains(task));
+
     }
 
     @Test
     public final void testReadFileWithNullDateCell()
-            throws IOException, InvalidFormatException {
-        String date = null;
+                    throws IOException, InvalidFormatException {
+        final String date = null;
         cell1.setCellValue(date);
         Mockito.when(readErrorsChecker.filenameIsValid(file1)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationMonthIsValid(location)).thenReturn(true);
@@ -275,13 +316,14 @@ public class XlsFilesReaderTest {
         employees = filesReader.readFiles(path);
         Assert.assertEquals(0, employees.size());
         Mockito.verify(readErrorsHolder, Mockito.times(1))
-                .addScanError(new ScanError(file1.getCanonicalPath(), sheet.getSheetName(),
-                        row.getRowNum() + 1, "DATA", "błędnie wypełniona komórka!"));
+                        .addScanError(new ScanError(file1.getCanonicalPath(),
+                                        sheet.getSheetName(), row.getRowNum() + 1, "DATA",
+                                        "błędnie wypełniona komórka!"));
     }
 
     @Test
     public final void testReadFileWithToManyHoursDateCell()
-            throws IOException, InvalidFormatException {
+                    throws IOException, InvalidFormatException {
         Mockito.when(readErrorsChecker.filenameIsValid(file1)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationMonthIsValid(location)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationYearIsValid(location)).thenReturn(true);
@@ -290,39 +332,31 @@ public class XlsFilesReaderTest {
         Mockito.when(readErrorsChecker.isValidDateField(cell1)).thenReturn(true);
         Mockito.when(readErrorsChecker.isValidDescriptionField(cell2)).thenReturn(true);
         Mockito.when(readErrorsChecker.isValidHoursField(cell3)).thenReturn(true);
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         calendar.setTime(cell1.getDateCellValue());
-        Mockito.when(readErrorsChecker.locationYearEqualsDateYear(calendar.get(Calendar.YEAR),
-                location)).thenReturn(true);
-        Mockito.when(readErrorsChecker
-                .locationMonthEqualsDateMonth(calendar.get(Calendar.MONTH) + 1, location))
-                .thenReturn(true);
+        Mockito.when(readErrorsChecker.locationYearEqualsDateYear(
+                        calendar.get(Calendar.YEAR), location)).thenReturn(true);
+        Mockito.when(readErrorsChecker.locationMonthEqualsDateMonth(
+                        calendar.get(Calendar.MONTH) + 1, location)).thenReturn(true);
 
-        List<Date> invalidDates = new ArrayList<Date>();
+        final List<Date> invalidDates = new ArrayList<Date>();
         invalidDates.add(cell1.getDateCellValue());
 
         Mockito.when(readErrorsChecker.findDatesWithInvalidHours(Mockito.any(Map.class)))
-                .thenReturn(invalidDates);
+                        .thenReturn(invalidDates);
 
         employees = filesReader.readFiles(path);
         Assert.assertEquals(0, employees.size());
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-        String stringDate = format.format(cell1.getDateCellValue());
+        final SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        final String stringDate = format.format(cell1.getDateCellValue());
         Mockito.verify(readErrorsHolder, Mockito.times(1))
-                .addScanError(new ScanError(file1.getCanonicalPath(), "",
-                        "Niepoprawna suma godzin w dniu: " + stringDate));
+                        .addScanError(new ScanError(file1.getCanonicalPath(), "",
+                                        "Niepoprawna suma godzin w dniu: " + stringDate));
     }
-    
+
     @Test
-    public final void createsWorkBook() throws IOException {
-        Mockito.reset(filesReader);
-        Workbook wb = filesReader.createWorkBook(new File("src/test/testing-data/blankFile.xls"));
-        Assert.assertTrue(wb != null);
-    }
-    
-    @Test
-    public final void testReadFileWithNoErrors()
-            throws IOException, InvalidFormatException {
+    public final void testReadFileWithYearNotEqualToLocation()
+                    throws IOException, InvalidFormatException {
         Mockito.when(readErrorsChecker.filenameIsValid(file1)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationMonthIsValid(location)).thenReturn(true);
         Mockito.when(readErrorsChecker.locationYearIsValid(location)).thenReturn(true);
@@ -331,57 +365,26 @@ public class XlsFilesReaderTest {
         Mockito.when(readErrorsChecker.isValidDateField(cell1)).thenReturn(true);
         Mockito.when(readErrorsChecker.isValidDescriptionField(cell2)).thenReturn(true);
         Mockito.when(readErrorsChecker.isValidHoursField(cell3)).thenReturn(true);
-        Calendar calendar = Calendar.getInstance();
+        final Calendar calendar = Calendar.getInstance();
         calendar.setTime(cell1.getDateCellValue());
-        Mockito.when(readErrorsChecker.locationYearEqualsDateYear(calendar.get(Calendar.YEAR),
-                location)).thenReturn(true);
-        Mockito.when(readErrorsChecker
-                .locationMonthEqualsDateMonth(calendar.get(Calendar.MONTH) + 1, location))
-                .thenReturn(true);
-
-        Mockito.when(readErrorsChecker.findDatesWithInvalidHours(Mockito.any(Map.class)))
-                .thenReturn(new ArrayList<Date>());
-
+        Mockito.when(readErrorsChecker.locationYearEqualsDateYear(
+                        calendar.get(Calendar.YEAR), location)).thenReturn(false);
         employees = filesReader.readFiles(path);
-        Assert.assertEquals(1, employees.size());
-        Task task = new Task(cell1.getDateCellValue(), sheet.getSheetName(), cell2.getStringCellValue(), cell3.getNumericCellValue());
-        Employee employee = employees.get(0);
-        Assert.assertEquals("Jan", employee.getName());
-        Assert.assertEquals("Nowak", employee.getSurname());
-        Assert.assertTrue(employee.getTaskList().contains(task));
-        
+        Assert.assertEquals(0, employees.size());
+        Mockito.verify(readErrorsHolder, Mockito.times(1))
+                        .addScanError(new ScanError(file1.getCanonicalPath(),
+                                        sheet.getSheetName(), row.getRowNum() + 1, "DATA",
+                                        "rok nie zgadza się z lokalizacją pliku!"));
     }
-    
+
     @Test
     public void testSumHoursOfDate() {
-        Date date = new Date();
+        final Date date = new Date();
         filesReader.sumHoursOfDate(2, date);
         filesReader.sumHoursOfDate(3, date);
-        
-        Map<Date, Double> hoursOfDate = filesReader.getHoursOfDate();
+
+        final Map<Date, Double> hoursOfDate = filesReader.getHoursOfDate();
         Assert.assertTrue(hoursOfDate.containsKey(date));
         Assert.assertTrue(hoursOfDate.get(date) == 5.0);
-    }
-    
-    @Test
-    public void testMergeEmployee() {
-        List<Employee> employees = new ArrayList<Employee>();
-        Employee employee = new Employee("Karolina", "Kwiatkowska");
-        Task task = new Task(new Date(), "projekt1", "opis1", 3);
-        employee.addTask(task);
-        Employee employee2 = new Employee("Karolina", "Kwiatkowska");
-        Task task2 = new Task(new Date(), "projekt2", "opis2", 1);
-        employee2.addTask(task2);
-        
-        filesReader.mergeEmployee(employees, employee);
-        filesReader.mergeEmployee(employees, employee2);
-        
-        Assert.assertEquals(1, employees.size());
-        Employee mergedEmployee = employees.get(0);
-        List<Task> mergedEmployeeTasks = mergedEmployee.getTaskList();
-        Assert.assertEquals(2, mergedEmployeeTasks.size());
-        
-        Assert.assertTrue(mergedEmployeeTasks.contains(task));
-        Assert.assertTrue(mergedEmployeeTasks.contains(task2));
     }
 }

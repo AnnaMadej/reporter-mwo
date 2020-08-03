@@ -2,7 +2,6 @@ package services.reportbuilders;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -26,12 +25,12 @@ public class Report3BuilderUnitTests {
     @Before
     public void init() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2012,1,1);
+        calendar.set(2012, 1, 1);
         Employee employee1 = new Employee("Jan", "Nowak");
         Task task1 = new Task(calendar.getTime(), "projekt1", "opis", 4);
         employee1.addTask(task1);
 
-        calendar.set(2012,2,1);
+        calendar.set(2012, 2, 1);
         Employee employee2 = new Employee("Paweł", "Kowalski");
         Task task2 = new Task(calendar.getTime(), "projekt2", "opis", 2);
         employee2.addTask(task2);
@@ -50,7 +49,7 @@ public class Report3BuilderUnitTests {
 
         EmployeesFilter filter1 = filters.get(0);
         Assert.assertTrue(filter1 instanceof EmployeesFilterByYear);
-        
+
         EmployeesFilter filter2 = filters.get(1);
         Assert.assertTrue(filter2 instanceof EmployeesFilterByPerson);
     }
@@ -84,7 +83,7 @@ public class Report3BuilderUnitTests {
         row2.add("Marzec");
         row2.add("projekt2");
         row2.add("2.0");
-        
+
         rows.add(row1);
         rows.add(row2);
 
@@ -98,7 +97,7 @@ public class Report3BuilderUnitTests {
 
         // this should not be added to report rows:
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2012,3,1);
+        calendar.set(2012, 3, 1);
         Employee employee2 = new Employee("Adam", "Kot");
         Task task2 = new Task(calendar.getTime(), "projekt2", "opis", 0);
         employee2.addTask(task2);
@@ -117,7 +116,7 @@ public class Report3BuilderUnitTests {
         row2.add("Marzec");
         row2.add("projekt2");
         row2.add("2.0");
-        
+
         rows.add(row1);
         rows.add(row2);
 
@@ -130,7 +129,8 @@ public class Report3BuilderUnitTests {
     public void setsProperReportTitleWithoutFilter() {
         reportBuilder.removeFilters();
         reportBuilder.setReportTitle();
-        Assert.assertEquals("Raport godzin przepracowanych miesięcznie", report.getTitle());
+        Assert.assertEquals("Raport godzin przepracowanych miesięcznie",
+                        report.getTitle());
     }
 
     @Test
@@ -140,9 +140,10 @@ public class Report3BuilderUnitTests {
         reportBuilder.addEmployeesFilter(filter);
         Mockito.when(filter.getFilterParameter()).thenReturn("2012");
         reportBuilder.setReportTitle();
-        Assert.assertEquals("Raport godzin przepracowanych miesięcznie, w roku: 2012", report.getTitle());
+        Assert.assertEquals("Raport godzin przepracowanych miesięcznie, w roku: 2012",
+                        report.getTitle());
     }
-    
+
     @Test
     public void setsProperReportTitleWithTwoFilterParameters() {
         reportBuilder.removeFilters();
@@ -151,12 +152,14 @@ public class Report3BuilderUnitTests {
         EmployeesFilter filter2 = Mockito.mock(EmployeesFilterByPerson.class);
         reportBuilder.addEmployeesFilter(filter2);
         Mockito.when(filter2.getFilterParameter()).thenReturn("Jan Nowak");
-        
+
         reportBuilder.addEmployeesFilter(filter1);
         reportBuilder.addEmployeesFilter(filter2);
-        
+
         reportBuilder.setReportTitle();
-        Assert.assertEquals("Raport godzin przepracowanych miesięcznie przez: 2012, w roku: Jan Nowak", report.getTitle());
+        Assert.assertEquals(
+                        "Raport godzin przepracowanych miesięcznie przez: 2012, w roku: Jan Nowak",
+                        report.getTitle());
     }
 
     @Test
@@ -167,7 +170,8 @@ public class Report3BuilderUnitTests {
         Mockito.when(filter.getFilterParameter()).thenReturn(null);
         reportBuilder.addEmployeesFilter(filter);
         reportBuilder.setReportTitle();
-        Assert.assertEquals("Raport godzin przepracowanych miesięcznie", report.getTitle());
+        Assert.assertEquals("Raport godzin przepracowanych miesięcznie",
+                        report.getTitle());
     }
 
 }

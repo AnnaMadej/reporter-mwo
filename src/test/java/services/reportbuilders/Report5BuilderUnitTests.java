@@ -2,7 +2,6 @@ package services.reportbuilders;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Assert;
@@ -14,7 +13,6 @@ import model.Employee;
 import model.Report;
 import model.Task;
 import services.employeefilters.EmployeesFilter;
-import services.employeefilters.EmployeesFilterByPerson;
 import services.employeefilters.EmployeesFilterByProjectName;
 import services.employeefilters.EmployeesFilterByYear;
 
@@ -27,20 +25,19 @@ public class Report5BuilderUnitTests {
     @Before
     public void init() {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2012,1,1);
+        calendar.set(2012, 1, 1);
         Employee employee1 = new Employee("Jan", "Nowak");
         Task task1 = new Task(calendar.getTime(), "projekt1", "opis", 2);
         employee1.addTask(task1);
-        
-        calendar.set(2012,2,1);
+
+        calendar.set(2012, 2, 1);
         Employee employee2 = new Employee("Paweł", "Kowalski");
         Task task2 = new Task(calendar.getTime(), "projekt2", "opis", 2);
         employee2.addTask(task2);
-        
+
         Employee employee3 = new Employee("Jan", "Nowak");
         Task task3 = new Task(calendar.getTime(), "projekt1", "opis", 2);
         employee3.addTask(task3);
-
 
         employees.add(employee1);
         employees.add(employee2);
@@ -57,7 +54,6 @@ public class Report5BuilderUnitTests {
 
         EmployeesFilter filter1 = filters.get(0);
         Assert.assertTrue(filter1 instanceof EmployeesFilterByProjectName);
-        
 
     }
 
@@ -90,12 +86,12 @@ public class Report5BuilderUnitTests {
         row2.add("Paweł Kowalski");
         row2.add("projekt2");
         row2.add("2.0");
-        
+
         rows.add(row1);
         rows.add(row2);
 
         List<List<String>> reportRows = report.getRows();
-  
+
         Assert.assertEquals(2, report.getRows().size());
         Assert.assertTrue(rows.containsAll(reportRows));
     }
@@ -105,7 +101,7 @@ public class Report5BuilderUnitTests {
 
         // this should not be added to report rows:
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2012,3,1);
+        calendar.set(2012, 3, 1);
         Employee employee2 = new Employee("Adam", "Kot");
         Task task2 = new Task(calendar.getTime(), "projekt3", "opis", 0);
         employee2.addTask(task2);
@@ -124,7 +120,7 @@ public class Report5BuilderUnitTests {
         row2.add("Paweł Kowalski");
         row2.add("projekt2");
         row2.add("2.0");
-        
+
         rows.add(row1);
         rows.add(row2);
 
@@ -139,7 +135,8 @@ public class Report5BuilderUnitTests {
         reportBuilder.removeFilters();
         reportBuilder.setReportTitle();
 
-        Assert.assertEquals("Raport ilości przepracowanych godzin pracowników ", report.getTitle());
+        Assert.assertEquals("Raport ilości przepracowanych godzin pracowników ",
+                        report.getTitle());
     }
 
     @Test
@@ -149,7 +146,9 @@ public class Report5BuilderUnitTests {
         reportBuilder.addEmployeesFilter(filter);
         Mockito.when(filter.getFilterParameter()).thenReturn("2012");
         reportBuilder.setReportTitle();
-        Assert.assertEquals("Raport ilości przepracowanych godzin pracowników w projekcie: 2012", report.getTitle());
+        Assert.assertEquals(
+                        "Raport ilości przepracowanych godzin pracowników w projekcie: 2012",
+                        report.getTitle());
     }
 
     @Test
@@ -160,7 +159,8 @@ public class Report5BuilderUnitTests {
         Mockito.when(filter.getFilterParameter()).thenReturn(null);
         reportBuilder.addEmployeesFilter(filter);
         reportBuilder.setReportTitle();
-        Assert.assertEquals("Raport ilości przepracowanych godzin pracowników ", report.getTitle());
+        Assert.assertEquals("Raport ilości przepracowanych godzin pracowników ",
+                        report.getTitle());
     }
 
 }

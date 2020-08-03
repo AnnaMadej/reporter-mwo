@@ -1,20 +1,15 @@
 package services.errors;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
-import java.util.Map;
+
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 
 public class XlsReadErrorsChecker extends ReadErrorsChecker {
-    
+
     public boolean hasProperColumnNames(Object projectSheet) {
         if (projectSheet == null) {
             return false;
@@ -46,7 +41,7 @@ public class XlsReadErrorsChecker extends ReadErrorsChecker {
         if (!(dataRow instanceof Row)) {
             return true;
         }
-        
+
         Row row = (Row) dataRow;
         if (row.getPhysicalNumberOfCells() == 0) {
             return true;
@@ -61,7 +56,7 @@ public class XlsReadErrorsChecker extends ReadErrorsChecker {
         if (!(descriptionField instanceof Cell)) {
             return false;
         }
-        
+
         Cell descriptionCell = (Cell) descriptionField;
         if (descriptionCell.getCellType() == CellType.BLANK) {
             return false;
@@ -75,18 +70,16 @@ public class XlsReadErrorsChecker extends ReadErrorsChecker {
         return true;
     }
 
-  
-
     public boolean isValidDateField(Object dateField) {
         if (dateField == null) {
             return false;
-        }        
+        }
         if (!(dateField instanceof Cell)) {
             return false;
         }
-        
+
         Cell dateCell = (Cell) dateField;
-        
+
         if (dateCell.getCellType() == CellType.BLANK) {
             return false;
         }
@@ -97,7 +90,7 @@ public class XlsReadErrorsChecker extends ReadErrorsChecker {
         Calendar c = Calendar.getInstance();
         c.setTime(new Date());
         final int yearsDifference = 25;
-        c.add(Calendar.YEAR, -yearsDifference); 
+        c.add(Calendar.YEAR, -yearsDifference);
         Date minDate = c.getTime();
         c.add(Calendar.YEAR, yearsDifference * 2);
         Date maxDate = c.getTime();
@@ -111,14 +104,13 @@ public class XlsReadErrorsChecker extends ReadErrorsChecker {
     public boolean isValidHoursField(Object hoursField) {
         if (hoursField == null) {
             return false;
-        }        
+        }
         if (!(hoursField instanceof Cell)) {
             return false;
         }
-        
+
         Cell hoursCell = (Cell) hoursField;
-        
-        
+
         if (hoursCell == null || hoursCell.getCellType() == CellType.BLANK) {
             return false;
         }

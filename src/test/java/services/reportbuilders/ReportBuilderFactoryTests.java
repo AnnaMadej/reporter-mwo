@@ -1,60 +1,51 @@
 package services.reportbuilders;
 
-import org.hamcrest.CoreMatchers;
 import org.junit.Assert;
 import org.junit.Test;
 
-import services.reportbuilders.Report1Builder;
-import services.reportbuilders.Report2Builder;
-import services.reportbuilders.Report3Builder;
-import services.reportbuilders.Report4Builder;
-import services.reportbuilders.Report5Builder;
-import services.reportbuilders.ReportBuilder;
-import services.reportbuilders.ReportBuilderFactory;
-
 public class ReportBuilderFactoryTests {
 
-    private ReportBuilderFactory rbFactory = new ReportBuilderFactory();
-    @Test
-    public void returnsReport1Builder() {
-        ReportBuilder builder = rbFactory.getReportBuilder("1");
-        Assert.assertTrue(builder instanceof Report1Builder);
-    }
-    
-    @Test
-    public void returnsReport2Builder() {
-        ReportBuilder builder = rbFactory.getReportBuilder("2");
-        Assert.assertTrue(builder instanceof Report2Builder);
-    }
-    
-    @Test
-    public void returnsReport3Builder() {
-        ReportBuilder builder = rbFactory.getReportBuilder("3");
-        Assert.assertTrue(builder instanceof Report3Builder);
-    }
-    
-    @Test
-    public void returnsReport4Builder() {
-        ReportBuilder builder = rbFactory.getReportBuilder("4");
-        Assert.assertTrue(builder instanceof Report4Builder);
-    }
-    
-    @Test
-    public void returnsReport5Builder() {
-        ReportBuilder builder = rbFactory.getReportBuilder("5");
-        Assert.assertTrue(builder instanceof Report5Builder);
-    }
-    
-    @Test
-    public void returnsNullIfNullString() {
-        ReportBuilder builder = rbFactory.getReportBuilder(null);
-        Assert.assertEquals(builder, null);
-    }
-    
+    private final ReportBuilderFactory rbFactory = new ReportBuilderFactory();
+
     @Test
     public void returnsNullIfNotKnownString() {
-        ReportBuilderFactory rbf = new ReportBuilderFactory();
-        ReportBuilder builder = rbFactory.getReportBuilder("123");
+        final ReportBuilder builder = this.rbFactory.getReportBuilder("123");
         Assert.assertEquals(builder, null);
+    }
+
+    @Test
+    public void returnsNullIfNullString() {
+        final ReportBuilder builder = this.rbFactory.getReportBuilder(null);
+        Assert.assertEquals(builder, null);
+    }
+
+    @Test
+    public void returnsReport1Builder() {
+        final ReportBuilder builder = this.rbFactory.getReportBuilder("1");
+        Assert.assertTrue(builder instanceof Report1Builder);
+    }
+
+    @Test
+    public void returnsReport2Builder() {
+        final ReportBuilder builder = this.rbFactory.getReportBuilder("2");
+        Assert.assertTrue(builder instanceof Report2Builder);
+    }
+
+    @Test
+    public void returnsReport3Builder() {
+        final ReportBuilder builder = this.rbFactory.getReportBuilder("3");
+        Assert.assertTrue(builder instanceof Report3Builder);
+    }
+
+    @Test
+    public void returnsReport4Builder() {
+        final ReportBuilder builder = this.rbFactory.getReportBuilder("4");
+        Assert.assertTrue(builder instanceof Report4Builder);
+    }
+
+    @Test
+    public void returnsReport5Builder() {
+        final ReportBuilder builder = this.rbFactory.getReportBuilder("5");
+        Assert.assertTrue(builder instanceof Report5Builder);
     }
 }

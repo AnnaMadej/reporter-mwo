@@ -1,7 +1,5 @@
 package services;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Calendar;
@@ -29,7 +27,7 @@ public class XlsReadErrorsCheckerTest {
     private static Sheet sheet;
     private static Row columnNamesRow;
     private static Row dataRow;
-    private static ReadErrorsChecker readErrorsChecker= new XlsReadErrorsChecker();
+    private static ReadErrorsChecker readErrorsChecker = new XlsReadErrorsChecker();
 
     @Before
     public void init() {
@@ -294,7 +292,7 @@ public class XlsReadErrorsCheckerTest {
         Boolean result = readErrorsChecker.rowIsEmpty(someNotEmptyRow);
         Assert.assertFalse(result);
     }
-    
+
     @Test
     public final void testRowIsEmptyWithNotEmptyRow2() {
         Row someNotEmptyRow = sheet.createRow(5);
@@ -303,7 +301,7 @@ public class XlsReadErrorsCheckerTest {
         Boolean result = readErrorsChecker.rowIsEmpty(someNotEmptyRow);
         Assert.assertFalse(result);
     }
-    
+
     @Test
     public final void testRowIsEmptyWithNotEmptyRow3() {
         Row someNotEmptyRow = sheet.createRow(5);
@@ -629,67 +627,70 @@ public class XlsReadErrorsCheckerTest {
         Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertFalse(result);
     }
-    
+
     @Test
     public final void testfilenmeIsValidEmptyNameFile() throws IOException {
         File file = new File("");
         Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertFalse(result);
     }
+
     @Test
     public final void testfilenmeIsValidGoodNameFile() throws IOException {
         File file = new File("C:/2012/01/Adam_Nowak.xls");
         Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertTrue(result);
     }
-    
+
     @Test
     public final void testfilenmeIsValidNameWithSpace() throws IOException {
         File file = new File("C:/2012/01/Adam Nowak.xls");
         Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertFalse(result);
     }
+
     @Test
     public final void testfilenmeIsValidNameWithLetter() throws IOException {
         File file = new File("C:/2012/01/AdamBNowak.xls");
         Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertFalse(result);
     }
+
     @Test
     public final void testfilenmeIsValidDoubleName() throws IOException {
         File file = new File("C:/2012/01/Adam_Ignacy_Nowak.xls");
         Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertFalse(result);
     }
+
     @Test
     public final void testfilenmeIsValidLowerCase() throws IOException {
         File file = new File("C:/2012/01/adam_nowak.xls");
         Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertFalse(result);
     }
-    
+
     @Test
     public final void testfilenmeIsValidUpperCase() throws IOException {
         File file = new File("C:/2012/01/ADAM_NOWAK.xls");
         Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertFalse(result);
     }
-    
+
     @Test
     public final void testfilenmeIsValidXlsx() throws IOException {
         File file = new File("C:/2012/01/Adam_Nowak.xlsx");
         Boolean result = readErrorsChecker.filenameIsValid(file);
         Assert.assertTrue(result);
     }
-    
-    
+
     @Test
     public final void locationYearEqualsDateYearNulllocation() throws IOException {
         int year = 2012;
         Boolean result = readErrorsChecker.locationYearEqualsDateYear(year, null);
         Assert.assertFalse(result);
     }
-    
+
     @Test
     public final void locationYearEqualsDateYearCorrect() throws IOException {
         int year = 2012;
@@ -697,7 +698,7 @@ public class XlsReadErrorsCheckerTest {
         Boolean result = readErrorsChecker.locationYearEqualsDateYear(year, location);
         Assert.assertTrue(result);
     }
-    
+
     @Test
     public final void locationYearEqualsDateYearDifferent() throws IOException {
         int year = 2012;
@@ -705,7 +706,7 @@ public class XlsReadErrorsCheckerTest {
         Boolean result = readErrorsChecker.locationYearEqualsDateYear(year, location);
         Assert.assertFalse(result);
     }
-    
+
     @Test
     public final void locationYearEqualsDateYearStrangeLocation() throws IOException {
         int year = 2012;
@@ -713,7 +714,7 @@ public class XlsReadErrorsCheckerTest {
         Boolean result = readErrorsChecker.locationYearEqualsDateYear(year, location);
         Assert.assertFalse(result);
     }
-    
+
     @Test
     public final void locationYearEqualsDateYearEmptyLocation() throws IOException {
         int year = 2012;
@@ -721,14 +722,14 @@ public class XlsReadErrorsCheckerTest {
         Boolean result = readErrorsChecker.locationYearEqualsDateYear(year, location);
         Assert.assertFalse(result);
     }
-    
+
     @Test
     public final void locationMonthEqualsDateMonthNulllocation() throws IOException {
         int month = 3;
         Boolean result = readErrorsChecker.locationMonthEqualsDateMonth(month, null);
         Assert.assertFalse(result);
     }
-    
+
     @Test
     public final void locationMonthEqualsDateMonthCorrect() throws IOException {
         int month = 1;
@@ -736,7 +737,7 @@ public class XlsReadErrorsCheckerTest {
         Boolean result = readErrorsChecker.locationMonthEqualsDateMonth(month, location);
         Assert.assertTrue(result);
     }
-    
+
     @Test
     public final void locationMonthEqualsDateMonthDifferent() throws IOException {
         int month = 2;
@@ -744,7 +745,7 @@ public class XlsReadErrorsCheckerTest {
         Boolean result = readErrorsChecker.locationMonthEqualsDateMonth(month, location);
         Assert.assertFalse(result);
     }
-    
+
     @Test
     public final void locationMonthEqualsDateMonthStrangeLocation() throws IOException {
         int month = 2;
@@ -752,7 +753,7 @@ public class XlsReadErrorsCheckerTest {
         Boolean result = readErrorsChecker.locationMonthEqualsDateMonth(month, location);
         Assert.assertFalse(result);
     }
-    
+
     @Test
     public final void locationMonthEqualsDateMonthEmptyLocation() throws IOException {
         int month = 2;
@@ -760,67 +761,67 @@ public class XlsReadErrorsCheckerTest {
         Boolean result = readErrorsChecker.locationMonthEqualsDateMonth(month, location);
         Assert.assertFalse(result);
     }
-    
+
     @Test
-    public final void testFindDatesWithInvalidHoursTooManyHours(){
+    public final void testFindDatesWithInvalidHoursTooManyHours() {
         Map<Date, Double> hoursOfDates = new HashMap<Date, Double>();
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2012, 01,01);
+        calendar.set(2012, 01, 01);
         Date date = calendar.getTime();
         hoursOfDates.put(date, 25.0);
-        
+
         List<Date> result = readErrorsChecker.findDatesWithInvalidHours(hoursOfDates);
-        Assert.assertTrue(result.contains(date));   
+        Assert.assertTrue(result.contains(date));
     }
-    
+
     @Test
-    public final void testFindDatesWithInvalidHoursCorrectHours(){
+    public final void testFindDatesWithInvalidHoursCorrectHours() {
         Map<Date, Double> hoursOfDates = new HashMap<Date, Double>();
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2012, 01,01);
+        calendar.set(2012, 01, 01);
         Date date = calendar.getTime();
         hoursOfDates.put(date, 24.0);
-        
+
         List<Date> result = readErrorsChecker.findDatesWithInvalidHours(hoursOfDates);
-        Assert.assertFalse(result.contains(date));   
+        Assert.assertFalse(result.contains(date));
     }
-    
+
     @Test
-    public final void testFindDatesWithInvalidHoursNegativeHours(){
+    public final void testFindDatesWithInvalidHoursNegativeHours() {
         Map<Date, Double> hoursOfDates = new HashMap<Date, Double>();
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2012, 01,01);
+        calendar.set(2012, 01, 01);
         Date date = calendar.getTime();
         hoursOfDates.put(date, -5.0);
-        
+
         List<Date> result = readErrorsChecker.findDatesWithInvalidHours(hoursOfDates);
-        Assert.assertTrue(result.contains(date));   
+        Assert.assertTrue(result.contains(date));
     }
-    
+
     @Test
     public final void testHasProperColumnNamesWithBadInstance() {
         boolean result = readErrorsChecker.hasProperColumnNames(new Object());
         Assert.assertFalse(result);
     }
-    
+
     @Test
     public final void testRowIsEmptyWithBadInstance() {
         boolean result = readErrorsChecker.rowIsEmpty(new Object());
         Assert.assertTrue(result);
     }
-    
+
     @Test
     public final void testIsValidDesctiptionFieldBadInstance() {
         boolean result = readErrorsChecker.isValidDescriptionField(new Object());
         Assert.assertFalse(result);
     }
-    
+
     @Test
     public final void testIsValidDateFieldBadInstance() {
         boolean result = readErrorsChecker.isValidDateField(new Object());
         Assert.assertFalse(result);
     }
-    
+
     @Test
     public final void testIsValidHoursFieldBadInstance() {
         boolean result = readErrorsChecker.isValidHoursField(new Object());

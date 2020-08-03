@@ -3,6 +3,7 @@ package services.possibledataretrievers;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
 import model.Employee;
 
 public class PossiblePersonRetriever implements PossibleDataRetriever {

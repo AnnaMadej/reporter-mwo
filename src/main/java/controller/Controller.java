@@ -6,10 +6,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import model.Employee;
 import model.Report;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import repository.FilesFinder;
 import services.ReportStringer;
 import services.XlsReportExporter;
 import services.errors.ReadErrorsHolder;
@@ -133,5 +133,4 @@ public class Controller {
         return report;
     }
 
-    
 }

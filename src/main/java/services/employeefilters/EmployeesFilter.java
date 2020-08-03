@@ -2,6 +2,7 @@ package services.employeefilters;
 
 import java.util.List;
 import java.util.Set;
+
 import model.Employee;
 import services.possibledataretrievers.PossibleDataRetriever;
 
@@ -40,5 +41,4 @@ public abstract class EmployeesFilter {
         this.filterParameterName = filterParameterName;
     }
 
-    
 }

@@ -3,6 +3,7 @@ package services.reportbuilders;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import model.Employee;
 import model.Report;
 import services.chartmakers.ReportChartMaker;
@@ -78,7 +79,7 @@ public abstract class ReportBuilder {
     protected abstract void setReportRows();
 
     protected abstract void setReportTitle();
-    
+
     protected void removeFilters() {
         this.filters = new ArrayList<EmployeesFilter>();
     }
@@ -94,13 +95,10 @@ public abstract class ReportBuilder {
     public Report getReport() {
         return report;
     }
-    
+
     private void usefilter(int filterIndex) {
         EmployeesFilter filter = this.filters.get(filterIndex);
         this.employees = filter.filterEmployees(this.employees);
     }
-    
-    
-    
-    
+
 }

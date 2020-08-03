@@ -5,6 +5,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
+
 import model.Task;
 import services.employeefilters.EmployeesFilter;
 import services.employeefilters.EmployeesFilterFactory;
@@ -13,14 +14,14 @@ public class Report3Builder extends ReportBuilder {
 
     public Report3Builder() {
         super();
-        this.addEmployeesFilter(EmployeesFilterFactory.getEmployeesFilter("year"));
-        this.addEmployeesFilter(EmployeesFilterFactory.getEmployeesFilter("person"));
+        addEmployeesFilter(EmployeesFilterFactory.getEmployeesFilter("year"));
+        addEmployeesFilter(EmployeesFilterFactory.getEmployeesFilter("person"));
     }
 
     private Double countHoursSum(List<Task> tasks, int monthIndex, String project) {
         Double hoursSum = 0.0;
-        for (Task task : tasks) {
-            Calendar calendar = Calendar.getInstance();
+        for (final Task task : tasks) {
+            final Calendar calendar = Calendar.getInstance();
             calendar.setTime(task.getTaskDate());
             if (task.getProjectName().equals(project)
                     && calendar.get(Calendar.MONTH) == monthIndex) {
@@ -32,7 +33,7 @@ public class Report3Builder extends ReportBuilder {
 
     @Override
     protected void setReportCollumnNames() {
-        List<String> columnNames = new ArrayList<String>();
+        final List<String> columnNames = new ArrayList<String>();
         columnNames.add("L.p");
         columnNames.add("Miesiąc");
         columnNames.add("Projekt");
@@ -43,16 +44,17 @@ public class Report3Builder extends ReportBuilder {
     @Override
     protected void setReportRows() {
 
-        List<List<String>> rows = new ArrayList<List<String>>();
+        final List<List<String>> rows = new ArrayList<List<String>>();
         Integer rowsCounter = 1;
 
-        String[] polishMonths = { "Styczeń", "Luty", "Marzec", "Kwiecień", "Maj", "Czerwiec",
-            "Lipiec", "Sierpień", "Wrzesień", "Pażdziernik", "Listopad", "Grudzień" };
+        final String[] polishMonths = { "Styczeń", "Luty", "Marzec", "Kwiecień", "Maj",
+        "Czerwiec", "Lipiec", "Sierpień", "Wrzesień", "Pażdziernik", "Listopad",
+        "Grudzień" };
 
         if (this.employees.size() > 0) {
 
-            Set<String> projects = new TreeSet<String>();
-            List<Task> tasks = new ArrayList<Task>();
+            final Set<String> projects = new TreeSet<String>();
+            final List<Task> tasks = new ArrayList<Task>();
 
             this.employees.stream().forEach(emp -> {
                 projects.addAll(emp.getProjects());
@@ -61,10 +63,10 @@ public class Report3Builder extends ReportBuilder {
 
             final int numberOfMonths = 12;
             for (int monthIndex = 0; monthIndex < numberOfMonths; monthIndex++) {
-                for (String project : projects) {
-                    Double hoursSum = this.countHoursSum(tasks, monthIndex, project);
+                for (final String project : projects) {
+                    final Double hoursSum = countHoursSum(tasks, monthIndex, project);
                     if (hoursSum != 0.0) {
-                        List<String> newRow = new ArrayList<String>();
+                        final List<String> newRow = new ArrayList<String>();
                         newRow.add(rowsCounter.toString());
                         newRow.add(polishMonths[monthIndex]);
                         newRow.add(project);
@@ -82,20 +84,20 @@ public class Report3Builder extends ReportBuilder {
     @Override
     protected void setReportTitle() {
         String title = "Raport godzin przepracowanych miesięcznie";
-        
+
         if (this.filters.size() > 0) {
             if (this.filters.size() > 1) {
-                EmployeesFilter filter2 = this.filters.get(1);
+                final EmployeesFilter filter2 = this.filters.get(1);
                 if (filter2.getFilterParameter() != null) {
                     title += " przez: " + this.filters.get(1).getFilterParameter();
                 }
             }
-            EmployeesFilter filter1 = this.filters.get(0);
+            final EmployeesFilter filter1 = this.filters.get(0);
             if (filter1.getFilterParameter() != null) {
                 title += ", w roku: " + this.filters.get(0).getFilterParameter();
             }
         }
-       
+
         this.report.setTitle(title);
     }
 

@@ -1,11 +1,10 @@
 package services.errors;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
 import model.Report;
 import model.ScanError;
-import services.ReportStringer;
 
 public class ReadErrorsHolder {
 
@@ -23,12 +22,10 @@ public class ReadErrorsHolder {
         return scanErrors;
     }
 
-
-
     public Report getErrorsReport() {
         Report report = new Report();
         report.setTitle("Błędy odczytu plików (" + scanErrors.size() + ")");
-        
+
         List<String> columnNames = new ArrayList<String>();
         columnNames.add("Plik");
         columnNames.add("Projekt");
@@ -37,9 +34,9 @@ public class ReadErrorsHolder {
         columnNames.add("Opis błędu");
 
         report.setColumnNames(columnNames);
-        
+
         List<List<String>> rows = new ArrayList<List<String>>();
-        
+
         for (ScanError scanError : scanErrors) {
             List<String> row = new ArrayList<String>();
             row.add(scanError.getFilename());
@@ -49,9 +46,9 @@ public class ReadErrorsHolder {
             row.add(scanError.getDescription());
             rows.add(row);
         }
-       
+
         report.setRows(rows);
-        
+
         return report;
     }
 

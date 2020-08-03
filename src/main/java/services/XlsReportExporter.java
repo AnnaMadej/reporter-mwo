@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import model.Report;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
@@ -15,15 +15,16 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
+
+import model.Report;
 import repository.FilesWriter;
 import repository.XlsFilesWriter;
-
 
 public class XlsReportExporter {
 
     private FilesWriter filesWriter = new XlsFilesWriter();
     private Workbook wb;
-    private Sheet sheet1; 
+    private Sheet sheet1;
     private List<String> columnNames = new ArrayList<String>();
     private List<List<String>> rows = new ArrayList<List<String>>();
     private String title = "";
@@ -53,7 +54,7 @@ public class XlsReportExporter {
         Row row;
         final int numberOfStartingRow = 6;
         int rowsCounter = numberOfStartingRow;
-        int cellsCounter = 0; 
+        int cellsCounter = 0;
         for (List<String> reportRow : rows) {
             row = sheet1.createRow(rowsCounter);
             rowsCounter++;
@@ -65,7 +66,7 @@ public class XlsReportExporter {
             cellsCounter = 0;
         }
         new Date();
-    } 
+    }
 
     private void createTittle(int titleRow) {
         Row row = sheet1.createRow(titleRow);
@@ -107,7 +108,7 @@ public class XlsReportExporter {
 
         return wb;
     }
-    
+
     public File exportToXls(Report report) throws IOException {
         Workbook wb = createXlsWorkbook(report);
         return filesWriter.writeToFile(wb);
@@ -116,6 +117,5 @@ public class XlsReportExporter {
     public void setFilesWriter(FilesWriter filesWriter) {
         this.filesWriter = filesWriter;
     }
-    
-    
+
 }

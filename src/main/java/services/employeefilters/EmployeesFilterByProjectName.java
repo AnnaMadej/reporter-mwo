@@ -2,6 +2,7 @@ package services.employeefilters;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import model.Employee;
 import model.Task;
 import services.possibledataretrievers.PossibleProjectRetriever;
@@ -19,7 +20,7 @@ public class EmployeesFilterByProjectName extends EmployeesFilter {
         if (this.getFilterParameter() == null) {
             return employees;
         }
-        
+
         List<model.Employee> filteredEmployees = new ArrayList<Employee>();
 
         for (model.Employee employee : employees) {

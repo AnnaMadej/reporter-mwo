@@ -7,21 +7,22 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
-import model.Employee;
-import model.ScanError;
+
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Sheet;
+
+import model.Employee;
+import model.ScanError;
 import repository.FilesFinder;
 import services.errors.ReadErrorsChecker;
 import services.errors.ReadErrorsHolder;
 
-
 public abstract class FilesReader {
-    
+
     protected ReadErrorsChecker readErrorsChecker;
     protected FilesFinder filesFinder;
     protected ReadErrorsHolder readErrorsHolder;
-    
+
     protected void setReadErrorsChecker(ReadErrorsChecker readErrorsChecker) {
         this.readErrorsChecker = readErrorsChecker;
     }
@@ -29,18 +30,16 @@ public abstract class FilesReader {
     protected void setFilesFinder(FilesFinder filesFinder) {
         this.filesFinder = filesFinder;
     }
-    
+
     protected void setReadErrorsHolder(ReadErrorsHolder readErrorsHolder) {
         this.readErrorsHolder = readErrorsHolder;
     }
 
+    protected abstract Employee readFile(File file) throws IOException, InvalidFormatException;
 
-    
-    protected  abstract Employee readFile(File file) throws IOException, InvalidFormatException;
-    
     public List<Employee> readFiles(String path) throws InvalidFormatException, IOException {
         List<File> files = filesFinder.findFiles(path);
-        
+
         List<Employee> employees = new ArrayList<Employee>();
 
         for (File file : files) {
@@ -57,14 +56,13 @@ public abstract class FilesReader {
     protected void mergeEmployee(List<Employee> employees, Employee employee) {
         if (employee != null) {
             if (employees.contains(employee)) {
-                employees.get(employees.indexOf(employee))
-                        .addTasks(employee.getTaskList());
+                employees.get(employees.indexOf(employee)).addTasks(employee.getTaskList());
             } else {
                 employees.add(employee);
             }
         }
     }
-    
+
     protected String extractEmployeeName(String fileName) {
         return fileName.substring(fileName.indexOf("_") + 1, fileName.indexOf("."));
     }
@@ -117,8 +115,8 @@ public abstract class FilesReader {
     }
 
     protected void addLocationError(File file) throws IOException {
-        readErrorsHolder.addScanError(new ScanError(file.getCanonicalPath(),
-                "", "Zła lokalizacja pliku!"));
+        readErrorsHolder.addScanError(
+                new ScanError(file.getCanonicalPath(), "", "Zła lokalizacja pliku!"));
     }
 
     protected void addHoursError(File file, Date date) throws IOException {

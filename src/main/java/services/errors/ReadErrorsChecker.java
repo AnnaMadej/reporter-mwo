@@ -10,20 +10,19 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class ReadErrorsChecker {
-    
+
     protected static final double maxNumberOfHoursADay = 24;
-    
-    
+
     public abstract boolean hasProperColumnNames(Object projectSheet);
-    
+
     public abstract boolean rowIsEmpty(Object dataRow);
-    
+
     public abstract boolean isValidDescriptionField(Object descriptionField);
-    
+
     public abstract boolean isValidDateField(Object dateField);
-    
+
     public abstract boolean isValidHoursField(Object hoursField);
-    
+
     public boolean locationYearIsValid(String fileLocation) {
         if (fileLocation == null) {
             return false;
@@ -103,7 +102,7 @@ public abstract class ReadErrorsChecker {
         }
         return fileMonthFromLocation;
     }
-    
+
     public boolean locationYearEqualsDateYear(int year, String fileLocation) {
         if (fileLocation == null) {
             return false;
@@ -128,7 +127,7 @@ public abstract class ReadErrorsChecker {
         }
         return true;
     }
-    
+
     public List<Date> findDatesWithInvalidHours(Map<Date, Double> hoursOfDate) {
         List<Date> invalidDates = new ArrayList<Date>();
         for (Date date : hoursOfDate.keySet()) {
@@ -139,7 +138,7 @@ public abstract class ReadErrorsChecker {
         }
         return invalidDates;
     }
-    
+
     public boolean filenameIsValid(File file) throws IOException {
         if (file == null) {
             return false;
