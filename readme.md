@@ -13,7 +13,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
-  <a href="https://github.com/bszczepa/RuntimeTerror">
+  <a href="https://github.com/AnnaMadej/reporter-mwo">
     <img src="images/logo.png" alt="Logo" width="700" height="125">
   </a>
 
@@ -117,7 +117,7 @@ java -jar RuntimeTerror-1.0-shaded.jar "C:\Users\aniam\Desktop\reporter-dane2"
 - Plik musi mieć nazwę [Nazwisko_imię.xls] (na przykład Nowak_Jan.xls)
 <br>
 - Prawidłowa lokalizacja pliku: <b> 2012/01/Nowak_Jan.xls </b> 
-<br>
+<br><br>
 <p> Poszczególne projekty, w których uczestniczył pracownik to osobne arkusze pliku xls. (nazwy arkuszy to nazwy projektów) </p>
 <p> Każdy arkusz musi zawierać kolejno kolumny o nagłównach Data, Zadanie, Czas[h] </p> 
 <br>
