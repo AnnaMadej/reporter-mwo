@@ -30,7 +30,7 @@
     <br/> 
   </p>
   <p>
-    Program odczytuje z plików xls dane o przepracowanych godzinach danego pracownika w różnych projektach z uwzględnieniem poszczególnych zadań a następnie używa odczytanych danych do budowania raportów, które można eksportować do plików xls a także tworzyć wykresy.
+    Program odczytuje z plików xls dane o przepracowanych godzinach pracowników w różnych projektach z uwzględnieniem poszczególnych zadań a następnie używa odczytanych danych do budowania raportów, które można eksportować do plików xls a także tworzyć wykresy.
   </p>
 </p>
 
@@ -110,6 +110,7 @@ np.
 ```sh
 java -jar RuntimeTerror-1.0-shaded.jar "C:\Users\aniam\Desktop\reporter-dane2"
 ```
+<p> <a href = https://youtu.be/OKl2cRyJp5g > DEMO DZIAŁANIA PROGRAMU (film) </a>
 
 ### Odczytywanie z plików
 ## Wymagania dla plików wejściowych xls:
@@ -121,7 +122,7 @@ java -jar RuntimeTerror-1.0-shaded.jar "C:\Users\aniam\Desktop\reporter-dane2"
 <p> Poszczególne projekty, w których uczestniczył pracownik to osobne arkusze pliku xls. (nazwy arkuszy to nazwy projektów) </p>
 <p> Każdy arkusz musi zawierać kolejno kolumny o nagłównach Data, Zadanie, Czas[h] </p> 
 <br>
-<p> Przykładowy plik xls: https://github.com/AnnaMadej/reporter-mwo/raw/master/src/test/testing-data/reporter-dane-z-bledami/2014/05/Nowak_Piotr.xls </p>
+<p> Przykładowy plik xls: <a href="https://github.com/AnnaMadej/reporter-mwo/raw/master/src/test/testing-data/reporter-dane-z-bledami/2014/05/Nowak_Piotr.xls"> LINK </a> </p>
 
 
 ### Korzystanie
