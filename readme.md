@@ -28,14 +28,9 @@
     <br /> >> <a href="https://github.com/mateuszsutor"> Mateusz Sutor </a>
     <br /> >> <a href="https://github.com/bszczepa"> Bartosz Szczepański </a>
     <br/> 
-    <br />
-    <a href="https://github.com/bszczepa/RuntimeTerror"><strong>Przejrzyj dokumentację »</strong></a>
-    <br />
-    <br />
-    <br/>
-    <a href="https://github.com/bszczepa/RuntimeTerror/issues">Znalazłem buga </a>
-    |
-    <a href="https://github.com/bszczepa/RuntimeTerror/issues">Zaproponuj funkcjonalność </a>
+  </p>
+  <p>
+    Program odczytuje z plików xls dane o przepracowanych godzinach danego pracownika w różnych projektach z uwzględnieniem poszczególnych zadań a następnie używa odczytanych danych do budowania raportów, które można eksportować do plików xls a także tworzyć wykresy.
   </p>
 </p>
 
@@ -59,7 +54,7 @@
 ## O projekcie
 
    <br />
-  <a href="https://github.com/bszczepa/RuntimeTerror">
+  <a href="https://github.com/AnnaMadej/reporter-mwo">
     <img src="images/interface.png" alt="Interface" width="720" height="469">
   </a>
    <br />
@@ -82,8 +77,6 @@ Narzędzie do raportowania uwzględniające następujące funkcjonalności:
 <!-- GETTING STARTED -->
 ## Dokumentacja
 
-Aby uruchomić lokalną kopię pliku należy:
-
 ### Wymagania
 
 - co najmniej Java 8 SE Runtime Environment
@@ -93,7 +86,7 @@ Aby uruchomić lokalną kopię pliku należy:
 
 Sklonuj Runtime Terror
 ```sh
-git clone https://github.com/bszczepa/RuntimeTerror.git
+git clone https://github.com/AnnaMadej/reporter-mwo
 ```
  Zainstaluj zależności Mavenowe i stwórz plik JAR
 ```sh
@@ -115,8 +108,22 @@ java -jar RuntimeTerror-1.0-shaded.jar "ścieżkaDoFolderuZPlikamiDanych"
 ```
 np. 
 ```sh
-java -jar RuntimeTerror-1.0-shaded.jar "C:\Users\Bartek\Desktop\reporter-dane2"
+java -jar RuntimeTerror-1.0-shaded.jar "C:\Users\aniam\Desktop\reporter-dane2"
 ```
+
+### Odczytywanie z plików
+## Wymagania dla plików wejściowych xls:
+- Plik musi znajdować się w katalogu [ROK]/[MIESIĄC] (RRRR/MM) (na przykład 2012/01)
+- Plik musi mieć nazwę [Nazwisko_imię.xls] (na przykład Nowak_Jan.xls)
+<br>
+- Prawidłowa lokalizacja pliku: <b> 2012/01/Nowak_Jan.xls </b> 
+<br>
+<p> Poszczególne projekty, w których uczestniczył pracownik to osobne arkusze pliku xls. (nazwy arkuszy to nazwy projektów) </p>
+<p> Każdy arkusz musi zawierać kolejno kolumny o nagłównach Data, Zadanie, Czas[h] </p> 
+<br>
+<p> Przykładowy plik xls: https://github.com/AnnaMadej/reporter-mwo/raw/master/src/test/testing-data/reporter-dane-z-bledami/2014/05/Nowak_Piotr.xls </p>
+
+
 ### Korzystanie
 
 Aby wywołać relewantną funkcję należy podać nr odpowiedniej opcji z interfejsu, następnie postępować wedle wskazówek programu. 
@@ -136,19 +143,11 @@ Program przeprowadza wstępną walidację poniższych błędów - wiersze błęd
 - nieprawidłowy rok w dacie
 - nieprawidłowy miesiąc w dacie
 - arkusz nie zawiera odpowiednich kolumn
+- zsumowala liczba godzin pracownika w danym dniu jest większa niż 24
 
 Listę błędów i zignorowanych wierszy można zobaczyć wybierając funkcję nr 8 w głównym menu.
-
-<!-- ROADMAP -->
-## Roadmapa
-
-Obejrzyj [open issues](https://github.com/bszczepa/RuntimeTerror/issues)  aby zapoznać się z propozycjami dalszych funkcjonalności oraz wykrytymi błędami.
-
-
-<!-- LICENSE -->
-## Licencja
-
-Produkt komercyjny typu Single User. Zakaz kopiowania i rozpowszechniania. 
+Jeżeli błąd wystapi na poziomie pliku (na przykład zsumowana liczba godzin któregoś dnia się nie zgadza), żadne dane z tego pliku nie zostaną wczytane do programu. 
+Analogicznie, jeżeli błąd wystąpił na poziomie wiersza (któraś z kolejnych komórek nie jest prawidłowo wypełniona), dane z tego wiersza nie zostaną wczytane do programu.
 
 
 
